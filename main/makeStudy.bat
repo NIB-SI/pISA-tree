@@ -49,7 +49,7 @@ set LF=^
 
 
 REM Two empty lines are necessary
-echo STUDY!LF!SHORT NAME:	%ID%!LF!DESCRIPTION:	> .\_STUDY_DESCRIPTION.TXT
+echo STUDY!LF!Short Name:	%ID%!LF!Study Title:	*!LF!Study Description:	*> .\_STUDY_DESCRIPTION.TXT
 copy .\_STUDY_DESCRIPTION.TXT+..\..\..\project.ini .\_STUDY_DESCRIPTION.TXT
 echo INVESTIGATION:	!LF!FITOBASE LINK:	!LF!RAW DATA:	!LF!>> .\_STUDY_DESCRIPTION.TXT
 echo STUDY:	%ID%!LF!>> ..\..\_INVESTIGATION_DESCRIPTION.TXT

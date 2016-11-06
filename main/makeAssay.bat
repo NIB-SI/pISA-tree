@@ -84,7 +84,7 @@ set LF=^
 
 
 REM Two empty lines are necessary
-echo ASSAY!LF!SHORT NAME:	%ID%!LF!DESCRIPTION:	 > .\_ASSAY_DESCRIPTION.TXT
+echo ASSAY!LF!Short Name:	%ID%!LF!Assay Title:	 *!LF!Assay Description:	 *> .\_ASSAY_DESCRIPTION.TXT
 copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\project.ini .\_ASSAY_DESCRIPTION.TXT
 echo STUDY:	!LF!DATA:	!LF!>> .\_ASSAY_DESCRIPTION.TXT
 echo ASSAY:	%ID%!LF!>> ..\..\_STUDY_DESCRIPTION.TXT
