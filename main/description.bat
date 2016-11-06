@@ -15,7 +15,7 @@ REM Two empty lines are necessary
 echo !LF!*!LF!>line.tmp
 where /R . _*.txt > src.tmp
 rem change \ with /
-echo # Study description >!lfn!
+echo # Investigation description >!lfn!
 echo %cd:\=  !LF!/%>>!lfn!
 For /F "tokens=1*" %%i in (src.tmp) do (
 rem (echo.|set /p =## %%i!LF!)>name.tmp
