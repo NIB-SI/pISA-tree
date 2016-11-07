@@ -67,10 +67,13 @@ echo PHENODATA:	./data/phenodata.txt!LF!FEATUREDATA:	./data/featuredata.txt!LF!>
 rem
 rem  make main readme.md file
 copy ..\makeStudy.bat .\_STUDIES
-copy ..\makeTree.bat .
-copy ..\Description.bat .
-copy ..\makeTree.bat .\_STUDIES
-copy ..\Description.bat .\_STUDIES
+copy ..\showTree.bat .
+copy ..\showDescription.bat .
+copy ..\checkDescription.bat .
+copy ..\showTree.bat .\_STUDIES
+copy ..\showDescription.bat .\_STUDIES
+copy ..\checkDescription.bat .\_STUDIES
+
 type README.MD
 dir.
 cd ..

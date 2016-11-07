@@ -60,8 +60,12 @@ echo STUDY:	%ID%!LF!>> ..\..\_INVESTIGATION_DESCRIPTION.TXT
 rem
 rem  make main readme.md file
 copy ..\..\..\makeAssay.bat .\_ASSAYS
-copy ..\..\makeTree.bat .\_ASSAYS
-copy ..\..\Description.bat .\_ASSAYS
+copy ..\..\showTree.bat .\_ASSAYS
+copy ..\..\showDescription.bat .\_ASSAYS
+copy ..\..\checkDescription.bat .\_ASSAYS
+copy ..\..\showTree.bat .
+copy ..\..\showDescription.bat .
+copy ..\..\checkDescription.bat .
 type README.MD
 del *.tmp
 dir .
