@@ -31,16 +31,16 @@ rem Make new Investigationt directory tree
 md %ID%
 cd %ID%
 md presentations
+md reports
 md _STUDIES
 rem put something to the directories
 rem to force git to add them
 echo # %ID% >  .\README.MD
-echo # %ID% >  .\out\README.MD
-echo # %ID% >  .\data\README.MD
+echo # %ID% >  .\reports\README.MD
 echo # %ID% >  .\presentations\README.MD
-echo # %ID% >  .\_STUDIES\README.MD
-echo Describe samples > .\data\phenodata.txt
-echo Describe features > .\data\featuredata.txt
+echo # Studies for investigation: %ID% >  .\_STUDIES\README.MD
+echo Describe samples > .\phenodata.txt
+echo # Feature Summary Table> .\FST.txt
 rem
 setlocal EnableDelayedExpansion
 set LF=^
