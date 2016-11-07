@@ -12,7 +12,6 @@ rem robocopy %1 X-%1 /MIR
 rem ------------------------------------------------------
 rem Ask for ID, loop if empty
 set ID1=""
-:Ask
 if "%1" EQU "" (
 echo ============================
 echo pISA-tree: make ASSAY 
@@ -21,22 +20,41 @@ set /p ID1=Enter Assay ID:
 ) else (
 set ID1=%1
 )
-if %ID1% EQU "" goto Ask
-rem ----------------------------------------------
-rem Ask for Type, loop if empty
+rem dir %ID1%* /B /AD
 set ID2=""
-:Ask2
 if "%2" EQU "" (
 rem echo @
 set /p ID2=Enter Assay Type: 
 ) else (
 set ID2=%2
 )
+:Ask
+if %ID1% EQU "" set /p ID1=Enter Assay ID: 
+if %ID1% EQU "" goto Ask
+rem ----------------------------------------------
+rem Ask for Type, loop if empty
+rem Similar Assay IDs
+rem %ID1%* /AD
+:Ask2
+if %ID2% EQU "" set /p ID2=Enter Assay Type: 
 if %ID2% EQU "" goto Ask2
+
 rem ----------------------------------------------
 rem concatenate ID name
 set ID=%ID1%-%ID2%
 echo %ID%
+rem ----------------------------------------------
+rem Check existence
+IF EXIST %ID% (
+REM Dir exists
+echo ERROR: Assay named *%ID%* already exists
+set ID1=""
+set ID2=""
+set ID=""
+goto Ask
+) ELSE (
+REM Continue creating directory
+)
 rem ----------------------------------------------
 rem Make new assay directory tree
 if %ID2% EQU Stat goto Stat
