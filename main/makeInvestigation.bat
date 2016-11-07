@@ -15,7 +15,6 @@ echo pISA-tree: make INVESTIGATION
 echo -----------------------------
 rem Ask for study ID, loop if empty
 set ID=""
-:Ask
 if "%1" EQU "" (
 echo @
 set /p ID=Enter Investigation ID: 
@@ -23,24 +22,35 @@ echo %ID%
 ) else (
 set ID=%1
 )
+:Ask
+if %ID% EQU "" set /p ID=Enter Investigation ID: 
 if %ID% EQU "" goto Ask
+REM Check existence/uniqueness
+IF EXIST %ID% (
+REM Dir exists
+echo ERROR: Investigation named *%ID%* already exists
+set ID=""
+goto Ask
+) ELSE (
+REM Continue creating directory
 echo %ID%
+)
 rem ----------------------------------------------
 
 rem Make new Investigationt directory tree
 md %ID%
 cd %ID%
 md presentations
+md reports
 md _STUDIES
 rem put something to the directories
 rem to force git to add them
-echo # %ID% >  .\README.MD
-echo # %ID% >  .\out\README.MD
-echo # %ID% >  .\data\README.MD
-echo # %ID% >  .\presentations\README.MD
-echo # %ID% >  .\_STUDIES\README.MD
-echo Describe samples > .\data\phenodata.txt
-echo Describe features > .\data\featuredata.txt
+echo # Investigation %ID% >  .\README.MD
+echo # Reports for investigation %ID% >  .\reports\README.MD
+echo # Presentations for investigation %ID% >  .\presentations\README.MD
+echo # Studies for investigation %ID% >  .\_STUDIES\README.MD
+echo # Describe samples > .\phenodata.txt
+echo # Feature Summary Table> .\FST.txt
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -57,10 +67,13 @@ echo PHENODATA:	./data/phenodata.txt!LF!FEATUREDATA:	./data/featuredata.txt!LF!>
 rem
 rem  make main readme.md file
 copy ..\makeStudy.bat .\_STUDIES
-copy ..\makeTree.bat .
-copy ..\Description.bat .
-copy ..\makeTree.bat .\_STUDIES
-copy ..\Description.bat .\_STUDIES
+copy ..\showTree.bat .
+copy ..\showDescription.bat .
+copy ..\checkDescription.bat .
+copy ..\showTree.bat .\_STUDIES
+copy ..\showDescription.bat .\_STUDIES
+copy ..\checkDescription.bat .\_STUDIES
+
 type README.MD
 dir.
 cd ..
