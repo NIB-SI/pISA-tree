@@ -36,7 +36,7 @@ rem Ask for Type, loop if empty
 rem Similar Assay IDs
 rem %ID1%* /AD
 :Ask2
-if %ID2% EQU "" set /p ID2=Enter Assay Type: 
+if %ID2% EQU "" set /p ID2=Enter Assay Type Wet/Dry: 
 if %ID2% EQU "" goto Ask2
 
 rem ----------------------------------------------
