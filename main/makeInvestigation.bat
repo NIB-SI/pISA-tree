@@ -24,7 +24,14 @@ echo %ID%
 set ID=%1
 )
 if %ID% EQU "" goto Ask
+IF EXIST %ID% (
+REM Dir exists
+echo ERROR: Investigation named *%ID%* already exists
+goto Ask
+) ELSE (
+REM Continue creating directory
 echo %ID%
+)
 rem ----------------------------------------------
 
 rem Make new Investigationt directory tree
