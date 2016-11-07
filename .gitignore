@@ -1,3 +1,5 @@
+# Exclude bla directories
+*/bla/
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
