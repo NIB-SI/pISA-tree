@@ -15,7 +15,6 @@ echo pISA-tree: make INVESTIGATION
 echo -----------------------------
 rem Ask for study ID, loop if empty
 set ID=""
-:Ask
 if "%1" EQU "" (
 echo @
 set /p ID=Enter Investigation ID: 
@@ -23,10 +22,14 @@ echo %ID%
 ) else (
 set ID=%1
 )
+:Ask
+if %ID% EQU "" set /p ID=Enter Investigation ID: 
 if %ID% EQU "" goto Ask
+REM Check existence/uniqueness
 IF EXIST %ID% (
 REM Dir exists
 echo ERROR: Investigation named *%ID%* already exists
+set ID=""
 goto Ask
 ) ELSE (
 REM Continue creating directory
