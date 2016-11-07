@@ -15,7 +15,6 @@ echo pISA-tree: make STUDY
 echo ----------------------------
 rem Ask for study ID, loop if empty
 set ID=""
-:Ask
 if "%1" EQU "" (
 echo @
 set /p ID=Enter Study ID: 
@@ -23,26 +22,31 @@ echo %ID%
 ) else (
 set ID=%1
 )
+:Ask
+if %ID% EQU "" set /p ID=Enter Study ID: 
 if %ID% EQU "" goto Ask
+REM Check existence/uniqueness
+IF EXIST %ID% (
+REM Dir exists
+echo ERROR: Study named *%ID%* already exists
+set ID=""
+goto Ask
+) ELSE (
+REM Continue creating directory
 echo %ID%
+)
+
 rem ----------------------------------------------
 rem Make new Study directory tree
 md %ID%
 cd %ID%
-md presentations
-md data
-md results
+md reports
 md _ASSAYS
 rem put something to the directories
 rem to force git to add them
-echo # %ID% >  .\README.MD
-echo # %ID% >  .\doc\README.MD
-echo # %ID% >  .\doc\figs\README.MD
-echo # %ID% >  .\out\README.MD
-echo # %ID% >  .\data\README.MD
-echo # %ID% >  .\presentations\README.MD
-echo # %ID% >  .\r\README.MD
-echo # %ID% >  .\_analyses\README.MD
+echo # Study %ID% >  .\README.MD
+echo # Reports for study %ID% >  .\reports\README.MD
+echo # Assays for study %ID% >  .\_ASSAYS\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -56,11 +60,15 @@ echo STUDY:	%ID%!LF!>> ..\..\_INVESTIGATION_DESCRIPTION.TXT
 rem
 rem  make main readme.md file
 copy ..\..\..\makeAssay.bat .\_ASSAYS
-copy ..\..\makeTree.bat .\_ASSAYS
-copy ..\..\Description.bat .\_ASSAYS
+copy ..\..\showTree.bat .\_ASSAYS
+copy ..\..\showDescription.bat .\_ASSAYS
+copy ..\..\checkDescription.bat .\_ASSAYS
+copy ..\..\showTree.bat .
+copy ..\..\showDescription.bat .
+copy ..\..\checkDescription.bat .
 type README.MD
 del *.tmp
-dir.
+dir .
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E

@@ -1,5 +1,9 @@
 # Exclude bla directories
+<<<<<<< HEAD
 */bla/
+=======
+*/bla*/
+>>>>>>> refs/remotes/origin/fix-structure
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
