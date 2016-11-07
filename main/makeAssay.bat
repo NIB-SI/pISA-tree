@@ -24,7 +24,7 @@ rem dir %ID1%* /B /AD
 set ID2=""
 if "%2" EQU "" (
 rem echo @
-set /p ID2=Enter Assay Type: 
+set /p ID2=Enter Assay Type Wet/Dry: 
 ) else (
 set ID2=%2
 )
@@ -41,7 +41,8 @@ if %ID2% EQU "" goto Ask2
 
 rem ----------------------------------------------
 rem concatenate ID name
-set ID=%ID1%-%ID2%
+rem set ID=%ID1%-%ID2%
+set ID=%ID1% 
 echo %ID%
 rem ----------------------------------------------
 rem Check existence
@@ -57,42 +58,39 @@ REM Continue creating directory
 )
 rem ----------------------------------------------
 rem Make new assay directory tree
-if %ID2% EQU Stat goto Stat
-if %ID2% EQU NGS goto NGS
+if %ID2% EQU dry goto dry
+if %ID2% EQU wet goto wet
 rem ----------------------------------------------
-:Stat
+:dry
 md %ID%
 cd %ID%
-md data
-md data\raw
-md presentations
-md results
-md doc
-md doc\figs
-md R
+md input
+md reports
+md scripts
+md output
+md other
 rem put something in to force git to add new directories
-echo # %ID% >  .\README.MD
-echo # %ID% >  .\doc\README.MD
-echo # %ID% >  .\doc\figs\README.MD
-echo # %ID% >  .\results\README.MD
-echo # %ID% >  .\data\README.MD
-echo # %ID% >  .\data\raw\README.MD
-echo # %ID% >  .\presentations\README.MD
-echo # %ID% >  .\R\README.MD
+echo # Assay %ID% >  .\README.MD
+echo # Input for assay %ID% >  .\input\README.MD
+echo # Reports for assay %ID% >  .\reports\figs\README.MD
+echo # Scripts for assas %ID% >  .\scripts\README.MD
+echo # Output of assay %ID% >  .\output\README.MD
+echo # Other files for assay %ID% >  .\other\README.MD
 goto Finish
 rem ----------------------------------------------
-:NGS
+:wet
 md %ID%
 cd %ID%
-md data
-md presentations
-md results
+md reports
+md output
+md output/raw
+md other
 rem put something in to force git to add new directories
-echo # %ID% >  .\README.MD
-echo # %ID% >  .\results\README.MD
-echo # %ID% >  .\data\README.MD
-echo # %ID% >  .\data\raw\README.MD
-echo # %ID% >  .\presentations\README.MD
+echo # Assay %ID% >  .\README.MD
+echo # Reports for assay %ID% >  .\reports\figs\README.MD
+echo # Output of assay %ID% >  .\output\README.MD
+echo # Raw output of assay %ID% >  .\output\raw\README.MD
+echo # Other files for assay %ID% >  .\other\README.MD
 goto Finish
 rem ----------------------------------------------
 :Finish
@@ -102,7 +100,7 @@ set LF=^
 
 
 REM Two empty lines are necessary
-echo ASSAY!LF!Short Name:	%ID%!LF!Assay Title:	 *!LF!Assay Description:	 *> .\_ASSAY_DESCRIPTION.TXT
+echo ASSAY!LF!Short Name:	%ID%!LF!Assay Type:	 %ID2%!LF!Assay Title:	 *!LF!Assay Description:	 *> .\_ASSAY_DESCRIPTION.TXT
 copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\project.ini .\_ASSAY_DESCRIPTION.TXT
 echo STUDY:	!LF!DATA:	!LF!>> .\_ASSAY_DESCRIPTION.TXT
 echo ASSAY:	%ID%!LF!>> ..\..\_STUDY_DESCRIPTION.TXT
