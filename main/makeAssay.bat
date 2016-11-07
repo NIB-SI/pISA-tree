@@ -59,7 +59,9 @@ REM Continue creating directory
 rem ----------------------------------------------
 rem Make new assay directory tree
 if %ID2% EQU dry goto dry
+if %ID2% EQU d goto dry
 if %ID2% EQU wet goto wet
+if %ID2% EQU w goto wet
 rem ----------------------------------------------
 :dry
 md %ID%
