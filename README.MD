@@ -7,9 +7,11 @@ Installation:
 
 1. Download (*.zip) or clone the repository
 2. Extract files from the **main** subdirectory to your local project directory
-3. README.md file contains instructions for use.
+3. INSTRUCTIONS.MD file contains instructions for use.
 
-Additional info: <http://ablejec.nib.si/doc>
+Additional info:
+* `doc` folder
+* <http://ablejec.nib.si/doc>
 
 Links:
 * [ISA Model & Serialization Specifications](http://isa-tools.org/format/specification/)
