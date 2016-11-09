@@ -58,11 +58,14 @@ goto Ask
 REM Continue creating directory
 )
 rem ----------------------------------------------
+rem /I: case insensitive compare
+if /I %IDClass% EQU dry goto dry
+if /I %IDClass% EQU d goto dry
+if /I %IDClass% EQU wet goto wet
+if /I %IDClass% EQU w goto wet
+rem ----------------------------------------------
+
 rem Make new assay directory tree
-if %IDClass% EQU dry goto dry
-if %IDClass% EQU d goto dry
-if %IDClass% EQU wet goto wet
-if %IDClass% EQU w goto wet
 rem ----------------------------------------------
 :dry
 set IDClass=Dry
