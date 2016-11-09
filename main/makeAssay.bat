@@ -10,47 +10,48 @@ rem cd d:\_X
 rem Backup copy if assay folder exists
 rem robocopy %1 X-%1 /MIR
 rem ------------------------------------------------------
-rem Ask for ID, loop if empty
-set ID1=""
-if "%1" EQU "" (
 echo ============================
 echo pISA-tree: make ASSAY 
 echo ----------------------------
-set /p ID1=Enter Assay ID: 
-) else (
-set ID1=%1
-)
-rem dir %ID1%* /B /AD
-set ID2=""
-if "%2" EQU "" (
-rem echo @
-set /p ID2=Enter Assay Type Wet/Dry: 
-) else (
-set ID2=%2
-)
-:Ask
-if %ID1% EQU "" set /p ID1=Enter Assay ID: 
-if %ID1% EQU "" goto Ask
 rem ----------------------------------------------
-rem Ask for Type, loop if empty
-rem Similar Assay IDs
-rem %ID1%* /AD
+rem Class: use argument 1 if present
+set IDClass=""
+if "%1" EQU "" (
+rem echo @
+set /p IDClass=Enter Assay Class [Wet/Dry]: 
+) else (
+set IDClass=%1
+)
+rem Ask for Class, loop if empty
 :Ask2
-if %ID2% EQU "" set /p ID2=Enter Assay Type Wet/Dry: 
-if %ID2% EQU "" goto Ask2
-
+if %IDClass% EQU "" set /p IDClass=Enter Assay Class [Wet/Dry]: 
+if %IDClass% EQU "" goto Ask2
+rem ----------------------------------------------
+rem ID and Type: use argument 2 if present
+set IDType=""
+if "%2" EQU "" (
+set /p IDType=Enter Assay ID and Type [IDXX-Type]: 
+) else (
+set IDType=%2
+)
+rem dir %IDType%* /B /AD
+rem Similar Assay IDs
+rem %IDType%* /AD
+:Ask
+if %IDType% EQU "" set /p IDType=Enter Assay ID and Type [IDXX-Type]: 
+if %IDType% EQU "" goto Ask
 rem ----------------------------------------------
 rem concatenate ID name
-rem set ID=%ID1%-%ID2%
-set ID=%ID1% 
+rem set ID=%IDType%-%IDClass%
+set ID=%IDType% 
 echo %ID%
 rem ----------------------------------------------
 rem Check existence
 IF EXIST %ID% (
 REM Dir exists
 echo ERROR: Assay named *%ID%* already exists
-set ID1=""
-set ID2=""
+set IDType=""
+set IDClass=""
 set ID=""
 goto Ask
 ) ELSE (
@@ -58,12 +59,13 @@ REM Continue creating directory
 )
 rem ----------------------------------------------
 rem Make new assay directory tree
-if %ID2% EQU dry goto dry
-if %ID2% EQU d goto dry
-if %ID2% EQU wet goto wet
-if %ID2% EQU w goto wet
+if %IDClass% EQU dry goto dry
+if %IDClass% EQU d goto dry
+if %IDClass% EQU wet goto wet
+if %IDClass% EQU w goto wet
 rem ----------------------------------------------
 :dry
+set IDClass=Dry
 md %ID%
 cd %ID%
 md input
@@ -81,6 +83,7 @@ echo # Other files for assay %ID% >  .\other\README.MD
 goto Finish
 rem ----------------------------------------------
 :wet
+set IDClass=Wet
 md %ID%
 cd %ID%
 md reports
@@ -102,7 +105,7 @@ set LF=^
 
 
 REM Two empty lines are necessary
-echo ASSAY!LF!Short Name:	%ID%!LF!Assay Type:	 %ID2%!LF!Assay Title:	 *!LF!Assay Description:	 *> .\_ASSAY_DESCRIPTION.TXT
+echo ASSAY!LF!Short Name:	%ID%!LF!Assay Class:	 %IDClass%!LF!Assay Title:	 *!LF!Assay Description:	 *> .\_ASSAY_DESCRIPTION.TXT
 copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\project.ini .\_ASSAY_DESCRIPTION.TXT
 echo STUDY:	!LF!DATA:	!LF!>> .\_ASSAY_DESCRIPTION.TXT
 echo ASSAY:	%ID%!LF!>> ..\..\_STUDY_DESCRIPTION.TXT
