@@ -30,7 +30,16 @@ Investigation studies are collected in the subdirectory `_STUDIES`. In the main 
 
 ### Assay
 
-Analyses for each study are collected the `_ASSAYS` folder of that study. To make a new assay, run the `makeAssay.bat` file and enter  assay ID (Short name) and assay Type (see documentation for covered types: NGS, MA, STat ...). Short assay name and type are used as the name of the  assay directory tree.
+Analyses for each study are collected the `_ASSAYS` folder of that study. To make a new assay, run the `makeAssay.bat` file.
+
+ You will be asked to enter assay Class [Wet/Dry]:
+
+* Wet: measurements on the biological material (MicroArray, NGS, PCR, ...)
+* Dry: process data (Statistcs, Modelling, ... )
+
+Then you will enter the assay ID (Short name) combined with assay Type (see documentation for covered types: NGS, MA, STat ...). Recommended form is ID-Type, for example XY1N-NGS. Short assay name and type are used as the name of the assay directory tree.
+
+Folders in assay directory trees for different Classes slightly differ, according to the need of the Class. 
 
 ### Description files
 
