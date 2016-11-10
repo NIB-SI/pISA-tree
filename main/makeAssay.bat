@@ -110,13 +110,16 @@ set LF=^
 REM Keep two empty lines above - they are neccessary!!
 rem -----------------------------------------------
 rem Find studyId (after \_STUDIES)
+set "studyId=*"
 set "mypath=%cd%"
 set "value=%mypath:*\_STUDIES\=%"
-if "%value%"=="%mypath%" echo "\_STUDIES\" not found &goto :eof
+if "%value%"=="%mypath%" echo "\_STUDIES\" not found &goto :eos
 for /f "delims=\" %%a in ("%value%") do set "value=%%~a"
 set studyId=%value%
+:eos
 echo --studyId--
 rem Find Investigation Id (before \_STUDIES)
+set "invId=*"
 setlocal enabledelayedexpansion
 set string=%mypath%
 set "find=*\_STUDIES\"
@@ -128,7 +131,7 @@ set "string=%%~na"
 )
 set invId=%string%
 rem -----------------------------------------------
-echo Investigation:	invId!LF!STUDY:	studyId!LF!> .\_ASSAY_DESCRIPTION.TXT
+echo Investigation:	invId!LF!Study:	studyId!LF!> .\_ASSAY_DESCRIPTION.TXT
 echo ASSAY!LF!Short Name:	%ID%!LF!Assay Class:	 %IDClass%!LF!Assay Title:	 *!LF!Assay Description:	 *>> .\_ASSAY_DESCRIPTION.TXT
 echo DATA:	!LF!>> .\_ASSAY_DESCRIPTION.TXT
 copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\project.ini .\_ASSAY_DESCRIPTION.TXT
