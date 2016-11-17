@@ -7,10 +7,10 @@ Installation:
 
 1. Download (zip file) or clone the repository
 2. Extract **files from** the subdirectory ***main*** to your local project directory
-3. INSTRUCTIONS.MD file contains instructions for use.
+3. INSTRUCTIONS.\* files contain instructions for use.
 
 Additional info:
-* `doc` folder
+* files in `doc` folder
 * <http://ablejec.nib.si/doc>
 
 Links:
