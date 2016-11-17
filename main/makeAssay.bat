@@ -23,37 +23,51 @@ set /p IDClass=Enter Assay Class [Wet/Dry]:
 set IDClass=%1
 )
 rem Ask for Class, loop if empty
-:Ask2
+:Ask1
 if %IDClass% EQU "" set /p IDClass=Enter Assay Class [Wet/Dry]: 
-if %IDClass% EQU "" goto Ask2
+if %IDClass% EQU "" goto Ask1
 rem ----------------------------------------------
-rem ID and Type: use argument 2 if present
+rem Type: use argument 2 if present
 set IDType=""
 if "%2" EQU "" (
-set /p IDType=Enter Assay ID and Type [IDXX-Type]: 
+set /p IDType=Enter Assay Type: 
 ) else (
 set IDType=%2
 )
 rem dir %IDType%* /B /AD
 rem Similar Assay IDs
 rem %IDType%* /AD
-:Ask
-if %IDType% EQU "" set /p IDType=Enter Assay ID and Type [IDXX-Type]: 
-if %IDType% EQU "" goto Ask
+:Ask2
+if %IDType% EQU "" set /p IDType=Enter Assay Type: 
+if %IDType% EQU "" goto Ask2
+rem ----------------------------------------------
+rem ID : use argument 3 if present
+set IDName=""
+if "%3" EQU "" (
+set /p IDName=Enter Assay ID: 
+) else (
+set IDType=%3
+)
+rem dir %IDType%* /B /AD
+rem Similar Assay IDs
+rem %IDType%* /AD
+:Ask3
+if %IDName% EQU "" set /p IDName=Enter Assay ID: 
+if %IDName% EQU "" goto Ask3
 rem ----------------------------------------------
 rem concatenate ID name
-rem set ID=%IDType%-%IDClass%
-set ID=%IDType% 
+set ID=%IDName%-%IDType%
 echo %ID%
 rem ----------------------------------------------
 rem Check existence
 IF EXIST %ID% (
 REM Dir exists
 echo ERROR: Assay named *%ID%* already exists
-set IDType=""
-set IDClass=""
+rem set IDType=""
+rem set IDClass=""
+set IDName=""
 set ID=""
-goto Ask
+goto Ask3
 ) ELSE (
 REM Continue creating directory
 )
