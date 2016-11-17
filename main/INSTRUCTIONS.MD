@@ -1,3 +1,9 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
 # pISA-tree: Standard project directory tree
 
 This set of batch files is used to create standard directory tree for research projects.
