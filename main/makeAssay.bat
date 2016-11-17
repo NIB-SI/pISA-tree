@@ -146,7 +146,7 @@ set "string=%%~na"
 set invId=%string%
 rem -----------------------------------------------
 echo Investigation:	%invId%!LF!Study:	%studyId%!LF!> .\_ASSAY_DESCRIPTION.TXT
-echo ASSAY!LF!Short Name:	%ID%!LF!Assay Class:	 %IDClass%!LF!Assay Title:	 *!LF!Assay Description:	 *>> .\_ASSAY_DESCRIPTION.TXT
+echo ### ASSAY!LF!Short Name:	%ID%!LF!Assay Class:	 %IDClass%!LF!Assay Title:	 *!LF!Assay Description:	 *>> .\_ASSAY_DESCRIPTION.TXT
 echo DATA:	!LF!>> .\_ASSAY_DESCRIPTION.TXT
 copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\project.ini .\_ASSAY_DESCRIPTION.TXT
 echo ASSAY:	%ID%!LF!>> ..\..\_STUDY_DESCRIPTION.TXT

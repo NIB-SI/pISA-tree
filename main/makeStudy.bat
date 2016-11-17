@@ -53,7 +53,22 @@ set LF=^
 
 
 REM Two empty lines are necessary
-echo STUDY!LF!Short Name:	%ID%!LF!Study Title:	*!LF!Study Description:	*> .\_STUDY_DESCRIPTION.TXT
+rem Find Investigation Id (before \_STUDIES)
+set "invId=*"
+set "mypath=%cd%"
+setlocal enabledelayedexpansion
+set string=%mypath%
+set "find=*\_STUDIES\"
+call set delete=%%string:!find!=%%
+call set string=%%string:!delete!=%%
+set "string=%string:\_STUDIES\=%"
+for /f  %%a in ("%string%") do (
+set "string=%%~na"
+)
+set invId=%string%
+rem -----------------------------------------------
+echo Investigation:	%invId%!LF!> .\_STUDY_DESCRIPTION.TXT
+echo ### STUDY!LF!Short Name:	%ID%!LF!Study Title:	*!LF!Study Description:	*>> .\_STUDY_DESCRIPTION.TXT
 copy .\_STUDY_DESCRIPTION.TXT+..\..\..\project.ini .\_STUDY_DESCRIPTION.TXT
 echo INVESTIGATION:	!LF!FITOBASE LINK:	!LF!RAW DATA:	!LF!>> .\_STUDY_DESCRIPTION.TXT
 echo STUDY:	%ID%!LF!>> ..\..\_INVESTIGATION_DESCRIPTION.TXT
