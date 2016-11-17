@@ -37,7 +37,8 @@ Analyses for each study are collected the `_ASSAYS` folder of that study. To mak
 * Wet: measurements on the biological material (MicroArray, NGS, PCR, ...)
 * Dry: process data (Statistcs, Modelling, ... )
 
-Then you will enter the assay ID (Short name) combined with assay Type (see documentation for covered types: NGS, MA, STat ...). Recommended form is ID-Type, for example XY1N-NGS. Short assay name and type are used as the name of the assay directory tree.
+Then you will enter the assay Type (see documentation for covered types: NGS, MA, STat ...) and
+assay ID (Short name, for example ASSAY1). Short assay name and type (separated by '-') are used as the name of the assay directory tree (for expample: ASSAY1-NGS).
 
 Folders in assay directory trees for different Classes slightly differ, according to the need of the Class. 
 
@@ -50,12 +51,12 @@ Description files are tab delimited files with two columns:
 2. item description or value
 
 Item description can be some text (for example investigator's name or a longer description of the study, study, and analysis) 
-or a value (for example the path to *phenodata* file). Each item should be typed in one line only. Special escaped characters for line break (`\n`) and tab (`\t`) are allowed. 
+or a value (for example the path to *phenodata* file). Each item should be typed in one line. Special escaped characters for line break (`\n`) and tab (`\t`) are allowed. Be careful if the description contains prime symbol (' ,as in 5'): use \' instead.  
 
 For example:
 
-INVESTIGATOR:	Miha Mihav  
-PHENODATA:	./data/phenodata.txt
+Investigator:	Miha Mihav  
+Phenodata:	./data/phenodata.txt
 
 The study level directory contains the file `study.ini`, which is organized in the same way as description files. 
 This file contains fields and descriptions that do not change, for example principal investigator name. 
