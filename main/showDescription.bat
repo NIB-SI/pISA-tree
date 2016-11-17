@@ -23,10 +23,12 @@ rem copy !lfn!+line.tmp !lfn!
 echo !LF!---!LF!>>!lfn!
 rem copy !lfn!+name.tmp !lfn!
 rem Shorten the path( remove project root) and change \ to /
+set emph="**"
 set "fname=%%i"
-set "fname=!fname:%cd%= * !"
+set "fname=!fname:%cd%= * **!"
 set "fname=!fname:\=/!"
-(echo.|set /p =" !fname! !LF!")>>!lfn!
+rem set fname=%fn% %emph%
+(echo.|set /p =" !fname!**!LF!")>>!lfn!
 echo !LF!---!LF!>>!lfn!
 REM set /p="TextHere" <nul >>!lfn!
 REM Add two blanks to each line

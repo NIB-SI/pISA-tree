@@ -60,10 +60,11 @@ REM Two empty lines are necessary
 ::Create a TAB variable
 call :hexprint "0x09" TAB
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_DESCRIPTION.TXT
-echo ### INVESTIGATION!LF!Short Name:	%ID%!LF!Investigation Title:	*!LF!Investigation Description:	*> .\_INVESTIGATION_DESCRIPTION.TXT
+echo #### INVESTIGATION!LF!Short Name:	%ID%!LF!Investigation Title:	*!LF!Investigation Description:	*> .\_INVESTIGATION_DESCRIPTION.TXT
 copy .\_INVESTIGATION_DESCRIPTION.TXT+..\project.ini .\_INVESTIGATION_DESCRIPTION.TXT
 rem copy bla.tmp .\_INVESTIGATION_DESCRIPTION.TXT
-echo PHENODATA:	./data/phenodata.txt!LF!FEATUREDATA:	./data/featuredata.txt!LF!>> .\_INVESTIGATION_DESCRIPTION.TXT
+echo Phenodata:	./data/phenodata.txt!LF!Featuredata:	./data/featuredata.txt!LF!>> .\_INVESTIGATION_DESCRIPTION.TXT
+echo ##### STUDIES!LF!>>  .\_INVESTIGATION_DESCRIPTION.TXT
 rem
 rem  make main readme.md file
 copy ..\makeStudy.bat .\_STUDIES

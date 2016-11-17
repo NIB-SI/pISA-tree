@@ -70,8 +70,9 @@ rem -----------------------------------------------
 echo Investigation:	%invId%!LF!> .\_STUDY_DESCRIPTION.TXT
 echo ### STUDY!LF!Short Name:	%ID%!LF!Study Title:	*!LF!Study Description:	*>> .\_STUDY_DESCRIPTION.TXT
 copy .\_STUDY_DESCRIPTION.TXT+..\..\..\project.ini .\_STUDY_DESCRIPTION.TXT
-echo INVESTIGATION:	!LF!FITOBASE LINK:	!LF!RAW DATA:	!LF!>> .\_STUDY_DESCRIPTION.TXT
-echo STUDY:	%ID%!LF!>> ..\..\_INVESTIGATION_DESCRIPTION.TXT
+echo Fitobase link:	!LF!Raw Data:	!LF!>> .\_STUDY_DESCRIPTION.TXT
+echo ### ASSAYS!LF!>>  .\_STUDY_DESCRIPTION.TXT
+echo STUDY:	%ID%>> ..\..\_INVESTIGATION_DESCRIPTION.TXT
 rem
 rem  make main readme.md file
 copy ..\..\..\makeAssay.bat .\_ASSAYS
