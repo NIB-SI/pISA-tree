@@ -1,8 +1,8 @@
 ---
 output:
-  html_document: default
-  pdf_document: default
   word_document: default
+  pdf_document: default
+  html_document: default
 ---
 # pISA-tree: Standard project directory tree
 
@@ -28,15 +28,24 @@ Each **study** has it's own collection of one or more **assays**. Assay can be o
 
 ### Investigation
 
-To create a new investigation, run (double click) the file `makeInvestigation.bat` and enter the study short name (ID). This will make a direcory tree, description files and a local copy of `makeStudy.bat`. Short study name (ID) is used as the name of the directory (no spaces or special characters, file name conventions apply!!). Each study tree has a `_STUDIES` subdirectory, where investigation studies will be rooted.
+To create a new investigation, run (double click) the file `makeInvestigation.bat` and enter
+the study short name (ID). This will make a direcory tree, description files and a local copy
+of `makeStudy.bat`. Short study name (ID) is used as the name of the directory 
+(no spaces or special characters, file name conventions apply!!). 
+Each study tree has a `_STUDIES` subdirectory, where investigation studies will be rooted.
 
 ### Study
 
-Investigation studies are collected in the subdirectory `_STUDIES`. In the main `_STUDIES` directory, you will find the `makeStudy.bat`. To create a new study, run the `makeStudy.bat` and enter the study ID (Short name), This file will make a new directory tree, rooted in the `_STUDIES` subdirectory. Each study tree has a `_ASSAYS` subdirectory and a copy of the `makeAssay.bat` file.
+Investigation studies are collected in the subdirectory `_STUDIES`. 
+In the main `_STUDIES` directory, you will find the `makeStudy.bat`. 
+To create a new study, run the `makeStudy.bat` and enter the study ID (Short name). 
+This file will make a new directory tree, rooted in the `_STUDIES` subdirectory. 
+Each study tree has a `_ASSAYS` subdirectory and a copy of the `makeAssay.bat` file.
 
 ### Assay
 
-Analyses for each study are collected the `_ASSAYS` folder of that study. To make a new assay, run the `makeAssay.bat` file.
+Analyses for each study are collected the `_ASSAYS` folder of that study. 
+To make a new assay, run the `makeAssay.bat` file.
 
  You will be asked to enter assay Class [Wet/Dry]:
 
@@ -44,9 +53,11 @@ Analyses for each study are collected the `_ASSAYS` folder of that study. To mak
 * Dry: process data (Statistcs, Modelling, ... )
 
 Then you will enter the assay Type (see documentation for covered types: NGS, MA, STat ...) and
-assay ID (Short name, for example ASSAY1). Short assay name and type (separated by '-') are used as the name of the assay directory tree (for expample: ASSAY1-NGS).
+assay ID (Short name, for example ASSAY1). Short assay name and type (separated by '-') 
+are used as the name of the assay directory tree (for expample: ASSAY1-NGS).
 
-Folders in assay directory trees for different Classes slightly differ, according to the need of the Class. 
+Folders in assay directory trees for different Classes slightly differ, 
+according to the need of the Class. 
 
 ### Description files
 
@@ -56,15 +67,19 @@ Description files are tab delimited files with two columns:
 1. item name (ended by a colon)
 2. item description or value
 
-Item description can be some text (for example investigator's name or a longer description of the study, study, and analysis) 
-or a value (for example the path to *phenodata* file). Each item should be typed in one line. Special escaped characters for line break (`\n`) and tab (`\t`) are allowed. Be careful if the description contains prime symbol (' ,as in 5'): use \' instead.  
+Item description can be some text (for example investigator's name or a longer description 
+of the study, study, and analysis) or a value (for example the path to *phenodata* file). 
+Each item should be typed in one line. Special escaped characters for 
+line break (`\n`) and tab (`\t`) are allowed. Be careful if the description contains prime 
+symbol (' ,as in 5'), it is safer to spell it, like 5-prime. 
 
 For example:
 
 Investigator:	Miha Mihav  
 Phenodata:	./data/phenodata.txt
 
-The study level directory contains the file `study.ini`, which is organized in the same way as description files. 
-This file contains fields and descriptions that do not change, for example principal investigator name. 
-Information in this file will be appended to the description files for studies and assays.
+The study level directory contains the file `study.ini`, which is organized in the same way 
+as description files. This file contains fields and descriptions that do not change, 
+for example principal investigator name. Information in this file will be appended to the 
+description files for studies and assays.
 

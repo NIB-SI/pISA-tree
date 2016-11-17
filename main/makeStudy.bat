@@ -67,11 +67,15 @@ set "string=%%~na"
 )
 set invId=%string%
 rem -----------------------------------------------
-echo Investigation:	%invId%!LF!> .\_STUDY_DESCRIPTION.TXT
-echo ### STUDY!LF!Short Name:	%ID%!LF!Study Title:	*!LF!Study Description:	*>> .\_STUDY_DESCRIPTION.TXT
-copy .\_STUDY_DESCRIPTION.TXT+..\..\..\project.ini .\_STUDY_DESCRIPTION.TXT
-echo Fitobase link:	!LF!Raw Data:	!LF!>> .\_STUDY_DESCRIPTION.TXT
-echo ### ASSAYS!LF!>>  .\_STUDY_DESCRIPTION.TXT
+echo Investigation:	%invId%> .\_STUDY_DESCRIPTION.TXT
+echo ### STUDY>> .\_STUDY_DESCRIPTION.TXT
+echo Short Name:	%ID%>> .\_STUDY_DESCRIPTION.TXT
+echo Study Title:	*>> .\_STUDY_DESCRIPTION.TXT
+echo Study Description:	*>> .\_STUDY_DESCRIPTION.TXT
+copy .\_STUDY_DESCRIPTION.TXT+..\..\..\common.ini .\_STUDY_DESCRIPTION.TXT
+echo Fitobase link:	>> .\_STUDY_DESCRIPTION.TXT
+echo Raw Data:	>> .\_STUDY_DESCRIPTION.TXT
+echo #### ASSAYS>>  .\_STUDY_DESCRIPTION.TXT
 echo STUDY:	%ID%>> ..\..\_INVESTIGATION_DESCRIPTION.TXT
 rem
 rem  make main readme.md file

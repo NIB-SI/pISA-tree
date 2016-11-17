@@ -145,10 +145,15 @@ set "string=%%~na"
 )
 set invId=%string%
 rem -----------------------------------------------
-echo Investigation:	%invId%!LF!Study:	%studyId%!LF!> .\_ASSAY_DESCRIPTION.TXT
-echo ### ASSAY!LF!Short Name:	%ID%!LF!Assay Class:	 %IDClass%!LF!Assay Title:	 *!LF!Assay Description:	 *>> .\_ASSAY_DESCRIPTION.TXT
-echo Data:	!LF!>> .\_ASSAY_DESCRIPTION.TXT
-copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\project.ini .\_ASSAY_DESCRIPTION.TXT
+echo Investigation:	%invId% > .\_ASSAY_DESCRIPTION.TXT
+echo Study:	%studyId%>> .\_ASSAY_DESCRIPTION.TXT
+echo ### ASSAY>> .\_ASSAY_DESCRIPTION.TXT
+echo Short Name:	%ID%>> .\_ASSAY_DESCRIPTION.TXT
+echo Assay Class:	 %IDClass%>> .\_ASSAY_DESCRIPTION.TXT
+echo Assay Title:	 *>> .\_ASSAY_DESCRIPTION.TXT
+echo Assay Description:	 *>> .\_ASSAY_DESCRIPTION.TXT
+echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
+copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\common.ini .\_ASSAY_DESCRIPTION.TXT
 echo ASSAY:	%ID%>> ..\..\_STUDY_DESCRIPTION.TXT
 rem
 rem  make main readme.md file
