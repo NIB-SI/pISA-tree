@@ -35,6 +35,8 @@ goto Ask
 REM Continue creating directory
 echo %ID%
 )
+rem Ask for some additional info
+call:getInput "Investigation Title" Title *
 rem ----------------------------------------------
 
 rem Make new Investigationt directory tree
@@ -62,7 +64,7 @@ call :hexprint "0x09" TAB
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_DESCRIPTION.TXT
 echo #### INVESTIGATION> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Short Name:	%ID%>> .\_INVESTIGATION_DESCRIPTION.TXT
-echo Investigation Title:	*>> .\_INVESTIGATION_DESCRIPTION.TXT
+echo Investigation Title:	%Title%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Investigation Description:	*>> .\_INVESTIGATION_DESCRIPTION.TXT
 copy .\_INVESTIGATION_DESCRIPTION.TXT+..\common.ini .\_INVESTIGATION_DESCRIPTION.TXT
 rem copy bla.tmp .\_INVESTIGATION_DESCRIPTION.TXT
@@ -86,3 +88,31 @@ rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
 rem dir .\%ID% /s/b
 rem pause
+goto:eof
+rem --------------------------------------------------------
+rem Functions
+:getInput   --- get text from keyboard
+::          --- %~1 Input message (what o type
+::          --- %~2 Variable to get result
+::          --- %~3 (optional) missing: input required
+::          ---                * : can be skipped, return *
+:: Example: call:getInpt "Type something" xx default
+SETLOCAL
+:Ask
+set x=%~3
+set /p x=Enter %~1 [%x%]:
+rem if %x% EQU "" set x="%~3"
+if "%x%" EQU "" goto Ask
+REM Check existence/uniqueness
+if %x% EQU * goto done
+IF EXIST %x% (
+REM Dir exists
+echo ERROR: %~1 *%x%* already exists
+set x=""
+goto Ask
+) 
+:done
+(ENDLOCAL
+    set "%~2=%x%"
+)
+GOTO:EOF

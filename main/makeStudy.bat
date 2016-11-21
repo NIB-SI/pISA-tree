@@ -77,7 +77,7 @@ echo Fitobase link:	>> .\_STUDY_DESCRIPTION.TXT
 echo Raw Data:	>> .\_STUDY_DESCRIPTION.TXT
 echo #### ASSAYS>>  .\_STUDY_DESCRIPTION.TXT
 echo STUDY:	%ID%>> ..\..\_INVESTIGATION_DESCRIPTION.TXT
-rem
+rem 
 rem  make main readme.md file
 copy ..\..\..\makeAssay.bat .\_ASSAYS
 copy ..\..\showTree.bat .\_ASSAYS
