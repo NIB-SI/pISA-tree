@@ -1,5 +1,6 @@
 @echo off
-rem ------------------------------------------------------
+rem -------------------------------------  pISA-tree v.0.2
+rem
 rem Create a new Assay tree in _ASSAYS directory
 rem ------------------------------------------------------
 rem Author: A Blejec <andrej.blejec@nib.si>

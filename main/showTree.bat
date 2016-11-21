@@ -1,5 +1,6 @@
 @echo off
-rem ------------------------------------------------------
+rem -------------------------------------  pISA-tree v.0.2
+rem
 rem make a directory tree in TREE.txt
 rem ------------------------------------------------------
 rem Author: A Blejec <andrej.blejec@nib.si>

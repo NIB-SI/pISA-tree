@@ -1,5 +1,6 @@
 @echo off
-rem ------------------------------------------------------
+rem -------------------------------------  pISA-tree v.0.2
+rem
 rem Create a new Study tree in _STUDIES directory
 rem ------------------------------------------------------
 rem Author: A Blejec <andrej.blejec@nib.si>
@@ -82,10 +83,10 @@ rem  make main readme.md file
 copy ..\..\..\makeAssay.bat .\_ASSAYS
 copy ..\..\showTree.bat .\_ASSAYS
 copy ..\..\showDescription.bat .\_ASSAYS
-copy ..\..\checkDescription.bat .\_ASSAYS
+copy ..\..\xcheckDescription.bat .\_ASSAYS
 copy ..\..\showTree.bat .
 copy ..\..\showDescription.bat .
-copy ..\..\checkDescription.bat .
+copy ..\..\xcheckDescription.bat .
 type README.MD
 del *.tmp
 dir .

@@ -1,10 +1,15 @@
 ---
+title: 'pISA-tree: Standard project directory tree'
+author: "A. Blejec, ... , K. Gruden"
+date: '2016-11-21'
 output:
   word_document: default
   pdf_document: default
-  html_document: default
+  html_document:
+    number_sections: yes
+    toc: yes
 ---
-# pISA-tree: Standard project directory tree
+# What is pISA-tree?
 
 This set of batch files is used to create standard directory tree for research projects.
 
@@ -24,9 +29,9 @@ Each **study** has it's own collection of one or more **assays**. Assay can be o
 - `makeStudy.bat` - makes new **study** (subdirectory tree within the **investigation**)
 - `makeAssay.bat` - makes new **assay** (subdirectory tree within the **study**)
 
-## Creation of the directory tree
+# Creation of the directory tree
 
-### Investigation
+## Investigation
 
 To create a new investigation, run (double click) the file `makeInvestigation.bat` and enter
 the study short name (ID). This will make a direcory tree, description files and a local copy
@@ -34,7 +39,7 @@ of `makeStudy.bat`. Short study name (ID) is used as the name of the directory
 (no spaces or special characters, file name conventions apply!!). 
 Each study tree has a `_STUDIES` subdirectory, where investigation studies will be rooted.
 
-### Study
+## Study
 
 Investigation studies are collected in the subdirectory `_STUDIES`. 
 In the main `_STUDIES` directory, you will find the `makeStudy.bat`. 
@@ -42,7 +47,7 @@ To create a new study, run the `makeStudy.bat` and enter the study ID (Short nam
 This file will make a new directory tree, rooted in the `_STUDIES` subdirectory. 
 Each study tree has a `_ASSAYS` subdirectory and a copy of the `makeAssay.bat` file.
 
-### Assay
+## Assay
 
 Analyses for each study are collected the `_ASSAYS` folder of that study. 
 To make a new assay, run the `makeAssay.bat` file.
@@ -59,7 +64,7 @@ are used as the name of the assay directory tree (for expample: ASSAY1-NGS).
 Folders in assay directory trees for different Classes slightly differ, 
 according to the need of the Class. 
 
-### Description files
+## Description files
 
 Each level has a *description* file, listing the informative items for that level. 
 Description files are tab delimited files with two columns:  
@@ -78,8 +83,30 @@ For example:
 Investigator:	Miha Mihav  
 Phenodata:	./data/phenodata.txt
 
-The study level directory contains the file `study.ini`, which is organized in the same way 
+The study level directory contains the file `common.ini`, which is organized in the same way 
 as description files. This file contains fields and descriptions that do not change, 
 for example principal investigator name. Information in this file will be appended to the 
-description files for studies and assays.
+description files for investigations, studies, and assays.
 
+# Auxiliary batch files
+
+## `showDescription.bat`
+
+Collects all description files in a tree below the current level. 
+Descriptions are typeset in the file **DESCRIPTION.MD**. 
+(plain text file in a `markdown` format)
+
+## `xcheckDescription.bat`
+
+Checks all description files for missing required information (*)in a tree below the current 
+level. Produces file **xCheckDescription.md** which is similar to one produced by 
+`showDescription.bat` but lists only lines with asterisks (*).
+
+## `showTree.bat`
+
+List a directory tree below the current level in the file **TREE.TXT**.
+
+## `update.bat`
+
+Replaces batch files in existing tree with the updated versions in the project directory.
+Use after update from [GitHub](https://github.com/ablejec/pISA/)

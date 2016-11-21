@@ -1,5 +1,6 @@
 @echo off
-rem ------------------------------------------------------
+rem -------------------------------------  pISA-tree v.0.2
+rem
 rem Prepare description for levels below the current level
 rem ------------------------------------------------------
 rem Author: A Blejec <andrej.blejec@nib.si>
