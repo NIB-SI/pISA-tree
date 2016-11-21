@@ -46,7 +46,6 @@ rem set \ to /
 set "PPath=!PPath:\=/!"
 echo Project Path:	%cd% > _PROJECT_DESCRIPTION.TXT
 echo %PPath%
-pause
 rem
 md %ID%
 cd %ID%
