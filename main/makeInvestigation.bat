@@ -40,6 +40,7 @@ call:getInput "Investigation Title" Title *
 rem ----------------------------------------------
 
 rem Make new Investigationt directory tree
+set PPath=%cd%
 md %ID%
 cd %ID%
 md presentations
@@ -62,7 +63,8 @@ REM Two empty lines are necessary
 ::Create a TAB variable
 call :hexprint "0x09" TAB
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_DESCRIPTION.TXT
-echo #### INVESTIGATION> .\_INVESTIGATION_DESCRIPTION.TXT
+echo Project Path:	%PPath%> .\_INVESTIGATION_DESCRIPTION.TXT
+echo #### INVESTIGATION>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Short Name:	%ID%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Investigation Title:	%Title%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Investigation Description:	*>> .\_INVESTIGATION_DESCRIPTION.TXT
