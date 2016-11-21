@@ -113,7 +113,7 @@ echo # Reports for assay %ID% >  .\reports\figs\README.MD
 echo # Output of assay %ID% >  .\output\README.MD
 echo # Raw output of assay %ID% >  .\output\raw\README.MD
 echo # Other files for assay %ID% >  .\other\README.MD
-goto Finish
+goto Forall
 rem ----------------------------------------------
 :Forall
 rem
