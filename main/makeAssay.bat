@@ -164,3 +164,30 @@ cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
 rem dir .\%ID% /s/b
+rem --------------------------------------------------------
+rem Functions
+:getInput   --- get text from keyboard
+::          --- %~1 Input message (what to enter)
+::          --- %~2 Variable to get result
+::          --- %~3 (optional) missing: input required
+::          ---                * : can be skipped, return *
+:: Example: call:getInpt "Type something" xx default
+SETLOCAL
+:Ask
+set x=%~3
+set /p x=Enter %~1 [%x%]:
+rem if %x% EQU "" set x="%~3"
+if "%x%" EQU "" goto Ask
+REM Check existence/uniqueness
+if %x% EQU * goto done
+IF EXIST %x% (
+REM Dir exists
+echo ERROR: %~1 *%x%* already exists
+set x=""
+goto Ask
+) 
+:done
+(ENDLOCAL
+    set "%~2=%x%"
+)
+GOTO:EOF
