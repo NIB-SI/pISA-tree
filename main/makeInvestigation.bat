@@ -112,8 +112,8 @@ set /p x=Enter %~1 [%x%]:
 rem if %x% EQU "" set x="%~3"
 if "%x%" EQU "" goto Ask
 REM Check existence/uniqueness
-if %x% EQU * goto done
-IF EXIST %x% (
+if "%x%" EQU * goto done
+IF EXIST "%x%" (
 REM Dir exists
 echo ERROR: %~1 *%x%* already exists
 set x=""
