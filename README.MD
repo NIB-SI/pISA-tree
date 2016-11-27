@@ -6,7 +6,7 @@ Batch files are provided to make standardized nested directories in accordance w
 Installation:
 
 1. Download (zip file) or clone the repository
-2. Extract **files from** the subdirectory ***main*** to your local project directory
+2. Extract **files from** the subdirectory ***main*** into your local project directory
 3. INSTRUCTIONS.\* files contain instructions for use.
 
 Additional info:
