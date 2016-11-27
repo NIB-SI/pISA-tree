@@ -1,4 +1,4 @@
-@echo off
+rem @echo off
 rem -------------------------------------  pISA-tree v.0.2
 rem
 rem Create a new Assay tree in _ASSAYS directory
@@ -94,7 +94,7 @@ md other
 rem put something in to force git to add new directories
 echo # Assay %ID% >  .\README.MD
 echo # Input for assay %ID% >  .\input\README.MD
-echo # Reports for assay %ID% >  .\reports\figs\README.MD
+echo # Reports for assay %ID% >  .\reports\README.MD
 echo # Scripts for assas %ID% >  .\scripts\README.MD
 echo # Output of assay %ID% >  .\output\README.MD
 echo # Other files for assay %ID% >  .\other\README.MD
@@ -106,7 +106,9 @@ md %ID%
 cd %ID%
 md reports
 md output
-md output/raw
+cd output
+md raw
+cd ..
 md other
 rem put something in to force git to add new directories
 echo # Assay %ID% >  .\README.MD
@@ -145,15 +147,17 @@ for /f  %%a in ("%string%") do (
 set "string=%%~na"
 )
 set invId=%string%
-rem -----------------------------------------------
-echo Investigation:	%invId% > .\_ASSAY_DESCRIPTION.TXT
+rem -------------------------------------- make ASSAY_DESCRIPTION
+set descFile=".\_ASSAY_DESCRIPTION.TXT"
+echo Investigation:	%invId% > %descFile%
 echo Study:	%studyId%>> .\_ASSAY_DESCRIPTION.TXT
 echo ### ASSAY>> .\_ASSAY_DESCRIPTION.TXT
 echo Short Name:	%ID%>> .\_ASSAY_DESCRIPTION.TXT
 echo Assay Class:	 %IDClass%>> .\_ASSAY_DESCRIPTION.TXT
-echo Assay Title:	 *>> .\_ASSAY_DESCRIPTION.TXT
-echo Assay Description:	 *>> .\_ASSAY_DESCRIPTION.TXT
+call:putMeta "Assay Title" aTitle *
+call:putMeta "Assay Description" aDesc *
 echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
+rem ------------------------------------  include common.ini
 copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\common.ini .\_ASSAY_DESCRIPTION.TXT
 echo ASSAY:	%ID%>> ..\..\_STUDY_DESCRIPTION.TXT
 rem
@@ -164,6 +168,8 @@ cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
 rem dir .\%ID% /s/b
+goto:eof
+rem
 rem --------------------------------------------------------
 rem Functions
 :getInput   --- get text from keyboard
@@ -179,8 +185,8 @@ set /p x=Enter %~1 [%x%]:
 rem if %x% EQU "" set x="%~3"
 if "%x%" EQU "" goto Ask
 REM Check existence/uniqueness
-if %x% EQU * goto done
-IF EXIST %x% (
+if "%x%" EQU "*" goto done
+IF EXIST "%x%" (
 REM Dir exists
 echo ERROR: %~1 *%x%* already exists
 set x=""
@@ -190,4 +196,18 @@ goto Ask
 (ENDLOCAL
     set "%~2=%x%"
 )
+GOTO:EOF
+rem -----------------------------------------------------
+:putMeta   --- get metadata and append to descFile
+::         --- descFile - should be set befor the call
+::          --- %~1 Input message (what to enter)
+::          --- %~2 Variable to get result
+::          --- %~3 (optional) missing: input required
+::          ---                * : can be skipped, return *
+:: Example: call:putMeta "Type something" xx default
+SETLOCAL
+call:getInput "%~1" xMeta "%~3"
+echo %~1:	%xMeta% >> %descFile%
+ENDLOCAL
+set "%~2=%x%"
 GOTO:EOF
