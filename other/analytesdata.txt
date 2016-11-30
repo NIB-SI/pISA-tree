@@ -1,0 +1,12 @@
+SampleID	SampleName	X31	X4  
+HT402	EtOH_Tween R2	first	second 
+HT403	EtOH_Tween R3	first	second 
+HT404	EtOH_Tween RNahG1	first	second 
+HT405	EtOH_Tween RNahG2	first	second 
+HT406	EtOH_Tween RNahG3	first	second 
+HT407	DIECA R1	first	second 
+HT408	DIECA R2	first	second 
+HT409	DIECA R3	first	second 
+HT410	DIECA RNahG1	first	second 
+HT411	DIECA RNahG2	first	second 
+HT412	DIECA RNahG3	first	second 
