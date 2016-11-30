@@ -1,4 +1,4 @@
-rem @echo off
+@echo off
 rem -------------------------------------  pISA-tree v.0.2
 rem
 rem Create a new Assay tree in _ASSAYS directory
@@ -16,6 +16,7 @@ echo pISA-tree: make ASSAY
 echo ----------------------------
 rem ----------------------------------------------
 rem Class: use argument 1 if present
+set mydate=%date:~13,4%/%date:~9,2%/%date:~5,2%
 set IDClass=""
 if "%1" EQU "" (
 rem echo @
@@ -112,7 +113,7 @@ cd ..
 md other
 rem put something in to force git to add new directories
 echo # Assay %ID% >  .\README.MD
-echo # Reports for assay %ID% >  .\reports\figs\README.MD
+echo # Reports for assay %ID% >  .\reports\README.MD
 echo # Output of assay %ID% >  .\output\README.MD
 echo # Raw output of assay %ID% >  .\output\raw\README.MD
 echo # Other files for assay %ID% >  .\other\README.MD
@@ -134,7 +135,7 @@ if "%value%"=="%mypath%" echo "\_STUDIES\" not found &goto :eos
 for /f "delims=\" %%a in ("%value%") do set "value=%%~a"
 set studyId=%value%
 :eos
-echo --studyId--
+rem --studyId--
 rem Find Investigation Id (before \_STUDIES)
 set "invId=*"
 setlocal enabledelayedexpansion
@@ -154,8 +155,22 @@ echo Study:	%studyId%>> .\_ASSAY_DESCRIPTION.TXT
 echo ### ASSAY>> .\_ASSAY_DESCRIPTION.TXT
 echo Short Name:	%ID%>> .\_ASSAY_DESCRIPTION.TXT
 echo Assay Class:	 %IDClass%>> .\_ASSAY_DESCRIPTION.TXT
-call:putMeta "Assay Title" aTitle *
-call:putMeta "Assay Description" aDesc *
+rem ECHO ON
+  set analytesInput=Analytes.txt
+  rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
+  call:putMeta "Assay Title" aTitle *
+  call:putMeta "Assay Description" aDesc *
+REM ------------------------------------------ NGS
+  if "%IDType%"=="NGS" (
+  set analytesInput=Analytes.txt
+  rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
+  call:putMeta "RNA ID" a01 RNA
+  call:putMeta "Homogenisation protocol" a02 fastPrep
+  call:putMeta "Date Homogenisation" a03 %mydate%
+  call:putMeta "Isolation Protocol" a04 Rneasy_Plant
+  call:putMeta "Date Isolation" a05 %mydate%
+  call:putMeta "Storage RNA" a06 CU0369
+  )
 echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
 rem ------------------------------------  include common.ini
 copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\common.ini .\_ASSAY_DESCRIPTION.TXT
@@ -205,9 +220,52 @@ rem -----------------------------------------------------
 ::          --- %~3 (optional) missing: input required
 ::          ---                * : can be skipped, return *
 :: Example: call:putMeta "Type something" xx default
-SETLOCAL
+rem SETLOCAL
 call:getInput "%~1" xMeta "%~3"
 echo %~1:	%xMeta% >> %descFile%
-ENDLOCAL
-set "%~2=%x%"
+rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
+rem
+
+
+rem
+REM (ENDLOCAL
+set %~2="%xMeta%"
+REM )
+GOTO:EOF
+rem -----------------------------------------------------
+:putMeta2   --- get metadata and append to descFile
+::         --- descFile - should be set befor the call
+::          --- %~1 Input message (what to enter)
+::          --- %~2 Variable to get result
+::          --- %~3 (optional) missing: input required
+::          ---                * : can be skipped, return *
+:: Example: call:putMeta "Type something" xx default
+rem SETLOCAL
+call:getInput "%~1" xMeta "%~3"
+echo %~1:	%xMeta% >> %descFile%
+call:writeAnalytes %analytesInput% "%~1" %xMeta% 
+rem
+
+
+rem
+REM (ENDLOCAL
+set %~2="%xMeta%"
+REM )
+GOTO:EOF
+rem ---------------------------------------------------
+:writeAnalytes  --- write colums to analyte file
+::              --- %~1 file to process
+::              --- %~2 string for the first line
+::              --- %~3 string for other lines
+IF EXIST %~1 (
+    set /p z= <%~1
+    rem
+    set x2=%~2
+    set x2=%x2: =%
+    rem set str=%str: =%
+    echo %z%	%x2%  > tmp.txt
+    for /f "skip=1 tokens=*" %%a in (%~1) do (
+       echo %%a	%~3 >> tmp.txt
+    copy tmp.txt %~1
+)
 GOTO:EOF
