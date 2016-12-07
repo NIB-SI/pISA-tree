@@ -1,0 +1,26 @@
+Investigation:	inv1 
+Study:	St1
+### ASSAY
+Short Name:	aaa2-NGS
+Assay Class:	 Wet
+Assay Title:	* 
+Assay Description:	* 
+RNA ID:	RNA 
+Homogenisation protocol:	fastPrep 
+Date Homogenisation:	2016/12/07 
+Isolation Protocol:	Rneasy_Plant 
+Date Isolation:	2016/12/07 
+Storage RNA:	CU0369 
+Dnase treatment protocol:	trr 
+Dnase ID:	HT403_DNase 
+Date DNAse_treatment:	2016/12/07 
+Storage_DNAse_treated:	CU0370 
+Operator:	AB 
+cDNA ID:	HT403_cDNA 
+DateRT:	2016/12/07 
+Operator:	a14 
+Notes:	  
+Fluidigm_chip:	Chip10 
+Data:	
+Investigator:	Name Lastname
+

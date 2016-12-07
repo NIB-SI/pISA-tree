@@ -170,13 +170,24 @@ REM ------------------------------------------ NGS
   set line1=
   set line2=
   call:putMeta2 "RNA ID" a01 RNA
-  set "line1=RNA-ID"
-  set "line2=%a01%-%IDType%"
+  set "line1=RNA-ID	ng/ul	260/280	260/230"
+  set "line2=%a01%_%IDType%			"
   call:putMeta2 "Homogenisation protocol" a02 fastPrep
   call:putMeta2 "Date Homogenisation" a03 %mydate%
   call:putMeta2 "Isolation Protocol" a04 Rneasy_Plant
   call:putMeta2 "Date Isolation" a05 %mydate%
   call:putMeta2 "Storage RNA" a06 CU0369
+  call:putMeta2 "Dnase treatment protocol" a7 "*"
+  call:putMeta2 "Dnase ID" a8 HT403_DNase
+  call:putMeta2 "Date DNAse_treatment" a9 %mydate%
+  call:putMeta2 "Storage_DNAse_treated" a10 CU0370
+  call:putMeta2 "Operator" a11
+  call:putMeta2 "cDNA ID" a12 HT403_cDNA
+  call:putMeta2 "DateRT" a13 %mydate%
+  call:putMeta2 "Operator" a14 %a11%
+  call:putMeta2 "Notes" a15 " "
+  call:putMeta2 "Fluidigm_chip" a16 Chip10
+
   call:writeAnalytes %analytesInput% "%line1%" "%line2%"
 REM
   goto Finish
@@ -287,7 +298,8 @@ rem IF EXIST %~1 (
     set "TAB=	"
       	echo %%a
       	echo %%b
-       echo %%a	%%b	%%a-%~3 >> tmp.txt 
+      	rem should replace special token with SampleId before writing
+       echo %%a	%%b	%%a_%~3 >> tmp.txt 
        echo off
        )
     copy tmp.txt %~1

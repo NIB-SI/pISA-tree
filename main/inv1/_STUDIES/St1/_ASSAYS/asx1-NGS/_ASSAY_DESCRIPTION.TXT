@@ -1,0 +1,26 @@
+Investigation:	inv1 
+Study:	St1
+### ASSAY
+Short Name:	asx1-NGS
+Assay Class:	 Wet
+Assay Title:	* 
+Assay Description:	* 
+RNA ID:	RNA 
+Homogenisation protocol:	fastPrep 
+Date Homogenisation:	2016/12/07 
+Isolation Protocol:	Rneasy_Plant 
+Date Isolation:	2016/12/07 
+Storage RNA:	CU0369 
+'Dnase:	protocol' 
+'Dnase:	a11 
+'Date:	a12 
+'Storage_DNAse_treated':	CU0370 
+'operator':	AB 
+'cDNA:	a15 
+'DateRT':	2016/12/07 
+'Operator':	'' 
+'Notes':	nic 
+'Fluidigm_chip':	'Chip10' 
+Data:	
+Investigator:	Name Lastname
+
