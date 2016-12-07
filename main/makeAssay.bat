@@ -282,9 +282,9 @@ rem IF EXIST %~1 (
     rem set str=%str: =%
     echo %z%	%x2%  > tmp.txt
     rem Process other lines
-    for /f "skip=1 tokens=1,2 delims=	 " %%a in (%~1) do (
+    for /f "skip=1 tokens=1,* delims=	 " %%a in (%~1) do (
     echo on
-    	set "TAB=	"
+    set "TAB=	"
       	echo %%a
       	echo %%b
        echo %%a	%%b	%%a-%~3 >> tmp.txt 
