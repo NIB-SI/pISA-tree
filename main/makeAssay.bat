@@ -165,15 +165,20 @@ rem ECHO ON
 :NGS
 REM ------------------------------------------ NGS
   set analytesInput=Analytes.txt
-  if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
-  call:putMeta "RNA ID" a01 RNA
+  if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
+  set line1=
+  set line2=
+  call:putMeta2 "RNA ID" a01 RNA
+  set "line1=RNA-ID"
+  set "line2=%a01%-%IDType%"
   call:putMeta2 "Homogenisation protocol" a02 fastPrep
-  call:putMeta "Date Homogenisation" a03 %mydate%
-  call:putMeta "Isolation Protocol" a04 Rneasy_Plant
-  call:putMeta "Date Isolation" a05 %mydate%
-  call:putMeta "Storage RNA" a06 CU0369
+  call:putMeta2 "Date Homogenisation" a03 %mydate%
+  call:putMeta2 "Isolation Protocol" a04 Rneasy_Plant
+  call:putMeta2 "Date Isolation" a05 %mydate%
+  call:putMeta2 "Storage RNA" a06 CU0369
+  call:writeAnalytes %analytesInput% "%line1%" "%line2%"
+REM
   goto Finish
-  call:writeAnalytes ./%analytesInput% "bla	ble" "%a01%	%a02%"
 REM ---------------------------------------- /NGS
 REM ---------------------------------------- Next Assay Type
 :Finish
@@ -257,6 +262,8 @@ rem
 rem
 REM (ENDLOCAL
 set %~2="%xMeta%"
+set "line1=%line1%	%~1"
+set "line2=%line2%	%xMeta%"
 REM )
 GOTO:EOF
 rem ---------------------------------------------------
@@ -264,17 +271,20 @@ rem ---------------------------------------------------
 ::              --- %~1 file to process
 ::              --- %~2 string for the first line
 ::              --- %~3 string for other lines
-SETLOCAL
-IF EXIST %~1 (
+rem SETLOCAL
+rem IF EXIST %~1 (
+
+    rem First line
     set /p z= <%~1
-    rem
     set x2=%~2
     set x2=%x2: =%
     rem set str=%str: =%
     echo %z%	%x2%  > tmp.txt
+    rem Process other lines
     for /f "skip=1 tokens=*" %%a in (%~1) do (
-       echo %%a	%~3 >> tmp.txt
+       echo %%a	%~3 >> tmp.txt )
     copy tmp.txt %~1
-)
-ENDLOCAL
+rem )
+rem ENDLOCAL
+del tmp.txt
 GOTO:EOF
