@@ -126,6 +126,7 @@ set LF=^
 
 
 REM Keep two empty lines above - they are neccessary!!
+set "TAB=	"
 rem -----------------------------------------------
 rem Find studyId (after \_STUDIES)
 set "studyId=*"
@@ -261,7 +262,7 @@ rem
 
 rem
 REM (ENDLOCAL
-set %~2="%xMeta%"
+set "%~2=%xMeta%"
 set "line1=%line1%	%~1"
 set "line2=%line2%	%xMeta%"
 REM )
@@ -281,8 +282,14 @@ rem IF EXIST %~1 (
     rem set str=%str: =%
     echo %z%	%x2%  > tmp.txt
     rem Process other lines
-    for /f "skip=1 tokens=*" %%a in (%~1) do (
-       echo %%a	%~3 >> tmp.txt )
+    for /f "skip=1 tokens=1,2 delims=	 " %%a in (%~1) do (
+    echo on
+    	set "TAB=	"
+      	echo %%a
+      	echo %%b
+       echo %%a	%%b	%%a-%~3 >> tmp.txt 
+       echo off
+       )
     copy tmp.txt %~1
 rem )
 rem ENDLOCAL
