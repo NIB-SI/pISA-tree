@@ -160,17 +160,23 @@ rem ECHO ON
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
   call:putMeta "Assay Title" aTitle *
   call:putMeta "Assay Description" aDesc *
+  if "%IDType%" == "NGS" goto NGS
+
+:NGS
 REM ------------------------------------------ NGS
-  if "%IDType%"=="NGS" (
   set analytesInput=Analytes.txt
-  rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
+  if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
   call:putMeta "RNA ID" a01 RNA
-  call:putMeta "Homogenisation protocol" a02 fastPrep
+  call:putMeta2 "Homogenisation protocol" a02 fastPrep
   call:putMeta "Date Homogenisation" a03 %mydate%
   call:putMeta "Isolation Protocol" a04 Rneasy_Plant
   call:putMeta "Date Isolation" a05 %mydate%
   call:putMeta "Storage RNA" a06 CU0369
-  )
+  goto Finish
+  call:writeAnalytes ./%analytesInput% "bla	ble" "%a01%	%a02%"
+REM ---------------------------------------- /NGS
+REM ---------------------------------------- Next Assay Type
+:Finish
 echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
 rem ------------------------------------  include common.ini
 copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\common.ini .\_ASSAY_DESCRIPTION.TXT
@@ -196,7 +202,7 @@ rem Functions
 SETLOCAL
 :Ask
 set x=%~3
-set /p x=Enter %~1 [%x%]:
+set /p x=Enter %~1 [ %x% ]: 
 rem if %x% EQU "" set x="%~3"
 if "%x%" EQU "" goto Ask
 REM Check existence/uniqueness
@@ -209,7 +215,7 @@ goto Ask
 ) 
 :done
 (ENDLOCAL
-    set "%~2=%x%"
+ IF "%~2" NEQ "" set "%~2=%x%"
 )
 GOTO:EOF
 rem -----------------------------------------------------
@@ -220,7 +226,7 @@ rem -----------------------------------------------------
 ::          --- %~3 (optional) missing: input required
 ::          ---                * : can be skipped, return *
 :: Example: call:putMeta "Type something" xx default
-rem SETLOCAL
+SETLOCAL
 call:getInput "%~1" xMeta "%~3"
 echo %~1:	%xMeta% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
@@ -228,9 +234,10 @@ rem
 
 
 rem
-REM (ENDLOCAL
-set %~2="%xMeta%"
-REM )
+(ENDLOCAL
+    IF "%~2" NEQ "" set "%~2=%xMeta%"
+    set "aEntered=%xMeta%"
+)
 GOTO:EOF
 rem -----------------------------------------------------
 :putMeta2   --- get metadata and append to descFile
@@ -239,11 +246,11 @@ rem -----------------------------------------------------
 ::          --- %~2 Variable to get result
 ::          --- %~3 (optional) missing: input required
 ::          ---                * : can be skipped, return *
-:: Example: call:putMeta "Type something" xx default
+:: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
 call:getInput "%~1" xMeta "%~3"
 echo %~1:	%xMeta% >> %descFile%
-call:writeAnalytes %analytesInput% "%~1" %xMeta% 
+rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
 
@@ -257,6 +264,7 @@ rem ---------------------------------------------------
 ::              --- %~1 file to process
 ::              --- %~2 string for the first line
 ::              --- %~3 string for other lines
+SETLOCAL
 IF EXIST %~1 (
     set /p z= <%~1
     rem
@@ -268,4 +276,5 @@ IF EXIST %~1 (
        echo %%a	%~3 >> tmp.txt
     copy tmp.txt %~1
 )
+ENDLOCAL
 GOTO:EOF
