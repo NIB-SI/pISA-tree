@@ -20,13 +20,13 @@ set mydate=%date:~13,4%/%date:~9,2%/%date:~5,2%
 set IDClass=""
 if "%1" EQU "" (
 rem echo @
-set /p IDClass=Enter Assay Class [Wet/Dry]: 
+set /p IDClass=Enter Assay Class [ Wet/Dry ]: 
 ) else (
 set IDClass=%1
 )
 rem Ask for Class, loop if empty
 :Ask1
-if %IDClass% EQU "" set /p IDClass=Enter Assay Class [Wet/Dry]: 
+if %IDClass% EQU "" set /p IDClass=Enter Assay Class [ Wet/Dry ]: 
 if %IDClass% EQU "" goto Ask1
 rem /I: case insensitive compare
 if /I %IDClass% EQU dry (set IDClass=Dry)
@@ -41,7 +41,7 @@ rem ----------------------------------------------
 rem Type: use argument 2 if present
 set IDType=""
 if "%2" EQU "" (
-set /p "IDType=Enter Assay Type (%types%):" 
+set /p IDType=Enter Assay Type [ %types% ]: 
 ) else (
 set IDType=%2
 )
@@ -49,7 +49,7 @@ rem dir %IDType%* /B /AD
 rem Similar Assay IDs
 rem %IDType%* /AD
 :Ask2
-if %IDType% EQU "" set /p "IDType=Enter Assay Type (%types%):"
+if %IDType% EQU "" set /p IDType=Enter Assay Type [ %types% ]: 
 if %IDType% EQU "" goto Ask2
 rem ----------------------------------------------
 rem ID : use argument 3 if present
@@ -163,11 +163,16 @@ rem ECHO ON
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
   call:putMeta "Assay Title" aTitle *
   call:putMeta "Assay Description" aDesc *
-  goto %IDType%
-rem  if "%IDType%" == "NGS" goto NGS
-rem  if "%IDType%" == "RT" goto RT
-rem  if "%IDType%" == "R" goto R
-rem  if "%IDType%" == "Stat" goto Stat
+rem ---- Type specific fields
+if "%IDType%" == "NGS" goto NGS
+if "%IDType%" == "RT" goto RT
+if "%IDType%" == "R" goto R
+if "%IDType%" == "Stat" goto Stat
+echo .
+echo Warning: Unseen Assay Type: *%IDType%* - will make Generic %IDClass% Assay
+echo .
+pause
+goto Finish
 rem
 :NGS
 REM ------------------------------------------ NGS
