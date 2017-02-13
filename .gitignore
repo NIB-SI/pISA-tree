@@ -1,6 +1,7 @@
 # Exclude bla directories
 <<<<<<< HEAD
 */bla/
+doc/
 =======
 */bla*/
 >>>>>>> refs/remotes/origin/fix-structure
