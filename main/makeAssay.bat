@@ -1,5 +1,5 @@
 @echo off
-rem -------------------------------------  pISA-tree v.0.2
+rem -------------------------------------  pISA-tree v.0.3
 rem
 rem Create a new Assay tree in _ASSAYS directory
 rem ------------------------------------------------------
