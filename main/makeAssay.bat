@@ -278,7 +278,8 @@ rem -----------------------------------------------------
 ::          ---                * : can be skipped, return *
 :: Example: call:putMeta "Type something" xx default
 SETLOCAL
-call:getInput "%~1" xMeta "%~3"
+rem call:getInput "%~1" xMeta "%~3"
+call:getMenu "%~1" %~3 xMeta "%~3"
 echo %~1:	%xMeta% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
@@ -288,6 +289,43 @@ rem
 (ENDLOCAL
     IF "%~2" NEQ "" set "%~2=%xMeta%"
     set "aEntered=%xMeta%"
+)
+GOTO:EOF
+rem --------------------------------------------------------
+:getMenu    --- get menu item
+::          --- %~1 Value description
+::          --- %~2 String of choices (aa/bb/cc)
+::          --- %~3 Variable to get result
+::          --- %~4 (optional) missing: input required
+::          ---                * : can be skipped, return *
+:: Example: call:getMenu "Select input" list/of/choices u
+SETLOCAL
+rem Make menu function
+cls
+echo =========================
+echo.
+echo %~1
+echo.
+set mn=%~2
+rem 
+set mn=%mn%/
+set _mn=%mn%
+set nl=0
+set mch=
+echo %mn%
+echo. 
+:top
+rem if "%mn%"=="" goto :done
+set /A "nl=%nl%+1"
+set mch=%mch%%nl%
+for /F "tokens=1 delims=/" %%H in ("%mn%") DO echo    %nl% %%H
+set mn=%mn:*/=%
+if NOT "%mn%"=="" goto :top
+rem :done
+echo. 
+choice /C:%mch% /M:Select 
+(ENDLOCAL
+    for /F "tokens=%errorlevel% delims=/" %%H in ("%_mn%") DO set "%~3=%%H
 )
 GOTO:EOF
 rem -----------------------------------------------------
@@ -301,7 +339,8 @@ rem -----------------------------------------------------
 ::                  XIDX will be replaced by SampleID upon writing to file
 :: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
-call:getInput "%~1" xMeta "%~3"
+rem call:getInput "%~1" xMeta "%~3"
+call:getMenu "%~1" %~3 xMeta "%~3"
 echo %~1:	%xMeta% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
