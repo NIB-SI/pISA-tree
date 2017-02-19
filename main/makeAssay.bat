@@ -16,7 +16,7 @@ echo pISA-tree: make ASSAY
 echo ---------------------------------
 rem ----------------------------------------------
 rem Class: use argument 1 if present
-set mydate=%date:~13,4%/%date:~9,2%/%date:~5,2%
+set mydate=%date:~13,4%-%date:~9,2%-%date:~5,2%
 set IDClass=""
 if "%1" EQU "" (
 rem echo @
@@ -36,6 +36,12 @@ if /I %IDClass% EQU w set IDClass=Wet
 rem ----------------------------------------------
 rem Supported types
 if /I %IDClass% EQU Wet set "types=NGS / RT"
+SETLOCAL ENABLEDELAYEDEXPANSION
+SET "types="
+FOR /f "delims=" %%i IN ('dir ..\..\..\..\ini\WET /b') DO (
+    SET types=!types!%%i/
+)
+SETLOCAL DISABLEDELAYEDEXPANSION
 if /I %IDClass% EQU Dry set "types=R / Stat"
 rem ----------------------------------------------
 rem Type: use argument 2 if present
@@ -165,6 +171,7 @@ rem ECHO ON
   call:putMeta "Assay Description" aDesc *
 rem ---- Type specific fields
 if "%IDType%" == "NGS" goto NGS
+if "%IDType%" == "RNAisol" goto NGS
 if "%IDType%" == "RT" goto RT
 if "%IDType%" == "R" goto R
 if "%IDType%" == "Stat" goto Stat
@@ -183,7 +190,7 @@ REM ------------------------------------------ NGS
   call:putMeta2 "RNA ID" a01 RNA
   set "line1=RNA-ID	ng/ul	260/280	260/230"
   set "line2=XIDX_%a01%_%IDType%			"
-  call:putMeta2 "Homogenisation protocol" a02 fastPrep
+  call:putMeta2 "Homogenisation protocol" a02 fastPrep/slowPrep
   call:putMeta2 "Date Homogenisation" a03 %mydate%
   call:putMeta2 "Isolation Protocol" a04 Rneasy_Plant
   call:putMeta2 "Date Isolation" a05 %mydate%
@@ -279,7 +286,7 @@ rem -----------------------------------------------------
 :: Example: call:putMeta "Type something" xx default
 SETLOCAL
 rem call:getInput "%~1" xMeta "%~3"
-call:getMenu "%~1" %~3 xMeta "%~3"
+call:getMenu "%~1" %~3/getMenu xMeta "%~3"
 echo %~1:	%xMeta% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
@@ -340,7 +347,7 @@ rem -----------------------------------------------------
 :: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
 rem call:getInput "%~1" xMeta "%~3"
-call:getMenu "%~1" %~3 xMeta "%~3"
+call:getMenu "%~1" %~3/getMenu2 xMeta "%~3"
 echo %~1:	%xMeta% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
