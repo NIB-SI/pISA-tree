@@ -17,22 +17,32 @@ echo ---------------------------------
 rem ----------------------------------------------
 rem Class: use argument 1 if present
 set mydate=%date:~13,4%-%date:~9,2%-%date:~5,2%
-set IDClass=""
-if "%1" EQU "" (
+set IDClass=
+rem if "%1" EQU "" (
 rem echo @
-set /p IDClass=Enter Assay Class [ Wet/Dry ]: 
-) else (
-set IDClass=%1
-)
+rem set /p IDClass=Enter Assay Class [ Wet/Dry ]: 
+rem ) else (
+rem set IDClass=%1
+rem )
 rem Ask for Class, loop if empty
 :Ask1
-if %IDClass% EQU "" set /p IDClass=Enter Assay Class [ Wet/Dry ]: 
-if %IDClass% EQU "" goto Ask1
+rem if %IDClass% EQU "" set /p IDClass=Enter Assay Class [ Wet/Dry ]: 
+rem if %IDClass% EQU "" goto Ask1
 rem /I: case insensitive compare
-if /I %IDClass% EQU dry (set IDClass=Dry)
-if /I %IDClass% EQU d set IDClass=Dry
-if /I %IDClass% EQU wet set IDClass=Wet
-if /I %IDClass% EQU w set IDClass=Wet
+rem if /I %IDClass% EQU dry (set IDClass=Dry)
+rem if /I %IDClass% EQU d set IDClass=Dry
+rem if /I %IDClass% EQU wet set IDClass=Wet
+rem if /I %IDClass% EQU w set IDClass=Wet
+SETLOCAL ENABLEDELAYEDEXPANSION
+SET "types="
+FOR /f "delims=" %%i IN ('dir ..\..\..\..\ini /b') DO (
+    SET types=!types!%%i/
+)
+SETLOCAL DISABLEDELAYEDEXPANSION
+
+call:getMenu "Select Assay Class" %types% IDClass
+echo Selected: %IDClass%
+pause
 rem ----------------------------------------------
 rem Supported types
 if /I %IDClass% EQU Wet set "types=NGS / RT"
@@ -315,7 +325,7 @@ echo %~1
 echo.
 set mn=%~2
 rem 
-set mn=%mn%/
+IF NOT "%mn:~-1%"=="/" set mn=%mn%/
 set _mn=%mn%
 set nl=0
 set mch=
