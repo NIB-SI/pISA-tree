@@ -46,27 +46,30 @@ pause
 rem ----------------------------------------------
 rem Supported types
 if /I %IDClass% EQU Wet set "types=NGS / RT"
+if /I %IDClass% EQU Dry set "types=R / Stat"
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "types="
-FOR /f "delims=" %%i IN ('dir ..\..\..\..\ini\WET /b') DO (
+FOR /f "delims=" %%i IN ('dir ..\..\..\..\ini\%IDClass% /b') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
-if /I %IDClass% EQU Dry set "types=R / Stat"
+call:getMenu "Select Assay Type" %types% IDType
+echo Selected: %IDType%
+pause
 rem ----------------------------------------------
 rem Type: use argument 2 if present
-set IDType=""
-if "%2" EQU "" (
-set /p IDType=Enter Assay Type [ %types% ]: 
-) else (
-set IDType=%2
-)
+rem set IDType=""
+rem if "%2" EQU "" (
+rem set /p IDType=Enter Assay Type [ %types% ]: 
+rem ) else (
+rem set IDType=%2
+rem )
 rem dir %IDType%* /B /AD
 rem Similar Assay IDs
 rem %IDType%* /AD
 :Ask2
-if %IDType% EQU "" set /p IDType=Enter Assay Type [ %types% ]: 
-if %IDType% EQU "" goto Ask2
+rem if %IDType% EQU "" set /p IDType=Enter Assay Type [ %types% ]: 
+rem if %IDType% EQU "" goto Ask2
 rem ----------------------------------------------
 rem ID : use argument 3 if present
 set IDName=""
