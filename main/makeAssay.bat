@@ -11,9 +11,20 @@ rem cd d:\_X
 rem Backup copy if assay folder exists
 rem robocopy %1 X-%1 /MIR
 rem ------------------------------------------------------
+rem
+setlocal EnableDelayedExpansion
+set LF=^
+
+
+REM Keep two empty lines above - they are neccessary!!
+set "TAB=	"
 echo =================================
 echo pISA-tree: make ASSAY 
 echo ---------------------------------
+set hd=---------------------------------/
+set hd=%hd%pISA-tree: make ASSAY/
+set hd=%hd%---------------------------------/
+call:displayhd "%hd%"
 rem ----------------------------------------------
 rem Class: use argument 1 if present
 set mydate=%date:~13,4%-%date:~9,2%-%date:~5,2%
@@ -35,7 +46,7 @@ rem if /I %IDClass% EQU wet set IDClass=Wet
 rem if /I %IDClass% EQU w set IDClass=Wet
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "types="
-FOR /f "delims=" %%i IN ('dir ..\..\..\..\ini /b') DO (
+FOR /f "delims=" %%i IN ('dir ..\..\..\..\Templates /b') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
@@ -49,7 +60,7 @@ if /I %IDClass% EQU Wet set "types=NGS / RT"
 if /I %IDClass% EQU Dry set "types=R / Stat"
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "types="
-FOR /f "delims=" %%i IN ('dir ..\..\..\..\ini\%IDClass% /b') DO (
+FOR /f "delims=" %%i IN ('dir ..\..\..\..\Templates\%IDClass% /b') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
@@ -245,7 +256,7 @@ REM ---------------------------------------- R
 REM ---------------------------------------- /R
 :Stat
 REM ---------------------------------------- R
-    oto Finish
+    goto Finish
 REM ---------------------------------------- /R
 :Finish
 echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
@@ -321,7 +332,8 @@ rem --------------------------------------------------------
 :: Example: call:getMenu "Select input" list/of/choices u
 SETLOCAL
 rem Make menu function
-cls
+rem cls
+echo.
 echo =========================
 echo.
 echo %~1
@@ -346,6 +358,8 @@ echo.
 choice /C:%mch% /M:Select 
 (ENDLOCAL
     for /F "tokens=%errorlevel% delims=/" %%H in ("%_mn%") DO set "%~3=%%H
+    set "hd=%hd%%~1:		 %~4%~3/"
+    call:displayhd "%hd%"
 )
 GOTO:EOF
 rem -----------------------------------------------------
@@ -360,12 +374,9 @@ rem -----------------------------------------------------
 :: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
 rem call:getInput "%~1" xMeta "%~3"
-call:getMenu "%~1" %~3/getMenu2 xMeta "%~3"
+call:getMenu "%~1" "%~3/test getMenu2" xMeta "%~3"
 echo %~1:	%xMeta% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
-rem
-
-
 rem
 REM (ENDLOCAL
 set "%~2=%xMeta%"
@@ -410,3 +421,17 @@ rem )
 rem ENDLOCAL
 del tmp.txt
 GOTO:EOF
+rem --------------------------------------------------
+:displayhd  --- clear screen and display header
+::          --- %~1 header text, use / as the new line character
+:: Example: call:displayhd list/of/choices
+set mn=%~1
+SETLOCAL
+cls
+IF NOT "%mn:~-1%"=="/" set mn=%mn%/
+:tophd
+FOR /F "delims=/" %%i IN ("%mn%") DO echo %%i
+set mn=%mn:*/=%
+if NOT "%mn%"=="" goto :tophd
+ENDLOCAL
+goto:EOF
