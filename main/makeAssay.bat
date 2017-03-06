@@ -199,11 +199,11 @@ rem ECHO ON
   call:inputMeta "Assay Title" aTitle *
   call:inputMeta "Assay Description" aDesc *
 rem ---- Type specific fields
-if "%IDType%" == "NGS" goto NGS
-if "%IDType%" == "RNAisol" goto NGS
-if "%IDType%" == "RT" goto RT
-if "%IDType%" == "R" goto R
-if "%IDType%" == "Stat" goto Stat
+if /I "%IDType%" == "NGS" goto NGS
+if /I "%IDType%" == "RNAisol" goto NGS
+if /I "%IDType%" == "RT" goto RT
+if /I "%IDType%" == "R" goto R
+if /I "%IDType%" == "Stat" goto Stat
 echo .
 echo Warning: Unseen Assay Type: *%IDType%* - will make Generic %IDClass% Assay
 echo .
@@ -216,9 +216,13 @@ REM ------------------------------------------ NGS
   if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
   set line1=
   set line2=
-  call:putMeta2 "RNA ID" a01 RNA
-  set "line1=RNA-ID	ng/ul	260/280	260/230"
-  set "line2=XIDX_%a01%_%IDType%			"
+  call:putMeta2 "RNA ID" a01 RNA XIDX_
+  rem set "line1=RNA-ID	ng/ul	260/280	260/230"
+  rem set "line2=XIDX_%a01%_%IDType%			"
+  set "line2=%line2%_%IDType%"
+  call:putMeta2 "ng/ul" a100 Blank
+  call:putMeta2 "260/280" a100 Blank
+  call:putMeta2 "260/230" a100 Blank
   call:putMeta2 "Homogenisation protocol" a02 fastPrep/slowPrep
   call:putMeta2 "Date Homogenisation" a03 %mydate%
   call:putMeta2 "Isolation Protocol" a04 Rneasy_Plant
@@ -410,10 +414,9 @@ rem -----------------------------------------------------
 ::                  XIDX will be replaced by SampleID upon writing to file
 :: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
-if "%~3"=="*" call:getInput "%~1" xMeta "%~3"
-if "%~3"=="*" GOTO:next
-if "%~3"==" " call:getInput "%~1" xMeta "%~3"
-if "%~3"==" " GOTO:next
+if "%~3"=="*" call:getInput "%~1" xMeta "%~3" & GOTO:next
+if "%~3"==" " call:getInput "%~1" xMeta "%~3" & GOTO:next
+if /I "%~3"=="Blank" set xMeta="" & GOTO:next
 rem call:getInput "%~1" xMeta "%~3"
 call:getMenu "%~1" "%~3/Other" xMeta "%~3"
 if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%~3"
@@ -425,8 +428,7 @@ REM (ENDLOCAL
 set "%~2=%xMeta%"
 set "line1=%line1%	%~1"
 set "line2=%line2%	%~4%xMeta%"
-set "hd=%hd%%~1:		 %~4%xMeta%/"
-call:displayhd "%hd%"
+if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/" & call:displayhd "%hd%"
 REM )
 GOTO:EOF
 rem ---------------------------------------------------
