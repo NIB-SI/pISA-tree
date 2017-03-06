@@ -50,10 +50,11 @@ FOR /f "delims=" %%i IN ('dir ..\..\..\..\Templates /b') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
-
+set "IdClass="
 call:getMenu "Select Assay Class" %types% IDClass
-echo Selected: %IDClass%
-pause
+set "hd=%hd%Assay Class:		 %~4%IDClass%/"
+call:displayhd "%hd%"
+rem echo Selected: %IDClass%
 rem ----------------------------------------------
 rem Supported types
 if /I %IDClass% EQU Wet set "types=NGS / RT"
@@ -64,9 +65,11 @@ FOR /f "delims=" %%i IN ('dir ..\..\..\..\Templates\%IDClass% /b') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
+set "IDType="
 call:getMenu "Select Assay Type" %types% IDType
-echo Selected: %IDType%
-pause
+set "hd=%hd%Assay Type:		 %~4%IDType%/"
+call:displayhd "%hd%"
+rem echo Selected: %IDType%
 rem ----------------------------------------------
 rem Type: use argument 2 if present
 rem set IDType=""
@@ -112,6 +115,8 @@ goto Ask3
 ) ELSE (
 REM Continue creating directory
 )
+set "hd=%hd%Assay ID:		 %~4%ID%/"
+call:displayhd "%hd%"
 rem ----------------------------------------------
 rem Make new assay directory tree
 rem ----------------------------------------------
@@ -191,8 +196,8 @@ echo Assay Class:	 %IDClass%>> .\_ASSAY_DESCRIPTION.TXT
 rem ECHO ON
   rem set analytesInput=Analytes.txt
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
-  call:putMeta "Assay Title" aTitle *
-  call:putMeta "Assay Description" aDesc *
+  call:inputMeta "Assay Title" aTitle *
+  call:inputMeta "Assay Description" aDesc *
 rem ---- Type specific fields
 if "%IDType%" == "NGS" goto NGS
 if "%IDType%" == "RNAisol" goto NGS
@@ -267,6 +272,8 @@ rem
 rem  make main readme.md file
 type README.MD
 dir .
+cls
+type _ASSAY_DESCRIPTION.TXT
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
@@ -283,7 +290,10 @@ rem Functions
 :: Example: call:getInpt "Type something" xx default
 SETLOCAL
 :Ask
-set x=%~3
+echo.
+echo =========================
+echo.
+set "x=%~3"
 set /p x=Enter %~1 [ %x% ]: 
 rem if %x% EQU "" set x="%~3"
 if "%x%" EQU "" goto Ask
@@ -310,6 +320,8 @@ rem -----------------------------------------------------
 :: Example: call:putMeta "Type something" xx default
 SETLOCAL
 rem call:getInput "%~1" xMeta "%~3"
+rem Type input or get menu?
+
 call:getMenu "%~1" %~3/getMenu xMeta "%~3"
 echo %~1:	%xMeta% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
@@ -320,7 +332,34 @@ rem
 (ENDLOCAL
     IF "%~2" NEQ "" set "%~2=%xMeta%"
     set "aEntered=%xMeta%"
+    set "hd=%hd%%~1:		 %xMeta%/"
+    call:displayhd "%hd%"
+
 )
+GOTO:EOF
+rem -----------------------------------------------------
+:inputMeta   --- get metadata and append to descFile
+::         --- descFile - should be set befor the call
+::          --- %~1 Input message (what to enter)
+::          --- %~2 Variable to get result
+::          --- %~3 (optional) missing: input required
+::          ---                * : can be skipped, return *
+:: Example: call:putMeta "Type something" xx default
+SETLOCAL
+rem call:getInput "%~1" xMeta "%~3"
+rem Type input or get menu?
+
+call:getInput "%~1" xMeta "%~3"
+echo %~1:	%xMeta% >> %descFile%
+rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
+rem
+
+
+rem
+(ENDLOCAL
+    IF "%~2" NEQ "" set "%~2=%xMeta%"
+    set "aEntered=%xMeta%"
+    )
 GOTO:EOF
 rem --------------------------------------------------------
 :getMenu    --- get menu item
@@ -358,8 +397,6 @@ echo.
 choice /C:%mch% /M:Select 
 (ENDLOCAL
     for /F "tokens=%errorlevel% delims=/" %%H in ("%_mn%") DO set "%~3=%%H
-    set "hd=%hd%%~1:		 %~4%~3/"
-    call:displayhd "%hd%"
 )
 GOTO:EOF
 rem -----------------------------------------------------
@@ -373,8 +410,14 @@ rem -----------------------------------------------------
 ::                  XIDX will be replaced by SampleID upon writing to file
 :: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
+if "%~3"=="*" call:getInput "%~1" xMeta "%~3"
+if "%~3"=="*" GOTO:next
+if "%~3"==" " call:getInput "%~1" xMeta "%~3"
+if "%~3"==" " GOTO:next
 rem call:getInput "%~1" xMeta "%~3"
-call:getMenu "%~1" "%~3/test getMenu2" xMeta "%~3"
+call:getMenu "%~1" "%~3/Other" xMeta "%~3"
+if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%~3"
+:next
 echo %~1:	%xMeta% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
@@ -382,6 +425,8 @@ REM (ENDLOCAL
 set "%~2=%xMeta%"
 set "line1=%line1%	%~1"
 set "line2=%line2%	%~4%xMeta%"
+set "hd=%hd%%~1:		 %~4%xMeta%/"
+call:displayhd "%hd%"
 REM )
 GOTO:EOF
 rem ---------------------------------------------------
