@@ -282,6 +282,8 @@ cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
 rem dir .\%ID% /s/b
+echo Assay %ID% is ready.
+PAUSE
 goto:eof
 rem ====================================== / makeAssay
 rem --------------------------------------------------------
