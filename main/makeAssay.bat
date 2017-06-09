@@ -201,6 +201,7 @@ rem ECHO ON
 rem ---- Type specific fields
 if /I "%IDType%" == "NGS" goto NGS
 if /I "%IDType%" == "RNAisol" goto NGS
+if /I "%IDType%" == "Demo" goto NGS
 if /I "%IDType%" == "RT" goto RT
 if /I "%IDType%" == "R" goto R
 if /I "%IDType%" == "Stat" goto Stat
@@ -282,6 +283,9 @@ cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
 rem dir .\%ID% /s/b
+echo.
+echo.
+echo =====================================
 echo Assay %ID% is ready.
 PAUSE
 goto:eof
