@@ -4,6 +4,8 @@
 doc/
 other/
 main/xx*/
+main/Description.md
+main/xxDescription.md
 =======
 */bla*/
 >>>>>>> refs/remotes/origin/fix-structure
