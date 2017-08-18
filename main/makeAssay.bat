@@ -117,11 +117,12 @@ REM Continue creating directory
 )
 set "hd=%hd%Assay ID:		 %~4%ID%/"
 call:displayhd "%hd%"
+goto %IDClass%
 rem ----------------------------------------------
 rem Make new assay directory tree
 rem ----------------------------------------------
 :dry
-set IDClass=Dry
+REM set IDClass=Dry
 md %ID%
 cd %ID%
 md input
@@ -139,7 +140,7 @@ echo # Other files for assay %ID% >  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :wet
-set IDClass=Wet
+REM set IDClass=Wet
 md %ID%
 cd %ID%
 md reports
@@ -201,7 +202,7 @@ rem ECHO ON
 rem ---- Type specific fields
 if /I "%IDType%" == "NGS" goto NGS
 if /I "%IDType%" == "RNAisol" goto NGS
-if /I "%IDType%" == "Demo" goto NGS
+if /I "%IDType%" == "Demo" goto Demo
 if /I "%IDType%" == "RT" goto RT
 if /I "%IDType%" == "R" goto R
 if /I "%IDType%" == "Stat" goto Stat
@@ -211,6 +212,21 @@ echo .
 pause
 goto Finish
 rem
+:Demo
+REM ------------------------------------------ Demo
+echo ..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
+cd
+set analytesInput=Analytes.txt
+  if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
+  set line1=
+  set line2=
+call:processAnalytes ..\..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
+PAUSE
+
+  call:writeAnalytes %analytesInput% "%line1%" "%line2%"
+REM
+  goto Finish
+REM ------------------------------------------/Demo
 :NGS
 REM ------------------------------------------ NGS
   set analytesInput=Analytes.txt
@@ -411,7 +427,7 @@ choice /C:%mch% /M:Select
 GOTO:EOF
 rem -----------------------------------------------------
 :putMeta2   --- get metadata and append to descFile
-::         --- descFile - should be set befor the call
+::          --- descFile - should be set befor the call
 ::          --- %~1 Input message (what to enter)
 ::          --- %~2 Variable to get result
 ::          --- %~3 (optional) missing: input required
@@ -488,3 +504,48 @@ set mn=%mn:*/=%
 if NOT "%mn%"=="" goto :tophd
 ENDLOCAL
 goto:EOF
+rem --------------------------------------------------
+:getDirNames  --- get directory names and prepare / delimited list
+::            --- %~1 directory
+::            --- %~2 Variable to get result
+:: Return:    >>> list of directories DRY/WET/XXX
+:: Example: call:getDirNames ..\main\Templates
+SETLOCAL ENABLEDELAYEDEXPANSION
+echo "Reading from file: %~1"
+SET "files="
+FOR /f "delims=" %%i IN ('dir %~1 /b') DO (
+     SET "files=!files!%%i/"
+)
+(ENDLOCAL
+SET %~2="%files%"
+SET %~2=%files:~0,-1%
+)
+GOTO:EOF
+REM ----------------------------------------------------------
+:processAnalytes  --- read analytes.ini and loop through lines
+::                --- %~1 file path
+::                --- %~2 Variable to get result
+:: Return:    >>> 
+:: Example: call:processAnalytes ..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini"
+
+set "lfn=%~1"
+if %lfn%=="" set "lfn=..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini"
+echo %lfn%
+SETLOCAL DisableDelayedExpansion
+FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
+    set "myVar=%%a"
+    call :processLine myVar
+)
+goto :eof
+
+
+:processLine
+SETLOCAL enabledelayedexpansion
+SET "string=!%~1!"
+SET "s2=%string:*	=%"
+set "s1=!string:	%s2%=!"
+ECHO +%s1%+%s2%+
+call:putMeta2 "%s1%" xxx "%s2%"
+
+ENDLOCAL
+goto :eof
