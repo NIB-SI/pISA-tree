@@ -4,6 +4,7 @@
 doc/
 other/
 main/xx*/
+# Description files are recreated with .bat files
 main/Description.md
 main/xCheckDescription.md
 =======
