@@ -1,5 +1,5 @@
 @echo off
-rem -------------------------------------  pISA-tree v.0.3
+rem -------------------------------------  pISA-tree v.0.4
 rem
 rem Create a new Assay tree in _ASSAYS directory
 rem ------------------------------------------------------
@@ -218,8 +218,8 @@ echo ..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
 cd
 set analytesInput=Analytes.txt
   if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
-  set "line1=Demo"
-  set "line2=Demo"
+  set "line1="
+  set "line2="
   dir ..\..\..\..\..\Templates\%IDClass%\%IDType%\
   pause
 call:processAnalytes ..\..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
@@ -448,13 +448,14 @@ rem call:getInput "%~1" xMeta "%~3"
 call:getMenu "%~1" "%~3/Other" xMeta "%~3"
 if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%~3"
 :next
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%%prefix% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 REM (ENDLOCAL
 set "%~2=%xMeta%"
 set "line1=%line1%	%~1"
-set "line2=%line2%	%~4%xMeta%"
+set "line2=%line2%	%~4%xMeta%%postfix%"
+endlocal
 echo line1 %line1%
 echo line2 %line2%
 pause
@@ -472,8 +473,8 @@ rem IF EXIST %~1 (
     rem First line
     set /p z= <%~1
     set x2=%~2
-    set x2=%x2: =%
-    rem set str=%str: =%
+    rem uncoment next line to remove blanks in the header line
+    rem set x2=%x2: =%
     echo %z%	%x2%  > tmp.txt
     rem Process other lines
     set "SEARCHTEXT=XIDX"
@@ -535,12 +536,14 @@ REM ----------------------------------------------------------
 ::                --- %~2 Variable to get result
 :: Return:    >>> 
 :: Example: call:processAnalytes ..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini"
-
+rem first id is prefixed. will be reset to empty after the first line
+set postfix=_%IDType%
 set "lfn=%~1"
 if %lfn%=="" set "lfn=..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini"
 SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
+    set postfix=
 )
 echo processAnalytes: line1 %line1%
 echo processAnalytes: line2 %line2%
@@ -554,6 +557,8 @@ goto :eof
 ::
 :: Example: call:processLine "Descriptor	Option1/Option2"
 SET "string=%~1"
+REM the line starts with "nn:" - cut off the numbers and colon
+set "string=%string:*:=%
 REM parse Item/Value line (separetor is TAB) - do not forget to use "..."
 for /f "tokens=1 delims=	" %%a in ("%string%") do set s1=%%a
 for /f "tokens=2 delims=	" %%a in ("%string%") do set s2=%%a
