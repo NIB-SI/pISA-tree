@@ -201,7 +201,7 @@ rem ECHO ON
   call:inputMeta "Assay Description" aDesc *
 rem ---- Type specific fields
 if /I "%IDType%" == "NGS" goto NGS
-if /I "%IDType%" == "RNAisol" goto NGS
+if /I "%IDType%" == "RNAisol" goto Demo
 if /I "%IDType%" == "Demo" goto Demo
 if /I "%IDType%" == "RT" goto RT
 if /I "%IDType%" == "R" goto R
@@ -220,10 +220,15 @@ set analytesInput=Analytes.txt
   if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
   set "line1=Demo"
   set "line2=Demo"
+  dir ..\..\..\..\..\Templates\%IDClass%\%IDType%\
+  pause
 call:processAnalytes ..\..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
+pause
+echo after processAnalytes: line1 %line1%
+echo after processAnalytes: line2 %line2%
 PAUSE
 
-  call:writeAnalytes %analytesInput% "%line1%" "%line2%"
+  
 REM
   goto Finish
 REM ------------------------------------------/Demo
@@ -533,11 +538,15 @@ REM ----------------------------------------------------------
 
 set "lfn=%~1"
 if %lfn%=="" set "lfn=..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini"
-echo %lfn%
 SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
 )
+echo processAnalytes: line1 %line1%
+echo processAnalytes: line2 %line2%
+echo %analytesInput%
+pause
+call:writeAnalytes %analytesInput% "%line1%" "%line2%"
 goto :eof
 
 :processLine  --- compose metadata menu for a line
@@ -568,6 +577,5 @@ ECHO +%s1%+%s2%+
 ECHO call:putMeta2 "%s1%" xxx %s2%
 ENDLOCAL
 call:putMeta2 "%s1%" xxx %s2%
-
 rem ENDLOCAL
 goto :eof
