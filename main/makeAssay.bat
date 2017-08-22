@@ -218,8 +218,8 @@ echo ..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
 cd
 set analytesInput=Analytes.txt
   if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
-  set line1=
-  set line2=
+  set "line1=Demo"
+  set "line2=Demo"
 call:processAnalytes ..\..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
 PAUSE
 
@@ -450,6 +450,9 @@ REM (ENDLOCAL
 set "%~2=%xMeta%"
 set "line1=%line1%	%~1"
 set "line2=%line2%	%~4%xMeta%"
+echo line1 %line1%
+echo line2 %line2%
+pause
 if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/" & call:displayhd "%hd%"
 REM )
 GOTO:EOF
@@ -531,21 +534,40 @@ REM ----------------------------------------------------------
 set "lfn=%~1"
 if %lfn%=="" set "lfn=..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini"
 echo %lfn%
-SETLOCAL DisableDelayedExpansion
+SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
-    set "myVar=%%a"
-    call :processLine myVar
+    call :processLine "%%a"
 )
 goto :eof
 
+:processLine  --- compose metadata menu for a line
+::            --- %~1 line from analytes.ini template (two tab delimited strings)
+::
+:: Example: call:processLine "Descriptor	Option1/Option2"
+SET "string=%~1"
+REM parse Item/Value line (separetor is TAB) - do not forget to use "..."
+for /f "tokens=1 delims=	" %%a in ("%string%") do set s1=%%a
+for /f "tokens=2 delims=	" %%a in ("%string%") do set s2=%%a
+REM ask for input
+call:putMeta2 "%s1%" xxx %s2%
+goto :eof
 
-:processLine
+REM ----------------------------------------------------------
+:processLine2  --- compose metadata menu for a line
+::            --- %~1 line from analytes.ini template (two tab delimited strings)
+::
+:: Example: call:processLine "Descriptor	Option1/Option2"
 SETLOCAL enabledelayedexpansion
 SET "string=!%~1!"
+rem remove number: added by findstr - not working
+rem echo set "string=%!string!:*:=%"
+rem set "string=%!%~1!:*:=%"
 SET "s2=%string:*	=%"
 set "s1=!string:	%s2%=!"
 ECHO +%s1%+%s2%+
-call:putMeta2 "%s1%" xxx "%s2%"
-
+ECHO call:putMeta2 "%s1%" xxx %s2%
 ENDLOCAL
+call:putMeta2 "%s1%" xxx %s2%
+
+rem ENDLOCAL
 goto :eof
