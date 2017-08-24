@@ -441,7 +441,9 @@ rem -----------------------------------------------------
 ::                  XIDX will be replaced by SampleID upon writing to file
 :: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
+rem FIX: allow text input of empty string
 if "%~3"=="*" call:getInput "%~1" xMeta "%~3" & GOTO:next
+if "%~3"=="" call:getInput "%~1" xMeta "%~3" & GOTO:next
 if "%~3"==" " call:getInput "%~1" xMeta "%~3" & GOTO:next
 if /I "%~3"=="Blank" set xMeta="" & GOTO:next
 rem call:getInput "%~1" xMeta "%~3"
@@ -453,8 +455,10 @@ rem call:writeAnalytes %analytesInput% "%~1" %xMeta%
 rem
 REM (ENDLOCAL
 set "%~2=%xMeta%"
+set pf=
+if "%~4" NEQ ""  set pf=%postfix%
 set "line1=%line1%	%~1"
-set "line2=%line2%	%~4%xMeta%%postfix%"
+set "line2=%line2%	%~4%xMeta%%pf%"
 endlocal
 echo line1 %line1%
 echo line2 %line2%
@@ -537,14 +541,13 @@ REM ----------------------------------------------------------
 :: Return:    >>> 
 :: Example: call:processAnalytes ..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini"
 rem first id is prefixed. will be reset to empty after the first line
-set postfix=_%IDType%
+set postfix=_%IDName%
 set "lfn=%~1"
 if %lfn%=="" set "lfn=..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini"
 SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
-    set postfix=
-)
+    )
 echo processAnalytes: line1 %line1%
 echo processAnalytes: line2 %line2%
 echo %analytesInput%
@@ -560,6 +563,8 @@ SET "string=%~1"
 REM the line starts with "nn:" - cut off the numbers and colon
 set "string=%string:*:=%
 REM parse Item/Value line (separetor is TAB) - do not forget to use "..."
+set s1=
+set s2=
 for /f "tokens=1 delims=	" %%a in ("%string%") do set s1=%%a
 for /f "tokens=2 delims=	" %%a in ("%string%") do set s2=%%a
 REM ask for input
