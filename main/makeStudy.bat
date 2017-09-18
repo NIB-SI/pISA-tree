@@ -1,7 +1,7 @@
 @echo off
 rem -------------------------------------  pISA-tree v.0.4.2
 rem
-rem Create a new Study tree in _STUDIES directory
+rem Create a new Study tree _S_xxxx in current directory
 rem ------------------------------------------------------
 rem Author: A Blejec <andrej.blejec@nib.si>
 rem (c) National Institute of Biology, Ljubljana, Slovenia
@@ -39,15 +39,14 @@ echo %ID%
 
 rem ----------------------------------------------
 rem Make new Study directory tree
-md %ID%
-cd %ID%
+set Sdir=_S_%ID%
+md %Sdir%
+cd %Sdir%
 md reports
-md _ASSAYS
 rem put something to the directories
 rem to force git to add them
 echo # Study %ID% >  .\README.MD
 echo # Reports for study %ID% >  .\reports\README.MD
-echo # Assays for study %ID% >  .\_ASSAYS\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -55,20 +54,25 @@ set LF=^
 
 REM Two empty lines are necessary
 rem Find Investigation Id (before \_STUDIES)
+set "prjID=*"
 set "invId=*"
 set "mypath=%cd%"
 setlocal enabledelayedexpansion
 set string=%mypath%
-set "find=*\_STUDIES\"
+rem set "find=*\_STUDIES\"
+set "find=*\_I_"
 call set delete=%%string:!find!=%%
 call set string=%%string:!delete!=%%
-set "string=%string:\_STUDIES\=%"
+rem set "string=%string:\_STUDIES\=%"
+set "string=%string:\_I_=%"
 for /f  %%a in ("%string%") do (
 set "string=%%~na"
 )
-set invId=%string%
+set prjId=%string%
 rem -----------------------------------------------
-echo Investigation:	%invId%> .\_STUDY_DESCRIPTION.TXT
+echo project:	%prjId%> .\_STUDY_DESCRIPTION.TXT
+echo Investigation:	%invId%>> .\_STUDY_DESCRIPTION.TXT
+echo Study:	%SDir%>> .\_STUDY_DESCRIPTION.TXT
 echo ### STUDY>> .\_STUDY_DESCRIPTION.TXT
 echo Short Name:	%ID%>> .\_STUDY_DESCRIPTION.TXT
 echo Study Title:	*>> .\_STUDY_DESCRIPTION.TXT
@@ -77,13 +81,10 @@ copy .\_STUDY_DESCRIPTION.TXT+..\..\..\common.ini .\_STUDY_DESCRIPTION.TXT
 echo Fitobase link:	>> .\_STUDY_DESCRIPTION.TXT
 echo Raw Data:	>> .\_STUDY_DESCRIPTION.TXT
 echo #### ASSAYS>>  .\_STUDY_DESCRIPTION.TXT
-echo STUDY:	%ID%>> ..\..\_INVESTIGATION_DESCRIPTION.TXT
+echo STUDY:	%ID%>> ..\_INVESTIGATION_DESCRIPTION.TXT
 rem 
 rem  make main readme.md file
-copy ..\..\..\makeAssay.bat .\_ASSAYS
-copy ..\..\showTree.bat .\_ASSAYS
-copy ..\..\showDescription.bat .\_ASSAYS
-copy ..\..\xcheckDescription.bat .\_ASSAYS
+copy ..\..\..\makeAssay.bat .
 copy ..\..\showTree.bat .
 copy ..\..\showDescription.bat .
 copy ..\..\xcheckDescription.bat .
