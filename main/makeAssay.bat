@@ -203,7 +203,7 @@ rem ---- Type specific fields
 if /I "%IDType%" == "NGS" goto NGS
 if /I "%IDType%" == "RNAisol" goto Demo
 if /I "%IDType%" == "Demo" goto Demo
-if /I "%IDType%" == "RT" goto RT
+if /I "%IDType%" == "RT" goto Demo
 if /I "%IDType%" == "R" goto R
 if /I "%IDType%" == "Stat" goto Stat
 echo .
@@ -214,21 +214,19 @@ goto Finish
 rem
 :Demo
 REM ------------------------------------------ Demo
-echo ..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
+rem echo tst ..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
 cd
 set analytesInput=Analytes.txt
   if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
   set "line1="
   set "line2="
-  dir ..\..\..\..\..\Templates\%IDClass%\%IDType%\
-  pause
-call:processAnalytes ..\..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
-pause
-echo after processAnalytes: line1 %line1%
-echo after processAnalytes: line2 %line2%
-PAUSE
+  rem dir ..\..\..\..\..\Templates\%IDClass%\%IDType%\
 
-  
+call:processAnalytes ..\..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
+
+rem echo tst after processAnalytes: line1 %line1%
+rem echo tst after processAnalytes: line2 %line2%
+
 REM
   goto Finish
 REM ------------------------------------------/Demo
@@ -460,9 +458,9 @@ if "%~4" NEQ ""  set pf=%postfix%
 set "line1=%line1%	%~1"
 set "line2=%line2%	%~4%xMeta%%pf%"
 endlocal
-echo line1 %line1%
-echo line2 %line2%
-pause
+rem echo tst line1 %line1%
+rem echo tst line2 %line2%
+rem pause
 if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/" & call:displayhd "%hd%"
 REM )
 GOTO:EOF
@@ -548,10 +546,10 @@ SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
     )
-echo processAnalytes: line1 %line1%
-echo processAnalytes: line2 %line2%
-echo %analytesInput%
-pause
+rem echo tst processAnalytes: line1 %line1%
+rem echo tst processAnalytes: line2 %line2%
+rem echo tst %analytesInput%
+rem pause
 call:writeAnalytes %analytesInput% "%line1%" "%line2%"
 goto :eof
 

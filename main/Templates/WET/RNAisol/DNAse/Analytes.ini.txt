@@ -1,0 +1,6 @@
+Dnase ID 	DNase XIDX_
+Date DNAse_treatment	%mydate%
+Storage_DNAse_treated	CU0370
+Operator	*
+Operator	Anton/Miha Mihav/*
+Notes	 
