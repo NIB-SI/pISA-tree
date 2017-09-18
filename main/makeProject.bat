@@ -1,7 +1,7 @@
 @echo off
 rem -------------------------------------  pISA-tree v.0.4.2
 rem
-rem Create a new project tree in current directory
+rem Create a new project tree _p_xxx in current directory
 rem ------------------------------------------------------
 rem Author: A Blejec <andrej.blejec@nib.si>
 rem (c) National Institute of Biology, Ljubljana, Slovenia
@@ -45,7 +45,6 @@ rem set project root
 set PPath=:getparentdir %cd%
 rem set \ to /
 set "PPath=!PPath:\=/!"
-echo Project Path:	%cd% > _PROJECT_DESCRIPTION.TXT
 echo %PPath%
 rem
 set pdir=_p_%ID%
@@ -55,6 +54,9 @@ md presentations
 md reports
 rem put something to the directories
 rem to force git to add them
+echo #### PROJECT> .\_PROJECT_DESCRIPTION.TXT
+echo project	%pdir%>> _PROJECT_DESCRIPTION.TXT
+REM
 echo # project %ID% >  .\README.MD
 echo # Reports for project %ID% >  .\reports\README.MD
 echo # Presentations for project %ID% >  .\presentations\README.MD
@@ -69,14 +71,12 @@ REM Two empty lines are necessary
 ::Create a TAB variable
 call :hexprint "0x09" TAB
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!PROJECT	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_DESCRIPTION.TXT
-echo #### PROJECT> .\_PROJECT_DESCRIPTION.TXT
 echo Short Name:	%ID%>> .\_PROJECT_DESCRIPTION.TXT
 echo Project Title:	%Title%>> .\_PROJECT_DESCRIPTION.TXT
 echo Project Description:	*>> .\_PROJECT_DESCRIPTION.TXT
+echo Project Path:	%cd% >> _PROJECT_DESCRIPTION.TXT
 copy .\_PROJECT_DESCRIPTION.TXT+..\common.ini .\_PROJECT_DESCRIPTION.TXT
 rem copy bla.tmp .\_PROJECT_DESCRIPTION.TXT
-echo Phenodata:	./data/phenodata.txt>> .\_PROJECT_DESCRIPTION.TXT
-echo Featuredata:	./data/featuredata.txt>> .\_PROJECT_DESCRIPTION.TXT
 echo ##### STUDIES!LF!>>  .\_PROJECT_DESCRIPTION.TXT
 rem
 rem  make main readme.md file

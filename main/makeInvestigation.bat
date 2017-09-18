@@ -1,7 +1,7 @@
 @echo off
 rem -------------------------------------  pISA-tree v.0.4.2
 rem
-rem Create a new Investigation tree in current directory
+rem Create a new Investigation tree _I_xxx in current directory
 rem ------------------------------------------------------
 rem Author: A Blejec <andrej.blejec@nib.si>
 rem (c) National Institute of Biology, Ljubljana, Slovenia
@@ -70,6 +70,8 @@ REM Two empty lines are necessary
 call :hexprint "0x09" TAB
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_DESCRIPTION.TXT
 echo #### INVESTIGATION> .\_INVESTIGATION_DESCRIPTION.TXT
+echo project	*>> .\_INVESTIGATION_DESCRIPTION.TXT
+echo Investigation	%Idir%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Short Name:	%ID%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Investigation Title:	%Title%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Investigation Description:	*>> .\_INVESTIGATION_DESCRIPTION.TXT
