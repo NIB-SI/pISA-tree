@@ -1,7 +1,7 @@
 @echo off
-rem -------------------------------------  pISA-tree v.0.4
+rem -------------------------------------  pISA-tree v.0.4.2
 rem
-rem Create a new Assay tree in _ASSAYS directory
+rem Create a new Assay tree _A_xxx in current directory
 rem ------------------------------------------------------
 rem Author: A Blejec <andrej.blejec@nib.si>
 rem (c) National Institute of Biology, Ljubljana, Slovenia
@@ -25,6 +25,7 @@ set hd=---------------------------------/
 set hd=%hd%pISA-tree: make ASSAY/
 set hd=%hd%---------------------------------/
 call:displayhd "%hd%"
+set "tmpldir=..\..\..\Templates"
 rem ----------------------------------------------
 rem Class: use argument 1 if present
 set mydate=%date:~13,4%-%date:~9,2%-%date:~5,2%
@@ -46,7 +47,7 @@ rem if /I %IDClass% EQU wet set IDClass=Wet
 rem if /I %IDClass% EQU w set IDClass=Wet
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "types="
-FOR /f "delims=" %%i IN ('dir ..\..\..\..\Templates /b') DO (
+FOR /f "delims=" %%i IN ('dir %tmpldir% /b') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
@@ -61,7 +62,7 @@ if /I %IDClass% EQU Wet set "types=NGS / RT"
 if /I %IDClass% EQU Dry set "types=R / Stat"
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "types="
-FOR /f "delims=" %%i IN ('dir ..\..\..\..\Templates\%IDClass% /b') DO (
+FOR /f "delims=" %%i IN ('dir %tmpldir%\%IDClass% /b') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
@@ -123,8 +124,9 @@ rem Make new assay directory tree
 rem ----------------------------------------------
 :dry
 REM set IDClass=Dry
-md %ID%
-cd %ID%
+set Adir=_A_%ID%
+md %Adir%
+cd %Adir%
 md input
 md reports
 md scripts
@@ -141,8 +143,9 @@ goto Forall
 rem ----------------------------------------------
 :wet
 REM set IDClass=Wet
-md %ID%
-cd %ID%
+set Adir=_A_%ID%
+md %Adir%
+cd %Adir%
 md reports
 md output
 cd output
@@ -189,11 +192,13 @@ set "string=%%~na"
 set invId=%string%
 rem -------------------------------------- make ASSAY_DESCRIPTION
 set descFile=".\_ASSAY_DESCRIPTION.TXT"
-echo Investigation:	%invId% > %descFile%
-echo Study:	%studyId%>> .\_ASSAY_DESCRIPTION.TXT
-echo ### ASSAY>> .\_ASSAY_DESCRIPTION.TXT
-echo Short Name:	%ID%>> .\_ASSAY_DESCRIPTION.TXT
-echo Assay Class:	 %IDClass%>> .\_ASSAY_DESCRIPTION.TXT
+echo project:	%prjId% > %descFile%
+echo Investigation:	%invId% >> %descFile%
+echo Study:	%studyId%>> %descFile%
+echo Assay:	%Adir%>> %descFile%
+echo ### ASSAY>> %descFile%
+echo Short Name:	%ID%>> %descFile%
+echo Assay Class:	 %IDClass%>> %descFile%
 rem ECHO ON
   rem set analytesInput=Analytes.txt
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
@@ -214,20 +219,21 @@ goto Finish
 rem
 :Demo
 REM ------------------------------------------ Demo
-rem echo tst ..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
+rem echo tst %tmpldir%\%IDClass%\%IDType%\analytes.ini
 cd
 set analytesInput=Analytes.txt
   if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
   set "line1="
   set "line2="
-  rem dir ..\..\..\..\..\Templates\%IDClass%\%IDType%\
+  rem dir %tmpldir%\%IDClass%\%IDType%\
 
-call:processAnalytes ..\..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini
+call:processAnalytes ..\%tmpldir%\%IDClass%\%IDType%\analytes.ini
 
 rem echo tst after processAnalytes: line1 %line1%
 rem echo tst after processAnalytes: line2 %line2%
 
 REM
+PAUSE
   goto Finish
 REM ------------------------------------------/Demo
 :NGS
@@ -290,8 +296,8 @@ REM ---------------------------------------- /R
 :Finish
 echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
 rem ------------------------------------  include common.ini
-copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\..\common.ini .\_ASSAY_DESCRIPTION.TXT
-echo ASSAY:	%ID%>> ..\..\_STUDY_DESCRIPTION.TXT
+copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\common.ini .\_ASSAY_DESCRIPTION.TXT
+echo ASSAY:	%ID%>> ..\_STUDY_DESCRIPTION.TXT
 rem
 rem  make main readme.md file
 type README.MD
@@ -537,11 +543,11 @@ REM ----------------------------------------------------------
 ::                --- %~1 file path
 ::                --- %~2 Variable to get result
 :: Return:    >>> 
-:: Example: call:processAnalytes ..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini"
+:: Example: call:processAnalytes %tmpldir%\%IDClass%\%IDType%\analytes.ini"
 rem first id is prefixed. will be reset to empty after the first line
 set postfix=_%IDName%
 set "lfn=%~1"
-if %lfn%=="" set "lfn=..\..\..\..\Templates\%IDClass%\%IDType%\analytes.ini"
+if %lfn%=="" set "lfn=%tmpldir%\%IDClass%\%IDType%\analytes.ini"
 SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
