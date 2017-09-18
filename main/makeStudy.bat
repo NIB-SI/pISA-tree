@@ -1,5 +1,5 @@
 @echo off
-rem -------------------------------------  pISA-tree v.0.4.1
+rem -------------------------------------  pISA-tree v.0.4.2
 rem
 rem Create a new Study tree in _STUDIES directory
 rem ------------------------------------------------------

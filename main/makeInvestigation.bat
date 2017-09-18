@@ -1,5 +1,4 @@
 @echo off
-rem -------------------------------------  pISA-tree v.0.2
 rem
 rem Create a new Investigation tree in current directory
 rem ------------------------------------------------------
@@ -48,17 +47,18 @@ set "PPath=!PPath:\=/!"
 echo Project Path:	%cd% > _PROJECT_DESCRIPTION.TXT
 echo %PPath%
 rem
-md %ID%
-cd %ID%
+set Idir=_I_%ID%
+md %Idir%
+cd %Idir%
 md presentations
 md reports
-md _STUDIES
+rem xmd _STUDIES
 rem put something to the directories
 rem to force git to add them
 echo # Investigation %ID% >  .\README.MD
 echo # Reports for investigation %ID% >  .\reports\README.MD
 echo # Presentations for investigation %ID% >  .\presentations\README.MD
-echo # Studies for investigation %ID% >  .\_STUDIES\README.MD
+rem xecho # Studies for investigation %ID% >  .\_STUDIES\README.MD
 echo # Describe samples > .\phenodata.txt
 echo # Feature Summary Table> .\FST.txt
 rem
@@ -81,13 +81,13 @@ echo Featuredata:	./data/featuredata.txt>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo ##### STUDIES!LF!>>  .\_INVESTIGATION_DESCRIPTION.TXT
 rem
 rem  make main readme.md file
-copy ..\makeStudy.bat .\_STUDIES
+copy ..\makeStudy.bat .
 copy ..\showTree.bat .
 copy ..\showDescription.bat .
 copy ..\xcheckDescription.bat .
-copy ..\showTree.bat .\_STUDIES
-copy ..\showDescription.bat .\_STUDIES
-copy ..\xcheckDescription.bat .\_STUDIES
+copy ..\showTree.bat .
+copy ..\showDescription.bat .
+copy ..\xcheckDescription.bat .
 
 type README.MD
 dir.
