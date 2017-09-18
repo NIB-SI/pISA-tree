@@ -80,10 +80,7 @@ echo Featuredata:	./data/featuredata.txt>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo ##### STUDIES!LF!>>  .\_INVESTIGATION_DESCRIPTION.TXT
 rem
 rem  make main readme.md file
-copy ..\makeStudy.bat .
-copy ..\showTree.bat .
-copy ..\showDescription.bat .
-copy ..\xcheckDescription.bat .
+copy ..\..\makeStudy.bat .
 copy ..\showTree.bat .
 copy ..\showDescription.bat .
 copy ..\xcheckDescription.bat .
