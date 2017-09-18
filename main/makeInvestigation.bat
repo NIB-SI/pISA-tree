@@ -1,4 +1,5 @@
 @echo off
+rem -------------------------------------  pISA-tree v.0.4.2
 rem
 rem Create a new Investigation tree in current directory
 rem ------------------------------------------------------
@@ -52,13 +53,11 @@ md %Idir%
 cd %Idir%
 md presentations
 md reports
-rem xmd _STUDIES
 rem put something to the directories
 rem to force git to add them
 echo # Investigation %ID% >  .\README.MD
 echo # Reports for investigation %ID% >  .\reports\README.MD
 echo # Presentations for investigation %ID% >  .\presentations\README.MD
-rem xecho # Studies for investigation %ID% >  .\_STUDIES\README.MD
 echo # Describe samples > .\phenodata.txt
 echo # Feature Summary Table> .\FST.txt
 rem
