@@ -1,9 +1,0 @@
-#### INVESTIGATION
-Short Name:	v5
-Investigation Title:	*
-Investigation Description:	*
-Investigator:	Name Lastname
-Phenodata:	./data/phenodata.txt
-Featuredata:	./data/featuredata.txt
-##### STUDIES
-
