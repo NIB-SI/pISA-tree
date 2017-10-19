@@ -101,7 +101,7 @@ if %IDName% EQU "" set /p IDName=Enter Assay ID:
 if %IDName% EQU "" goto Ask3
 rem ----------------------------------------------
 rem concatenate ID name
-set ID=%IDName%-%IDType%
+set ID=%IDName%.%IDType%
 echo %ID%
 rem ----------------------------------------------
 rem Check existence
@@ -295,7 +295,7 @@ REM ---------------------------------------- R
 REM ---------------------------------------- /R
 :Finish
 echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
-rem ------------------------------------  include common.ini
+rem ------------------------------------  include common.ini from project level
 copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\common.ini .\_ASSAY_DESCRIPTION.TXT
 echo ASSAY:	%ID%>> ..\_STUDY_DESCRIPTION.TXT
 rem
