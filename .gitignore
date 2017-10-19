@@ -5,7 +5,7 @@ doc/
 other/
 main/xx*/
 main/_p_*/
-main/_I_*/
+main/_I_*/*
 # Description files are recreated with .bat files
 main/Description.md
 main/xCheckDescription.md

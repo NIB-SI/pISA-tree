@@ -3,13 +3,15 @@ title: 'pISA-tree: Standard project directory tree'
 author: "A. Blejec, ... , K. Gruden"
 date: '2016-11-21'
 output:
-  pdf_document: default
+  pdf_document: 
+    number_sections: yes
+    toc: yes
   html_document:
     number_sections: yes
     toc: yes
   word_document: default
 ---
-# What is pISA-tree?
+# What is the pISA-tree?
 
 This set of batch files is used to create standard directory tree for research projects.
 
