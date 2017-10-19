@@ -54,6 +54,7 @@ cd %Idir%
 set iroot=%cd%
 set "proot=.."
 set "mroot=..\%proot%"
+call:getLayer _p_ pname
 md presentations
 md reports
 rem put something to the directories
@@ -73,7 +74,7 @@ REM Two empty lines are necessary
 call :hexprint "0x09" TAB
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_DESCRIPTION.TXT
 echo #### INVESTIGATION> .\_INVESTIGATION_DESCRIPTION.TXT
-echo project	*>> .\_INVESTIGATION_DESCRIPTION.TXT
+echo project	%pname%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Investigation	%Idir%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Short Name:	%ID%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Investigation Title:	%Title%>> .\_INVESTIGATION_DESCRIPTION.TXT
@@ -134,3 +135,30 @@ if "%~1" EQU "" goto :EOF
 Set ParentDir=%~1
 shift
 goto :getparentdir
+rem -----------------------------------
+:getLayer  --- get layer name from the current path
+::                --- %~1 layer prefix (e.g. _I_)
+::                --- %~2 Variable to get result
+:: To remove characters from the right hand side of a string is 
+:: a two step process and requires the use of a CALL statement
+:: e.g.
+
+   SET _test=D:\bla\_p_project\_I_test\_S_moj
+   SET _test=%cd%
+
+SETLOCAL EnableDelayedExpansion
+
+   :: To delete everything after the string '_I_'  
+   :: first delete '_I_' and everything before it
+   SET _test=!_test:*\%~1=%~1! 
+   SET _endbit=%_test:*\=%
+   Echo We dont want: [%_endbit%]
+
+   ::Now remove this from the original string
+   CALL SET _result=%%_test:\%_endbit%=%%
+   rem echo %_result%
+   (endlocal 
+   set "%~2=%_result%")
+   rem echo %iname%
+   endlocal
+goto :eof
