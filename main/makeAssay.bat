@@ -118,15 +118,21 @@ REM Continue creating directory
 )
 set "hd=%hd%Assay ID:		 %~4%ID%/"
 call:displayhd "%hd%"
+set Adir=_A_%ID%
+md %Adir%
+cd %Adir%
+set aroot=%cd%
+set "sroot=.."
+set "iroot=..\%sroot%"
+set "proot=..\%iroot%"
+set "mroot=..\%proot%"
+
 goto %IDClass%
 rem ----------------------------------------------
 rem Make new assay directory tree
 rem ----------------------------------------------
 :dry
 REM set IDClass=Dry
-set Adir=_A_%ID%
-md %Adir%
-cd %Adir%
 md input
 md reports
 md scripts
@@ -143,9 +149,7 @@ goto Forall
 rem ----------------------------------------------
 :wet
 REM set IDClass=Wet
-set Adir=_A_%ID%
-md %Adir%
-cd %Adir%
+echo %cd%
 md reports
 md output
 cd output
@@ -296,8 +300,12 @@ REM ---------------------------------------- /R
 :Finish
 echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
 rem ------------------------------------  include common.ini from project level
-copy .\_ASSAY_DESCRIPTION.TXT+..\..\..\..\common.ini .\_ASSAY_DESCRIPTION.TXT
+copy .\_ASSAY_DESCRIPTION.TXT+..\common.ini .\_ASSAY_DESCRIPTION.TXT
 echo ASSAY:	%ID%>> ..\_STUDY_DESCRIPTION.TXT
+copy %sroot%\showTree.bat .
+copy %sroot%\showDescription.bat .
+copy %sroot%\xcheckDescription.bat .
+
 rem
 rem  make main readme.md file
 type README.MD

@@ -6,6 +6,7 @@ rem Author: A Blejec <andrej.blejec@nib.si>
 rem (c) National Institute of Biology, Ljubljana, Slovenia
 rem 2016
 rem ------------------------------------------------------
+call:Update makeProject.bat
 call:Update makeInvestigation.bat
 call:Update makeStudy.bat
 call:Update makeAssay.bat

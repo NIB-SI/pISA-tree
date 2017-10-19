@@ -50,14 +50,16 @@ rem
 set pdir=_p_%ID%
 md %pdir%
 cd %pdir%
+set proot=%cd%
+set mroot=".."
 md presentations
 md reports
 rem put something to the directories
 rem to force git to add them
 echo #### PROJECT> .\_PROJECT_DESCRIPTION.TXT
-echo project	%pdir%>> _PROJECT_DESCRIPTION.TXT
+echo project:	%pdir%>> _PROJECT_DESCRIPTION.TXT
 REM
-echo # project %ID% >  .\README.MD
+echo # Project %ID% >  .\README.MD
 echo # Reports for project %ID% >  .\reports\README.MD
 echo # Presentations for project %ID% >  .\presentations\README.MD
 echo # Describe samples > .\phenodata.txt
@@ -76,14 +78,15 @@ echo Project Title:	%Title%>> .\_PROJECT_DESCRIPTION.TXT
 echo Project Description:	*>> .\_PROJECT_DESCRIPTION.TXT
 echo Project Path:	%cd% >> _PROJECT_DESCRIPTION.TXT
 copy .\_PROJECT_DESCRIPTION.TXT+..\common.ini .\_PROJECT_DESCRIPTION.TXT
+copy ..\common.ini .
 rem copy bla.tmp .\_PROJECT_DESCRIPTION.TXT
 echo ##### STUDIES!LF!>>  .\_PROJECT_DESCRIPTION.TXT
 rem
 rem  make main readme.md file
-copy ..\makeInvestigation.bat .
-copy ..\showTree.bat .
-copy ..\showDescription.bat .
-copy ..\xcheckDescription.bat .
+copy %mroot%\makeInvestigation.bat .
+copy %mroot%\showTree.bat .
+copy %mroot%\showDescription.bat .
+copy %mroot%\xcheckDescription.bat .
 
 type README.MD
 dir.

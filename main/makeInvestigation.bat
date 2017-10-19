@@ -51,6 +51,9 @@ rem
 set Idir=_I_%ID%
 md %Idir%
 cd %Idir%
+set iroot=%cd%
+set "proot=.."
+set "mroot=..\%proot%"
 md presentations
 md reports
 rem put something to the directories
@@ -76,16 +79,17 @@ echo Short Name:	%ID%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Investigation Title:	%Title%>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Investigation Description:	*>> .\_INVESTIGATION_DESCRIPTION.TXT
 copy .\_INVESTIGATION_DESCRIPTION.TXT+..\common.ini .\_INVESTIGATION_DESCRIPTION.TXT
+copy ..\common.ini .
 rem copy bla.tmp .\_INVESTIGATION_DESCRIPTION.TXT
 echo Phenodata:	./data/phenodata.txt>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo Featuredata:	./data/featuredata.txt>> .\_INVESTIGATION_DESCRIPTION.TXT
 echo ##### STUDIES!LF!>>  .\_INVESTIGATION_DESCRIPTION.TXT
 rem
 rem  make main readme.md file
-copy ..\..\makeStudy.bat .
-copy ..\showTree.bat .
-copy ..\showDescription.bat .
-copy ..\xcheckDescription.bat .
+copy %mroot%\makeStudy.bat .
+copy %proot%\showTree.bat .
+copy %proot%\showDescription.bat .
+copy %proot%\xcheckDescription.bat .
 
 type README.MD
 dir.

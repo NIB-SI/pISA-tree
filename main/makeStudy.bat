@@ -42,6 +42,11 @@ rem Make new Study directory tree
 set Sdir=_S_%ID%
 md %Sdir%
 cd %Sdir%
+set sroot=%cd%
+set "iroot=.."
+set "proot=..\%iroot%"
+set "mroot=..\%proot%"
+
 md reports
 rem put something to the directories
 rem to force git to add them
@@ -53,7 +58,7 @@ set LF=^
 
 
 REM Two empty lines are necessary
-rem Find Investigation Id (before \_STUDIES)
+rem Find project Id (before \_I_)
 set "prjID=*"
 set "invId=*"
 set "mypath=%cd%"
@@ -70,6 +75,8 @@ set "string=%%~na"
 )
 set prjId=%string%
 rem -----------------------------------------------
+
+rem -----------------------------------------------
 echo project:	%prjId%> .\_STUDY_DESCRIPTION.TXT
 echo Investigation:	%invId%>> .\_STUDY_DESCRIPTION.TXT
 echo Study:	%SDir%>> .\_STUDY_DESCRIPTION.TXT
@@ -77,17 +84,18 @@ echo ### STUDY>> .\_STUDY_DESCRIPTION.TXT
 echo Short Name:	%ID%>> .\_STUDY_DESCRIPTION.TXT
 echo Study Title:	*>> .\_STUDY_DESCRIPTION.TXT
 echo Study Description:	*>> .\_STUDY_DESCRIPTION.TXT
-copy .\_STUDY_DESCRIPTION.TXT+..\..\..\common.ini .\_STUDY_DESCRIPTION.TXT
+copy .\_STUDY_DESCRIPTION.TXT+..\common.ini .\_STUDY_DESCRIPTION.TXT
+copy ..\common.ini .
 echo Fitobase link:	>> .\_STUDY_DESCRIPTION.TXT
 echo Raw Data:	>> .\_STUDY_DESCRIPTION.TXT
 echo #### ASSAYS>>  .\_STUDY_DESCRIPTION.TXT
 echo STUDY:	%ID%>> ..\_INVESTIGATION_DESCRIPTION.TXT
 rem 
 rem  make main readme.md file
-copy ..\..\..\makeAssay.bat .
-copy ..\..\showTree.bat .
-copy ..\..\showDescription.bat .
-copy ..\..\xcheckDescription.bat .
+copy %mroot%\makeAssay.bat .
+copy %iroot%\showTree.bat .
+copy %iroot%\showDescription.bat .
+copy %iroot%\xcheckDescription.bat .
 type README.MD
 del *.tmp
 dir .
