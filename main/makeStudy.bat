@@ -106,7 +106,7 @@ SETLOCAL EnableDelayedExpansion
    :: first delete .e.g. '_I_' and everything before it
    SET _test=!_test:*\%~1=%~1! 
    SET _endbit=%_test:*\=%
-   Echo We dont want: [%_endbit%]
+   REM Echo We dont want: [%_endbit%]
 
    ::Now remove this from the original string
    CALL SET _result=%%_test:\%_endbit%=%%
