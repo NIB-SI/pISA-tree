@@ -58,22 +58,6 @@ set LF=^
 
 
 REM Two empty lines are necessary
-rem Find project Id (before \_I_)
-set "prjID=*"
-set "invId=*"
-set "mypath=%cd%"
-setlocal enabledelayedexpansion
-set string=%mypath%
-rem set "find=*\_STUDIES\"
-set "find=*\_I_"
-call set delete=%%string:!find!=%%
-call set string=%%string:!delete!=%%
-rem set "string=%string:\_STUDIES\=%"
-set "string=%string:\_I_=%"
-for /f  %%a in ("%string%") do (
-set "string=%%~na"
-)
-set prjId=%string%
 rem -----------------------------------------------
 call:getLayer _p_ pname
 call:getLayer _I_ iname
