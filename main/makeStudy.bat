@@ -75,11 +75,13 @@ set "string=%%~na"
 )
 set prjId=%string%
 rem -----------------------------------------------
-
+call:getLayer _p_ pname
+call:getLayer _I_ iname
+call:getLayer _S_ sname
 rem -----------------------------------------------
-echo project:	%prjId%> .\_STUDY_DESCRIPTION.TXT
-echo Investigation:	%invId%>> .\_STUDY_DESCRIPTION.TXT
-echo Study:	%SDir%>> .\_STUDY_DESCRIPTION.TXT
+echo project:	%pname%> .\_STUDY_DESCRIPTION.TXT
+echo Investigation:	%iname%>> .\_STUDY_DESCRIPTION.TXT
+echo Study:	%sname%>> .\_STUDY_DESCRIPTION.TXT
 echo ### STUDY>> .\_STUDY_DESCRIPTION.TXT
 echo Short Name:	%ID%>> .\_STUDY_DESCRIPTION.TXT
 echo Study Title:	*>> .\_STUDY_DESCRIPTION.TXT
@@ -103,3 +105,30 @@ cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
 rem dir .\%ID% /s/b
+rem -----------------------------------
+:getLayer  --- get layer name from the current path
+::                --- %~1 layer prefix (e.g. _I_)
+::                --- %~2 Variable to get result
+:: To remove characters from the right hand side of a string is 
+:: a two step process and requires the use of a CALL statement
+:: e.g.
+
+   SET _test=D:\bla\_p_project\_I_test\_S_moj
+   SET _test=%cd%
+
+SETLOCAL EnableDelayedExpansion
+
+   :: To delete everything after the string e.g. '_I_'  
+   :: first delete .e.g. '_I_' and everything before it
+   SET _test=!_test:*\%~1=%~1! 
+   SET _endbit=%_test:*\=%
+   Echo We dont want: [%_endbit%]
+
+   ::Now remove this from the original string
+   CALL SET _result=%%_test:\%_endbit%=%%
+   rem echo %_result%
+   (endlocal 
+   set "%~2=%_result%")
+   rem echo %iname%
+   endlocal
+goto :eof
