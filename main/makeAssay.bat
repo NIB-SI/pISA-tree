@@ -226,7 +226,7 @@ dir %tmpldir%
 cd
 pause
 set analytesInput=Analytes.txt
-  if exist %tasdir%\%analytesInput% ( copy %tasdir%\%analytesInput% .\%analytesInput% )
+  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   set "line1="
   set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
@@ -242,7 +242,7 @@ REM ------------------------------------------/Demo
 :NGS
 REM ------------------------------------------ NGS
   set analytesInput=Analytes.txt
-  if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
+  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   set line1=
   set line2=
   call:putMeta2 "RNA ID" a01 RNA XIDX_
@@ -275,7 +275,7 @@ REM ---------------------------------------- /NGS
 :RT
 REM ---------------------------------------- RT
   set analytesInput=Analytes.txt
-  if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
+  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   set line1=
   set line2=
   call:putMeta2 "Dnase ID" a03	DNASE	XIDX_
@@ -490,7 +490,8 @@ rem IF EXIST %~1 (
     set x2=%~2
     rem uncoment next line to remove blanks in the header line
     rem set x2=%x2: =%
-    echo %z%	%x2%  > tmp.txt
+    rem TAB inserted automatically
+    echo %z%%x2%  > tmp.txt
     rem Process other lines
     set "SEARCHTEXT=XIDX"
     set "line=%~3"
@@ -505,7 +506,8 @@ rem IF EXIST %~1 (
       SET "modified=!line:%SEARCHTEXT%=%%a!"
       echo %searchtext% %modified%
       	rem should replace special token with SampleId before writing
-       echo %%a	%%b	!modified! >> tmp.txt 
+       echo %%a	%%b!modified! >> tmp.txt 
+       echo Write: %%a	%%b!modified!
        endlocal
        echo off
        )
@@ -559,13 +561,13 @@ SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
     )
-rem echo tst processAnalytes: line1 %line1%
-rem echo tst processAnalytes: line2 %line2%
-rem echo tst %analytesInput%
-rem pause
+ rem echo tst processAnalytes: line1 %line1%
+ rem echo tst processAnalytes: line2 %line2%
+ rem echo tst %analytesInput%
+ rem pause
 call:writeAnalytes %analytesInput% "%line1%" "%line2%"
 goto :eof
-
+rem ------------------------------------------------------------
 :processLine  --- compose metadata menu for a line
 ::            --- %~1 line from analytes.ini template (two tab delimited strings)
 ::
