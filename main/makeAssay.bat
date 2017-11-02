@@ -132,7 +132,7 @@ set "sroot=.."
 set "iroot=..\%sroot%"
 set "proot=..\%iroot%"
 set "mroot=..\%proot%"
-
+set "tmpldir=%mroot%\Templates"
 goto %IDClass%
 rem ----------------------------------------------
 rem Make new assay directory tree
@@ -220,21 +220,21 @@ cd
 echo tst %tmpldir%\%IDClass%\%IDType%\analytes.ini
 dir %tmpldir%
 dir ..\%tmpldir%
-dir %tmpldir%\%IDClass%\%IDType%
+set tasdir=%tmpldir%\%IDClass%\%IDType%
+dir %tasdir%
 dir %tmpldir%
 cd
 pause
 set analytesInput=Analytes.txt
-  if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
+  if exist %tasdir%\%analytesInput% ( copy %tasdir%\%analytesInput% .\%analytesInput% )
   set "line1="
   set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
 
-call:processAnalytes ..\%tmpldir%\%IDClass%\%IDType%\analytes.ini
+call:processAnalytes %tasdir%\analytes.ini
 
 rem echo tst after processAnalytes: line1 %line1%
 rem echo tst after processAnalytes: line2 %line2%
-
 REM
 PAUSE
   goto Finish
