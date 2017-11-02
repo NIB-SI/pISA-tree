@@ -25,7 +25,13 @@ set hd=---------------------------------/
 set hd=%hd%pISA-tree: make ASSAY/
 set hd=%hd%---------------------------------/
 call:displayhd "%hd%"
-set "tmpldir=..\..\..\Templates"
+set sroot=%cd%
+set "iroot=.."
+set "proot=..\%iroot%"
+set "mroot=..\%proot%"
+set "tmpldir=%mroot%\Templates"
+dir %tmpldir%
+pause
 rem ----------------------------------------------
 rem Class: use argument 1 if present
 set mydate=%date:~13,4%-%date:~9,2%-%date:~5,2%
@@ -101,7 +107,7 @@ if %IDName% EQU "" set /p IDName=Enter Assay ID:
 if %IDName% EQU "" goto Ask3
 rem ----------------------------------------------
 rem concatenate ID name
-set ID=%IDName%.%IDType%
+set ID=%IDName%-%IDType%
 echo %ID%
 rem ----------------------------------------------
 rem Check existence
@@ -173,41 +179,28 @@ set LF=^
 REM Keep two empty lines above - they are neccessary!!
 set "TAB=	"
 rem -----------------------------------------------
-rem Find studyId (after \_STUDIES)
-set "studyId=*"
-set "mypath=%cd%"
-set "value=%mypath:*\_STUDIES\=%"
-if "%value%"=="%mypath%" echo "\_STUDIES\" not found &goto :eos
-for /f "delims=\" %%a in ("%value%") do set "value=%%~a"
-set studyId=%value%
-:eos
-rem --studyId--
-rem Find Investigation Id (before \_STUDIES)
-set "invId=*"
-setlocal enabledelayedexpansion
-set string=%mypath%
-set "find=*\_STUDIES\"
-call set delete=%%string:!find!=%%
-call set string=%%string:!delete!=%%
-set "string=%string:\_STUDIES\=%"
-for /f  %%a in ("%string%") do (
-set "string=%%~na"
-)
-set invId=%string%
+rem -----------------------------------------------
+call:getLayer _p_ pname
+call:getLayer _I_ iname
+call:getLayer _S_ sname
+call:getLayer _A_ aname
+rem -----------------------------------------------
 rem -------------------------------------- make ASSAY_DESCRIPTION
 set descFile=".\_ASSAY_DESCRIPTION.TXT"
-echo project:	%prjId% > %descFile%
-echo Investigation:	%invId% >> %descFile%
-echo Study:	%studyId%>> %descFile%
-echo Assay:	%Adir%>> %descFile%
+echo project:	%pname%> %descFile%
+echo Investigation:	%iname%>> %descFile%
+echo Study:	%sname%>> %descFile%
+echo Assay:	%Adir% / %aname%>> %descFile%
 echo ### ASSAY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
 echo Assay Class:	 %IDClass%>> %descFile%
+echo Assay Type:	 %IDType%>> %descFile%
+
 rem ECHO ON
   rem set analytesInput=Analytes.txt
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
-  call:inputMeta "Assay Title" aTitle *
-  call:inputMeta "Assay Description" aDesc *
+  call:inputMeta "Title" aTitle *
+  call:inputMeta "Description" aDesc *
 rem ---- Type specific fields
 if /I "%IDType%" == "NGS" goto NGS
 if /I "%IDType%" == "RNAisol" goto Demo
@@ -223,8 +216,14 @@ goto Finish
 rem
 :Demo
 REM ------------------------------------------ Demo
-rem echo tst %tmpldir%\%IDClass%\%IDType%\analytes.ini
 cd
+echo tst %tmpldir%\%IDClass%\%IDType%\analytes.ini
+dir %tmpldir%
+dir ..\%tmpldir%
+dir %tmpldir%\%IDClass%\%IDType%
+dir %tmpldir%
+cd
+pause
 set analytesInput=Analytes.txt
   if exist ..\%analytesInput% ( copy ..\%analytesInput% .\%analytesInput% )
   set "line1="
@@ -600,4 +599,31 @@ ECHO call:putMeta2 "%s1%" xxx %s2%
 ENDLOCAL
 call:putMeta2 "%s1%" xxx %s2%
 rem ENDLOCAL
+goto :eof
+rem -----------------------------------
+:getLayer  --- get layer name from the current path
+::                --- %~1 layer prefix (e.g. _I_)
+::                --- %~2 Variable to get result
+:: To remove characters from the right hand side of a string is 
+:: a two step process and requires the use of a CALL statement
+:: e.g.
+
+   SET _test=D:\bla\_p_project\_I_test\_S_moj
+   SET _test=%cd%
+
+SETLOCAL EnableDelayedExpansion
+
+   :: To delete everything after the string e.g. '_I_'  
+   :: first delete .e.g. '_I_' and everything before it
+   SET _test=!_test:*\%~1=%~1! 
+   SET _endbit=%_test:*\=%
+   REM Echo We dont want: [%_endbit%]
+
+   ::Now remove this from the original string
+   CALL SET _result=%%_test:\%_endbit%=%%
+   rem echo %_result%
+   (endlocal 
+   set "%~2=%_result%")
+   rem echo %iname%
+   endlocal
 goto :eof

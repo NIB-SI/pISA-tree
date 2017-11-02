@@ -14,6 +14,7 @@ rem ------------------------------------------------------
 echo =============================
 echo pISA-tree: make INVESTIGATION 
 echo -----------------------------
+set descFile=".\_INVESTIGATION_DESCRIPTION.TXT"
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
@@ -36,17 +37,13 @@ goto Ask
 REM Continue creating directory
 echo %ID%
 )
-rem Ask for some additional info
-call:getInput "Investigation Title" Title *
 rem ----------------------------------------------
-
 rem Make new Investigationt directory tree
 rem set project root
-set PPath=:getparentdir %cd%
+rem set PPath=:getparentdir %cd%
 rem set \ to /
-set "PPath=!PPath:\=/!"
-echo Project Path:	%cd% > _PROJECT_DESCRIPTION.TXT
-echo %PPath%
+rem set "PPath=!PPath:\=/!"
+rem echo %PPath%
 rem
 set Idir=_I_%ID%
 md %Idir%
@@ -70,21 +67,28 @@ set LF=^
 
 
 REM Two empty lines are necessary
-::Create a TAB variable
-call :hexprint "0x09" TAB
+::Create a TAB variable (not realy needed)
+REM Throws an error??
+REM call :hexprint "0x09" TAB
+rem -----------------------------------------------
+call:getLayer _p_ pname
+call:getLayer _I_ iname
+REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_DESCRIPTION.TXT
-echo #### INVESTIGATION> .\_INVESTIGATION_DESCRIPTION.TXT
-echo project	%pname%>> .\_INVESTIGATION_DESCRIPTION.TXT
-echo Investigation	%Idir%>> .\_INVESTIGATION_DESCRIPTION.TXT
-echo Short Name:	%ID%>> .\_INVESTIGATION_DESCRIPTION.TXT
-echo Investigation Title:	%Title%>> .\_INVESTIGATION_DESCRIPTION.TXT
-echo Investigation Description:	*>> .\_INVESTIGATION_DESCRIPTION.TXT
-copy .\_INVESTIGATION_DESCRIPTION.TXT+..\common.ini .\_INVESTIGATION_DESCRIPTION.TXT
+echo project:	%pname%> %descFile%
+echo Investigation:	%iname%>> %descFile%
+echo ### INVESTIGATION>> %descFile%
+echo Short Name:	%ID%>> %descFile%
+  call:inputMeta "Title" aTitle *
+  call:inputMeta "Description" aDesc *
+copy %descFile%+..\common.ini %descFile%
 copy ..\common.ini .
-rem copy bla.tmp .\_INVESTIGATION_DESCRIPTION.TXT
-echo Phenodata:	./data/phenodata.txt>> .\_INVESTIGATION_DESCRIPTION.TXT
-echo Featuredata:	./data/featuredata.txt>> .\_INVESTIGATION_DESCRIPTION.TXT
-echo ##### STUDIES!LF!>>  .\_INVESTIGATION_DESCRIPTION.TXT
+rem copy bla.tmp %descFile%
+echo Phenodata:	./data/phenodata.txt>> %descFile%
+echo Featuredata:	./data/featuredata.txt>> %descFile%
+echo #### STUDIES!LF!>>  %descFile%
+echo INVESTIGATION:	%ID%>> ..\_PROJECT_DESCRIPTION.TXT
+
 rem
 rem  make main readme.md file
 copy %mroot%\makeStudy.bat .
@@ -93,7 +97,9 @@ copy %proot%\showDescription.bat .
 copy %proot%\xcheckDescription.bat .
 
 type README.MD
+del *.tmp
 dir.
+type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
@@ -127,7 +133,32 @@ goto Ask
     set "%~2=%x%"
 )
 GOTO:EOF
+rem -----------------------------------------------------
+:inputMeta   --- get metadata and append to descFile
+::         --- descFile - should be set befor the call
+::          --- %~1 Input message (what to enter)
+::          --- %~2 Variable to get result
+::          --- %~3 (optional) missing: input required
+::          ---                * : can be skipped, return *
+:: Example: call:putMeta "Type something" xx default
+SETLOCAL
+rem call:getInput "%~1" xMeta "%~3"
+rem Type input or get menu?
+
+call:getInput "%~1" xMeta "%~3"
+echo %~1:	%xMeta% >> %descFile%
+rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
+
+
+rem
+(ENDLOCAL
+    IF "%~2" NEQ "" set "%~2=%xMeta%"
+    set "aEntered=%xMeta%"
+    )
+GOTO:EOF
+
+rem ------------------------------------------------------
 rem Get parent dir
 rem
 :getparentdir
@@ -162,3 +193,9 @@ SETLOCAL EnableDelayedExpansion
    rem echo %iname%
    endlocal
 goto :eof
+REM ------------------------------------------------------
+:hexPrint  string  [rtnVar]
+  for /f eol^=^%LF%%LF%^ delims^= %%A in (
+    'forfiles /p "%~dp0." /m "%~nx0" /c "cmd /c echo(%~1"'
+  ) do if "%~2" neq "" (set %~2=%%A) else echo(%%A
+GOTO:EOF

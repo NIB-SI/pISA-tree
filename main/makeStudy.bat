@@ -14,6 +14,7 @@ rem ------------------------------------------------------
 echo ============================
 echo pISA-tree: make STUDY 
 echo ----------------------------
+set descFile=".\_STUDY_DESCRIPTION.TXT"
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
@@ -36,7 +37,6 @@ goto Ask
 REM Continue creating directory
 echo %ID%
 )
-
 rem ----------------------------------------------
 rem Make new Study directory tree
 set Sdir=_S_%ID%
@@ -63,18 +63,18 @@ call:getLayer _p_ pname
 call:getLayer _I_ iname
 call:getLayer _S_ sname
 rem -----------------------------------------------
-echo project:	%pname%> .\_STUDY_DESCRIPTION.TXT
-echo Investigation:	%iname%>> .\_STUDY_DESCRIPTION.TXT
-echo Study:	%sname%>> .\_STUDY_DESCRIPTION.TXT
-echo ### STUDY>> .\_STUDY_DESCRIPTION.TXT
-echo Short Name:	%ID%>> .\_STUDY_DESCRIPTION.TXT
-echo Study Title:	*>> .\_STUDY_DESCRIPTION.TXT
-echo Study Description:	*>> .\_STUDY_DESCRIPTION.TXT
-copy .\_STUDY_DESCRIPTION.TXT+..\common.ini .\_STUDY_DESCRIPTION.TXT
+echo project:	%pname%> %descFile%
+echo Investigation:	%iname%>> %descFile%
+echo Study:	%sname%>> %descFile%
+echo ### STUDY>> %descFile%
+echo Short Name:	%ID%>> %descFile%
+  call:inputMeta "Title" aTitle *
+  call:inputMeta "Description" aDesc *
+copy %descFile%+..\common.ini %descFile%
 copy ..\common.ini .
-echo Fitobase link:	>> .\_STUDY_DESCRIPTION.TXT
-echo Raw Data:	>> .\_STUDY_DESCRIPTION.TXT
-echo #### ASSAYS>>  .\_STUDY_DESCRIPTION.TXT
+echo Fitobase link:	>> %descFile%
+echo Raw Data:	>> %descFile%
+echo #### ASSAYS>>  %descFile%
 echo STUDY:	%ID%>> ..\_INVESTIGATION_DESCRIPTION.TXT
 rem 
 rem  make main readme.md file
@@ -85,10 +85,63 @@ copy %iroot%\xcheckDescription.bat .
 type README.MD
 del *.tmp
 dir .
+type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
 rem dir .\%ID% /s/b
+goto:eof
+rem --------------------------------------------------------
+rem Functions
+:getInput   --- get text from keyboard
+::          --- %~1 Input message (what o type
+::          --- %~2 Variable to get result
+::          --- %~3 (optional) missing: input required
+::          ---                * : can be skipped, return *
+:: Example: call:getInpt "Type something" xx default
+SETLOCAL
+:Ask
+set x=%~3
+set /p x=Enter %~1 [%x%]:
+rem if %x% EQU "" set x="%~3"
+if "%x%" EQU "" goto Ask
+REM Check existence/uniqueness
+if "%x%" EQU "*" goto done
+IF EXIST "%x%" (
+REM Dir exists
+echo ERROR: %~1 *%x%* already exists
+set x=""
+goto Ask
+) 
+:done
+(ENDLOCAL
+    set "%~2=%x%"
+)
+GOTO:EOF
+rem -----------------------------------------------------
+:inputMeta   --- get metadata and append to descFile
+::         --- descFile - should be set befor the call
+::          --- %~1 Input message (what to enter)
+::          --- %~2 Variable to get result
+::          --- %~3 (optional) missing: input required
+::          ---                * : can be skipped, return *
+:: Example: call:putMeta "Type something" xx default
+SETLOCAL
+rem call:getInput "%~1" xMeta "%~3"
+rem Type input or get menu?
+
+call:getInput "%~1" xMeta "%~3"
+echo %~1:	%xMeta% >> %descFile%
+rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
+rem
+
+
+rem
+(ENDLOCAL
+    IF "%~2" NEQ "" set "%~2=%xMeta%"
+    set "aEntered=%xMeta%"
+    )
+GOTO:EOF
 rem -----------------------------------
 :getLayer  --- get layer name from the current path
 ::                --- %~1 layer prefix (e.g. _I_)
