@@ -30,8 +30,8 @@ set "iroot=.."
 set "proot=..\%iroot%"
 set "mroot=..\%proot%"
 set "tmpldir=%mroot%\Templates"
-dir %tmpldir%
-pause
+rem dir %tmpldir%
+rem pause
 rem ----------------------------------------------
 rem Class: use argument 1 if present
 set mydate=%date:~13,4%-%date:~9,2%-%date:~5,2%
@@ -190,7 +190,7 @@ set descFile=".\_ASSAY_DESCRIPTION.TXT"
 echo project:	%pname%> %descFile%
 echo Investigation:	%iname%>> %descFile%
 echo Study:	%sname%>> %descFile%
-echo Assay:	%Adir% / %aname%>> %descFile%
+echo Assay:	%Adir%>> %descFile%
 echo ### ASSAY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
 echo Assay Class:	 %IDClass%>> %descFile%
@@ -216,27 +216,25 @@ goto Finish
 rem
 :Demo
 REM ------------------------------------------ Demo
-cd
-echo tst %tmpldir%\%IDClass%\%IDType%\analytes.ini
-dir %tmpldir%
-dir ..\%tmpldir%
+rem cd
+rem echo tst %tmpldir%\%IDClass%\%IDType%\analytes.ini
+rem dir %tmpldir%
+rem dir ..\%tmpldir%
 set tasdir=%tmpldir%\%IDClass%\%IDType%
-dir %tasdir%
-dir %tmpldir%
-cd
-pause
+rem dir %tasdir%
+rem dir %tmpldir%
+rem cd
 set analytesInput=Analytes.txt
   if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   set "line1="
   set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
-
 call:processAnalytes %tasdir%\analytes.ini
 
 rem echo tst after processAnalytes: line1 %line1%
 rem echo tst after processAnalytes: line2 %line2%
 REM
-PAUSE
+rem PAUSE
   goto Finish
 REM ------------------------------------------/Demo
 :NGS
@@ -308,8 +306,10 @@ copy %sroot%\xcheckDescription.bat .
 rem
 rem  make main readme.md file
 type README.MD
-dir .
+rem dir .
 cls
+echo ============================== pISA ==
+echo.
 type _ASSAY_DESCRIPTION.TXT
 cd ..
 rem copy existing files from nonversioned tree (if any)
@@ -401,6 +401,7 @@ rem
 (ENDLOCAL
     IF "%~2" NEQ "" set "%~2=%xMeta%"
     set "aEntered=%xMeta%"
+    set "hd=%hd%%~1:		 %xMeta%/"
     )
 GOTO:EOF
 rem --------------------------------------------------------
@@ -474,7 +475,8 @@ endlocal
 rem echo tst line1 %line1%
 rem echo tst line2 %line2%
 rem pause
-if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/" & call:displayhd "%hd%"
+if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/"
+if /I "%~3" NEQ "Blank" call:displayhd "%hd%"
 REM )
 GOTO:EOF
 rem ---------------------------------------------------
