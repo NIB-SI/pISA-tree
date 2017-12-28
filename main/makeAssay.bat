@@ -308,10 +308,10 @@ rem
 rem  make main readme.md file
 type README.MD
 rem dir .
-cls
+rem cls
 echo ============================== pISA ==
 echo.
-type _ASSAY_DESCRIPTION.TXT
+rem type _ASSAY_DESCRIPTION.TXT
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
@@ -470,7 +470,6 @@ if "%~3"==" " call:getInput "%~1" xMeta "%~3" & GOTO:next
 if /I "%~3"=="Blank" set xMeta="" & GOTO:next
 rem call:getInput "%~1" xMeta "%~3"
 rem echo.=%~3= rem test
-pause
 call:getMenu "%~1" "%~3/Other" xMeta "%~3"
 set first="."
 for /f "tokens=1 delims=/" %%a in ("%~3") do set first=%%a
@@ -490,7 +489,11 @@ endlocal
 rem echo tst line1 %line1%
 rem echo tst line2 %line2%
 rem pause
-if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/"
+set "spaces=                                 "
+set "line=%~1%spaces%"
+set "line=%line:~0,25%%~4%xMeta%
+rem if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/"
+if /I "%~3" NEQ "Blank" set "hd=%hd%%line%/"
 if /I "%~3" NEQ "Blank" call:displayhd "%hd%"
 REM )
 GOTO:EOF
