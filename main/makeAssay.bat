@@ -202,7 +202,8 @@ rem ECHO ON
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
 rem ---- Type specific fields
-if /I "%IDType%" == "NGS" goto NGS
+if /I "%IDClass%"=="WET" goto Demo
+if /I "%IDType%" == "DNAse" goto Demo
 if /I "%IDType%" == "RNAisol" goto Demo
 if /I "%IDType%" == "Demo" goto Demo
 if /I "%IDType%" == "RT" goto Demo
@@ -327,20 +328,27 @@ rem Functions
 :getInput   --- get text from keyboard
 ::          --- %~1 Input message (what to enter)
 ::          --- %~2 Variable to get result
-::          --- %~3 (optional) missing: input required
-::          ---                * : can be skipped, return *
+::          --- %~3 (optional) missing: empty string is OK
+::                             * : can be skipped, return *
+::                             ! : input required, no empty string
 :: Example: call:getInpt "Type something" xx default
 SETLOCAL
 :Ask
 echo.
-echo =========================
+echo =======================================================
 echo.
+:: Default for typing is is the first item (needed for Other)
 set "x=%~3"
 set /p x=Enter %~1 [ %x% ]: 
 rem if %x% EQU "" set x="%~3"
-if "%x%" EQU "" goto Ask
-REM Check existence/uniqueness
+rem empty answer OK
+if "%x%" EQU "" goto done 
 if "%x%" EQU "*" goto done
+REM Is input required and not entered?
+REM Mostly intended for pISA file names
+if "%x%" EQU "!" goto Ask
+goto done
+REM Check existence/uniqueness
 IF EXIST "%x%" (
 REM Dir exists
 echo ERROR: %~1 *%x%* already exists
@@ -384,9 +392,10 @@ rem -----------------------------------------------------
 ::         --- descFile - should be set befor the call
 ::          --- %~1 Input message (what to enter)
 ::          --- %~2 Variable to get result
-::          --- %~3 (optional) missing: input required
-::          ---                * : can be skipped, return *
-:: Example: call:putMeta "Type something" xx default
+::          --- %~3 (optional) missing: no typed input required
+::                             * : can be skipped, return *
+::                             ! : typed input required
+:: Example: call:inputMeta "Type something" xx default
 SETLOCAL
 rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
@@ -447,20 +456,26 @@ rem -----------------------------------------------------
 ::          --- descFile - should be set befor the call
 ::          --- %~1 Input message (what to enter)
 ::          --- %~2 Variable to get result
-::          --- %~3 (optional) missing: input required
-::          ---                * : can be skipped, return *
+::          --- %~3 (optional) missing: no typed input required
+::                             * : can be skipped, return *
+::                             ! : typed input required
 ::          --- %~4 optional prefix; some values have to be prefixed by SampleID
 ::                  XIDX will be replaced by SampleID upon writing to file
 :: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
 rem FIX: allow text input of empty string
 if "%~3"=="*" call:getInput "%~1" xMeta "%~3" & GOTO:next
-if "%~3"=="" call:getInput "%~1" xMeta "%~3" & GOTO:next
+if "%~3"==""  call:getInput "%~1" xMeta "%~3" & GOTO:next
 if "%~3"==" " call:getInput "%~1" xMeta "%~3" & GOTO:next
 if /I "%~3"=="Blank" set xMeta="" & GOTO:next
 rem call:getInput "%~1" xMeta "%~3"
+rem echo.=%~3= rem test
+pause
 call:getMenu "%~1" "%~3/Other" xMeta "%~3"
-if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%~3"
+set first="."
+for /f "tokens=1 delims=/" %%a in ("%~3") do set first=%%a
+rem echo =%~3=%first%= REM test
+if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%first%"
 :next
 echo %~1:	%xMeta%%prefix% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
@@ -582,8 +597,11 @@ set s1=
 set s2=
 for /f "tokens=1 delims=	" %%a in ("%string%") do set s1=%%a
 for /f "tokens=2 delims=	" %%a in ("%string%") do set s2=%%a
+for /f "tokens=1 delims=	" %%a in ("%string%") do set s1=%%a
+for /f "tokens=2 delims=	" %%a in ("%string%") do set s2=%%a
 REM ask for input
-call:putMeta2 "%s1%" xxx %s2%
+rem ECHO call:putMeta2 "%s1%" xxx %s2%
+call:putMeta2 "%s1%" xxx "%s2%"
 goto :eof
 
 REM ----------------------------------------------------------
@@ -599,8 +617,8 @@ rem set "string=%!%~1!:*:=%"
 SET "s2=%string:*	=%"
 set "s1=!string:	%s2%=!"
 ECHO +%s1%+%s2%+
+rem ENDLOCAL
 ECHO call:putMeta2 "%s1%" xxx %s2%
-ENDLOCAL
 call:putMeta2 "%s1%" xxx %s2%
 rem ENDLOCAL
 goto :eof
