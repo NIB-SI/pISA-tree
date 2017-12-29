@@ -406,12 +406,16 @@ echo %~1:	%xMeta% >> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
-
+    set "spaces=                                           "
+    set "line=%~1:%spaces%"
+    set "line=%line:~0,25%%~4%xMeta%"
 rem
 (ENDLOCAL
     IF "%~2" NEQ "" set "%~2=%xMeta%"
     set "aEntered=%xMeta%"
-    set "hd=%hd%%~1:		 %xMeta%/"
+    set "hd=%hd%%line%/"
+    rem set "hd=%hd%%~1:		 %xMeta%/"
+
     )
 GOTO:EOF
 rem --------------------------------------------------------
