@@ -298,28 +298,27 @@ REM ---------------------------------------- /R
 :Finish
 echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
 rem ------------------------------------  include common.ini from project level
-copy .\_ASSAY_DESCRIPTION.TXT+..\common.ini .\_ASSAY_DESCRIPTION.TXT
+copy .\_ASSAY_DESCRIPTION.TXT+..\common.ini .\_ASSAY_DESCRIPTION.TXT >NUL
 echo ASSAY:	%ID%>> ..\_STUDY_DESCRIPTION.TXT
-copy %sroot%\showTree.bat .
-copy %sroot%\showDescription.bat .
-copy %sroot%\xcheckDescription.bat .
+copy %sroot%\showTree.bat . >NUL
+copy %sroot%\showDescription.bat . >NUL
+copy %sroot%\xcheckDescription.bat . >NUL
 
 rem
 rem  make main readme.md file
-type README.MD
+rem type README.MD
 rem dir .
 rem cls
-echo ============================== pISA ==
-echo.
 rem type _ASSAY_DESCRIPTION.TXT
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
 rem dir .\%ID% /s/b
 echo.
+echo ============================== pISA ==
 echo.
-echo =====================================
 echo Assay %ID% is ready.
+echo.
 PAUSE
 goto:eof
 rem ====================================== / makeAssay
@@ -435,8 +434,8 @@ IF NOT "%mn:~-1%"=="/" set mn=%mn%/
 set _mn=%mn%
 set nl=0
 set mch=
-echo %mn%
-echo. 
+rem echo %mn%
+rem echo. 
 :top
 rem if "%mn%"=="" goto :done
 set /A "nl=%nl%+1"
@@ -513,21 +512,23 @@ rem IF EXIST %~1 (
     rem TAB inserted automatically
     echo %z%%x2%  > tmp.txt
     rem Process other lines
-    set "SEARCHTEXT=XIDX"
+    rem Replace $ with sample id from the first field
+    rem set "SEARCHTEXT=XIDX"
+    set "SEARCHTEXT=$"
     set "line=%~3"
     for /f "skip=1 tokens=1,* delims=	 " %%a in (%~1) do (
-    echo on
+    rem echo on
     set "TAB=	"
-      	echo %%a
-      	echo %%b
-      	echo %~3
+      	rem echo %%a
+      	rem echo %%b
+      	rem echo %~3
       	setlocal enabledelayedexpansion
       rem	set "line=!line:%search%=%replace%!"
       SET "modified=!line:%SEARCHTEXT%=%%a!"
-      echo %searchtext% %modified%
+      rem echo %searchtext% %modified%
       	rem should replace special token with SampleId before writing
        echo %%a	%%b!modified! >> tmp.txt 
-       echo Write: %%a	%%b!modified!
+       rem echo Write: %%a	%%b!modified!
        endlocal
        echo off
        )
@@ -585,6 +586,7 @@ FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
  rem echo tst processAnalytes: line2 %line2%
  rem echo tst %analytesInput%
  rem pause
+
 call:writeAnalytes %analytesInput% "%line1%" "%line2%"
 goto :eof
 rem ------------------------------------------------------------
