@@ -318,7 +318,9 @@ echo.
 echo ============================== pISA ==
 echo.
 echo Assay %ID% is ready.
-echo.
+echo .
+echo ======================================
+
 PAUSE
 goto:eof
 rem ====================================== / makeAssay
@@ -490,7 +492,7 @@ rem echo tst line2 %line2%
 rem pause
 set "spaces=                                 "
 set "line=%~1%spaces%"
-set "line=%line:~0,25%%~4%xMeta%
+set "line=%line:~0,25%%~4%xMeta%"
 rem if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/"
 if /I "%~3" NEQ "Blank" set "hd=%hd%%line%/"
 if /I "%~3" NEQ "Blank" call:displayhd "%hd%"
@@ -532,7 +534,7 @@ rem IF EXIST %~1 (
        endlocal
        echo off
        )
-    copy tmp.txt %~1
+    copy tmp.txt %~1 >NUL
 rem )
 rem ENDLOCAL
 del tmp.txt
