@@ -68,11 +68,12 @@ To make a new assay, run the `makeAssay.bat` file.
 * Dry: process data (Statistcs, Modelling, ... )
 
 Then you will enter the assay Type (see documentation for covered types: NGS, MA, STat ...) and
-assay ID (Short name, for example ASSAY1). Short assay name and type (separated by '.'), prefixed by `_A_`
-are used as the name of the assay directory tree (for expample: _A_ASSAY1.NGS).
+assay ID (Short name, for example ASSAY1). Short assay name and type (separated by '-' and prefixed by `_A_`) are used as the name of the assay directory tree (for example: _A_ASSAY1-NGS).
 
 Folders in assay directory trees for different Classes slightly differ, 
-according to the need of the specific Class. 
+according to the need of the specific Class.
+
+### Analytes files 
 
 ## Description files
 
@@ -94,9 +95,8 @@ Investigator:	Miha Mihav
 Phenodata:	./data/phenodata.txt
 
 The project level directory contains the file `common.ini`, which is organized in the same way 
-as description files. This file contains fields and descriptions that do not change, 
-for example principal investigator name. Information in this file will be appended to the 
-description files for investigations, studies, and assays.
+as description files. This file contains fields and descriptions that are fixed for the project, for example principal investigator name. Information in this file will be appended to the 
+description files for all investigations, studies, and assays within a project.
 
 # Auxiliary batch files
 
