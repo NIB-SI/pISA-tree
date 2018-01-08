@@ -34,7 +34,7 @@ rem dir %tmpldir%
 rem pause
 rem ----------------------------------------------
 rem Class: use argument 1 if present
-set mydate=%date:~13,4%-%date:~9,2%-%date:~5,2%
+set today=%date:~13,4%-%date:~9,2%-%date:~5,2%
 set IDClass=
 rem if "%1" EQU "" (
 rem echo @
@@ -252,17 +252,17 @@ REM ------------------------------------------ NGS
   call:putMeta2 "260/280" a100 Blank
   call:putMeta2 "260/230" a100 Blank
   call:putMeta2 "Homogenisation protocol" a02 fastPrep/slowPrep
-  call:putMeta2 "Date Homogenisation" a03 %mydate%
+  call:putMeta2 "Date Homogenisation" a03 %today%
   call:putMeta2 "Isolation Protocol" a04 Rneasy_Plant
-  call:putMeta2 "Date Isolation" a05 %mydate%
+  call:putMeta2 "Date Isolation" a05 %today%
   call:putMeta2 "Storage RNA" a06 CU0369
   call:putMeta2 "Dnase treatment protocol" a7 *
   call:putMeta2 "Dnase ID" a8 DNase XIDX_
-  call:putMeta2 "Date DNAse_treatment" a9 %mydate%
+  call:putMeta2 "Date DNAse_treatment" a9 %today%
   call:putMeta2 "Storage_DNAse_treated" a10 CU0370
   call:putMeta2 "Operator" a11 "*"
   call:putMeta2 "cDNA ID" a12 cDNA XIDX_
-  call:putMeta2 "DateRT" a13 %mydate%
+  call:putMeta2 "DateRT" a13 %today%
   call:putMeta2 "Operator" a14 %a11%
   call:putMeta2 "Notes" a15 " "
   call:putMeta2 "Fluidigm_chip" a16 Chip10
@@ -280,7 +280,7 @@ REM ---------------------------------------- RT
   call:putMeta2 "Dnase ID" a03	DNASE	XIDX_
   call:putMeta2 "RTprotocol" a04 " "
   call:putMeta2 "cDNA ID" a05 cDNA XIDX_
-  call:putMeta2 "DateRT" a06 %mydate%
+  call:putMeta2 "DateRT" a06 %today%
   call:putMeta2 "Operator" a07 *
   
   call:writeAnalytes %analytesInput% "%line1%" "%line2%"
