@@ -1,7 +1,7 @@
 ---
 title: 'pISA-tree: Standard project directory tree'
 author: "A. Blejec, ... , K. Gruden"
-date: '2016-11-21'
+date: '2018-01-08'
 output:
   pdf_document: 
     number_sections: yes
@@ -106,15 +106,10 @@ The `Analytes.ini` files are plain text files. You can open and edit them by Not
 
 An example of the `Analytes.ini` file:
 
-Item name
-Isolation Protocol	\t Rneasy_Plant
-Operator \t	John/Bob
-Date Homogenisation \t	%today%
-
-
-
-
-
+Item name  
+Isolation Protocol	\t Rneasy_Plant  
+Operator \t	John/Bob  
+Date Homogenisation \t	%today%  
 
 
 # Auxiliary batch files
