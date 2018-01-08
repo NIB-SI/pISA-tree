@@ -25,10 +25,10 @@ Step one is to copy/download the batch files from the [[set source]] into the ro
 
 ## Batch files
 
-- `makeproject.bat`	- makes new **project** directory tree
-- `makeInvestigation.bat`	- makes new **investigation** directory tree (subdirectory tree within the **project**)
-- `makeStudy.bat` - makes new **study** (subdirectory tree within the **investigation**)
-- `makeAssay.bat` - makes new **assay** (subdirectory tree within the **study**)
+- `makeproject.bat`	- makes a new **project** directory tree
+- `makeInvestigation.bat`	- makes a new **investigation** directory tree (subdirectory tree within the **project**)
+- `makeStudy.bat` - makes a new **study** (subdirectory tree within the **investigation**)
+- `makeAssay.bat` - makes a new **assay** (subdirectory tree within the **study**)
 
 # Creation of the directory tree
 
@@ -62,18 +62,18 @@ This will make a direcory tree with several standard folders, description and au
 Analyses for each study are collected in the folder of that study. 
 To make a new assay, run the `makeAssay.bat` file.
 
- You will be asked to enter assay Class [Wet/Dry]:
+ You will be asked to enter assay **Class** [Wet/Dry]:
 
 * Wet: measurements on the biological material (MicroArray, NGS, PCR, ...)
 * Dry: process data (Statistcs, Modelling, ... )
 
-Then you will enter the assay Type (see documentation for covered types: NGS, MA, STat ...) and
+Then you will enter the assay **Type** (see documentation for covered types: NGS, MA, STat ...) and
 assay ID (Short name, for example ASSAY1). Short assay name and type (separated by '-' and prefixed by `_A_`) are used as the name of the assay directory tree (for example: _A_ASSAY1-NGS).
 
 Folders in assay directory trees for different Classes slightly differ, 
 according to the need of the specific Class.
 
-### Analytes files 
+Assay classes and types are defined as subfolders of the `Templates` subfolder. An example is `../Templates/Wet/RT`.   To add another type of *Wet* assay (named *mytype*) , one can create a new subfolder  with the name *mytype*: `../Templates/Wet/mytype`. To add another class, create subfolder *myclass*: `../Templates/myclass`.
 
 ## Description files
 
@@ -98,6 +98,25 @@ The project level directory contains the file `common.ini`, which is organized i
 as description files. This file contains fields and descriptions that are fixed for the project, for example principal investigator name. Information in this file will be appended to the 
 description files for all investigations, studies, and assays within a project.
 
+### Analytes files
+
+In addition to the basic items, one can use also assay specific items. The assay specific items are prespecified in the `Analytes.ini` files, placed in the *Class/Type* subfolder of subfolder `Templates`. 
+
+The `Analytes.ini` files are plain text files. You can open and edit them by Notepad, WOrdpad or Excel (Use 'Open with ...'). Each line represents one Item-Value pair, separated by tab character (`\t`). The first part (Item name) will apear as the assay specific question during the assay creation. The second part (Item value) will be offered as the default (or first) value for information entry.
+
+An example of the `Analytes.ini` file:
+
+Item name
+Isolation Protocol	\t Rneasy_Plant
+Operator \t	John/Bob
+Date Homogenisation \t	%today%
+
+
+
+
+
+
+
 # Auxiliary batch files
 
 ## `showDescription.bat`
@@ -108,9 +127,8 @@ Descriptions are typeset in the file **DESCRIPTION.MD**.
 
 ## `xcheckDescription.bat`
 
-Checks all description files for missing required information (*)in a tree below the current 
-level. Produces file **xCheckDescription.md** which is similar to one produced by 
-`showDescription.bat` but lists only lines with asterisks (*).
+Checks all description files for missing required information (\*) in a tree below the current 
+level. Produces the file named **xCheckDescription.md** which is similar to the one produced by `showDescription.bat` and lists only lines with asterisks (\*).
 
 ## `showTree.bat`
 
