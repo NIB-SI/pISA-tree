@@ -42,20 +42,20 @@ The directory tree is a way to enforce the subordination of pISA layers. To emph
 ## project
 
 To create a new project, run (double click) the file `makeProject.bat` and enter
-the project short name (ID). This will make a direcory tree, description files and a local copy
+the project short name (ID). This will make a direcory tree, metadata files and a local copy
 of `makeInvestigation.bat`. Short project name (ID), automatically prefixed with `_p_`, is used as the name of the directory (no spaces or special characters, file name conventions apply!!). If you set the project ID as `bla` the project directory name will automatically become `_p_bla`.
 
 ## Investigation
 
 To create a new investigation, run (double click) the file `makeInvestigation.bat` and enter
-the study short name (ID). This will make a direcory tree, description files and a local copy
+the study short name (ID). This will make a direcory tree, metadata files and a local copy
 of `makeStudy.bat`. Short investigation name (ID), automatically prefixed with `_I_`,  is used as the name of the directory (no spaces or special characters, file name conventions apply!!). The investigation directory name for the investigation `ble` will be `_I_ble`.
 
 
 ## Study
 
 To create a new study, run the `makeStudy.bat` and enter the study ID (Short name). 
-This will make a direcory tree with several standard folders, description and auxiliary files and a local copy of `makeAssay.bat`. The study folder name will be `_S_blu` for a study with short name (ID) `blu`.
+This will make a direcory tree with several standard folders, metadata and auxiliary files and a local copy of `makeAssay.bat`. The study folder name will be `_S_blu` for a study with short name (ID) `blu`.
 
 ## Assay
 
@@ -77,26 +77,26 @@ Assay classes and types are defined as subfolders of the `Templates` subfolder. 
 
 ## Description files
 
-Each level has a *description* file, listing the informative items for that level. 
+Each level has a *metadata* file, listing the informative items for that level. 
 Description files are tab delimited files with two columns:  
 
 1. item name (ended by a colon)
-2. item description or value
+2. item metadata or value
 
-Item description can be some text (for example investigator's name or a longer description 
+Item metadata can be some text (for example investigator's name or a longer metadata 
 of the study, study, and analysis) or a value (for example the path to *phenodata* file). 
 Each item should be typed in one line. Special escaped characters for 
-line break (`\n`) and tab (`\t`) are allowed. Be careful if the description contains prime 
+line break (`\n`) and tab (`\t`) are allowed. Be careful if the metadata contains prime 
 symbol (' ,as in 5'), it is safer to spell it, like 5-prime. 
 
-An example of the description entry is:
+An example of the metadata entry is:
 
 Investigator:	Miha Mihav  
 Phenodata:	./data/phenodata.txt
 
 The project level directory contains the file `common.ini`, which is organized in the same way 
-as description files. This file contains fields and descriptions that are fixed for the project, for example principal investigator name. Information in this file will be appended to the 
-description files for all investigations, studies, and assays within a project.
+as metadata files. This file contains fields and metadatas that are fixed for the project, for example principal investigator name. Information in this file will be appended to the 
+metadata files for all investigations, studies, and assays within a project.
 
 ### Analytes files
 
@@ -116,13 +116,13 @@ Date Homogenisation \t	%today%
 
 ## `showDescription.bat`
 
-Collects all description files in a tree below the current level. 
-Descriptions are typeset in the file **DESCRIPTION.MD**. 
+Collects all metadata files in a tree below the current level. 
+Descriptions are typeset in the file **METADATA.MD**. 
 (plain text file in a `markdown` format)
 
 ## `xcheckDescription.bat`
 
-Checks all description files for missing required information (\*) in a tree below the current 
+Checks all metadata files for missing required information (\*) in a tree below the current 
 level. Produces the file named **xCheckDescription.md** which is similar to the one produced by `showDescription.bat` and lists only lines with asterisks (\*).
 
 ## `showTree.bat`
