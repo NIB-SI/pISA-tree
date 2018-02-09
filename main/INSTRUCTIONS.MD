@@ -114,16 +114,16 @@ Date Homogenisation \t	%today%
 
 # Auxiliary batch files
 
-## `showDescription.bat`
+## `showMetadata.bat`
 
 Collects all metadata files in a tree below the current level. 
 Descriptions are typeset in the file **METADATA.MD**. 
 (plain text file in a `markdown` format)
 
-## `xcheckDescription.bat`
+## `xcheckMetadata.bat`
 
 Checks all metadata files for missing required information (\*) in a tree below the current 
-level. Produces the file named **xCheckDescription.md** which is similar to the one produced by `showDescription.bat` and lists only lines with asterisks (\*).
+level. Produces the file named **xCheckMetadata.md** which is similar to the one produced by `showMetadata.bat` but lists only lines with asterisks (\*).
 
 ## `showTree.bat`
 
