@@ -301,8 +301,8 @@ rem ------------------------------------  include common.ini from project level
 copy %descFile%+..\common.ini %descFile% >NUL
 echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
 copy %sroot%\showTree.bat . >NUL
-copy %sroot%\showDescription.bat . >NUL
-copy %sroot%\xcheckDescription.bat . >NUL
+copy %sroot%\showMetadata.bat . >NUL
+copy %sroot%\xcheckMetadata.bat . >NUL
 
 rem
 rem  make main readme.md file

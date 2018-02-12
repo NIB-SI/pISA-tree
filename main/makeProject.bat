@@ -88,8 +88,8 @@ rem
 rem  make main readme.md file
 copy %mroot%\makeInvestigation.bat .
 copy %mroot%\showTree.bat .
-copy %mroot%\showDescription.bat .
-copy %mroot%\xcheckDescription.bat .
+copy %mroot%\showMetadata.bat .
+copy %mroot%\xcheckMetadata.bat .
 
 type README.MD
 del *.tmp

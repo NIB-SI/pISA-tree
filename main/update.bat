@@ -10,8 +10,8 @@ call:Update makeProject.bat
 call:Update makeInvestigation.bat
 call:Update makeStudy.bat
 call:Update makeAssay.bat
-call:Update xcheckDescription.bat
-call:Update showDescription.bat
+call:Update xcheckMetadata.bat
+call:Update showMetadata.bat
 call:Update showTree.bat
 del *.tmp
 goto:eof

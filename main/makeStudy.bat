@@ -80,8 +80,8 @@ rem
 rem  make main readme.md file
 copy %mroot%\makeAssay.bat .
 copy %iroot%\showTree.bat .
-copy %iroot%\showDescription.bat .
-copy %iroot%\xcheckDescription.bat .
+copy %iroot%\showMetadata.bat .
+copy %iroot%\xcheckMetadata.bat .
 rem Make test Analytes file
 echo Sample ID	Field1	Field2> Analytes.txt
 echo SMPL001	A1	B1>> Analytes.txt

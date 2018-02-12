@@ -93,8 +93,8 @@ rem
 rem  make main readme.md file
 copy %mroot%\makeStudy.bat .
 copy %proot%\showTree.bat .
-copy %proot%\showDescription.bat .
-copy %proot%\xcheckDescription.bat .
+copy %proot%\showMetadata.bat .
+copy %proot%\xcheckMetadata.bat .
 
 type README.MD
 del *.tmp
