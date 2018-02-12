@@ -186,7 +186,7 @@ call:getLayer _S_ sname
 call:getLayer _A_ aname
 rem -----------------------------------------------
 rem -------------------------------------- make ASSAY_DESCRIPTION
-set descFile=".\_ASSAY_DESCRIPTION.TXT"
+set descFile=".\_ASSAY_METADATA.TXT"
 echo project:	%pname%> %descFile%
 echo Investigation:	%iname%>> %descFile%
 echo Study:	%sname%>> %descFile%
@@ -296,10 +296,10 @@ REM ---------------------------------------- R
     goto Finish
 REM ---------------------------------------- /R
 :Finish
-echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
+echo Data:	>> %descFile%
 rem ------------------------------------  include common.ini from project level
-copy .\_ASSAY_DESCRIPTION.TXT+..\common.ini .\_ASSAY_DESCRIPTION.TXT >NUL
-echo ASSAY:	%ID%>> ..\_STUDY_DESCRIPTION.TXT
+copy %descFile%+..\common.ini %descFile% >NUL
+echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
 copy %sroot%\showTree.bat . >NUL
 copy %sroot%\showDescription.bat . >NUL
 copy %sroot%\xcheckDescription.bat . >NUL
@@ -309,7 +309,7 @@ rem  make main readme.md file
 rem type README.MD
 rem dir .
 rem cls
-rem type _ASSAY_DESCRIPTION.TXT
+rem type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E

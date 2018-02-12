@@ -195,7 +195,7 @@ set "string=%%~na"
 )
 set invId=%string%
 rem -------------------------------------- make ASSAY_DESCRIPTION
-set descFile=".\_ASSAY_DESCRIPTION.TXT"
+set descFile=".\_ASSAY_METADATA.TXT"
 echo project:	%prjId% > %descFile%
 echo Investigation:	%invId% >> %descFile%
 echo Study:	%studyId%>> %descFile%
@@ -298,10 +298,10 @@ REM ---------------------------------------- R
     goto Finish
 REM ---------------------------------------- /R
 :Finish
-echo Data:	>> .\_ASSAY_DESCRIPTION.TXT
+echo Data:	>> .\_ASSAY_METADATA.TXT
 rem ------------------------------------  include common.ini from project level
-copy .\_ASSAY_DESCRIPTION.TXT+..\common.ini .\_ASSAY_DESCRIPTION.TXT
-echo ASSAY:	%ID%>> ..\_STUDY_DESCRIPTION.TXT
+copy .\_ASSAY_METADATA.TXT+..\common.ini .\_ASSAY_METADATA.TXT
+echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
 copy %sroot%\showTree.bat .
 copy %sroot%\showDescription.bat .
 copy %sroot%\xcheckDescription.bat .
@@ -311,7 +311,7 @@ rem  make main readme.md file
 type README.MD
 dir .
 cls
-type _ASSAY_DESCRIPTION.TXT
+type _ASSAY_METADATA.TXT
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E

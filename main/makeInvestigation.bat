@@ -14,7 +14,7 @@ rem ------------------------------------------------------
 echo =============================
 echo pISA-tree: make INVESTIGATION 
 echo -----------------------------
-set descFile=".\_INVESTIGATION_DESCRIPTION.TXT"
+set descFile=".\_INVESTIGATION_METADATA.TXT"
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
@@ -74,7 +74,7 @@ rem -----------------------------------------------
 call:getLayer _p_ pname
 call:getLayer _I_ iname
 REM -----------------------------------------------
-REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_DESCRIPTION.TXT
+REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo project:	%pname%> %descFile%
 echo Investigation:	%iname%>> %descFile%
 echo ### INVESTIGATION>> %descFile%
@@ -87,7 +87,7 @@ rem copy bla.tmp %descFile%
 echo Phenodata:	./data/phenodata.txt>> %descFile%
 echo Featuredata:	./data/featuredata.txt>> %descFile%
 echo #### STUDIES!LF!>>  %descFile%
-echo INVESTIGATION:	%ID%>> ..\_PROJECT_DESCRIPTION.TXT
+echo INVESTIGATION:	%ID%>> ..\_PROJECT_METADATA.TXT
 
 rem
 rem  make main readme.md file

@@ -14,7 +14,7 @@ rem ------------------------------------------------------
 echo ============================
 echo pISA-tree: make STUDY 
 echo ----------------------------
-set descFile=".\_STUDY_DESCRIPTION.TXT"
+set descFile=".\_STUDY_METADATA.TXT"
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
@@ -75,7 +75,7 @@ copy ..\common.ini .
 echo Fitobase link:	>> %descFile%
 echo Raw Data:	>> %descFile%
 echo #### ASSAYS>>  %descFile%
-echo STUDY:	%ID%>> ..\_INVESTIGATION_DESCRIPTION.TXT
+echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
 rem 
 rem  make main readme.md file
 copy %mroot%\makeAssay.bat .

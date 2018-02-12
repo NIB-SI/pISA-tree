@@ -14,7 +14,7 @@ rem ------------------------------------------------------
 echo =============================
 echo pISA-tree: make PROJECT 
 echo -----------------------------
-set descFile=".\_PROJECT_DESCRIPTION.TXT"
+set descFile=".\_PROJECT_METADATA.TXT"
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
@@ -73,7 +73,7 @@ rem call:hexprint "0x09" TAB
 rem -----------------------------------------------
 call:getLayer _p_ pname
 REM -----------------------------------------------
-REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!PROJECT	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_DESCRIPTION.TXT
+REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!PROJECT	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo project:	%pname%> %descFile%
 echo ### PROJECT>> %descFile%
 echo Short Name:	%ID%>> %descFile%
