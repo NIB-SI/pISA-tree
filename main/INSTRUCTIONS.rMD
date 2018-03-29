@@ -1,15 +1,15 @@
 ---
 title: 'pISA-tree: Standard project directory tree'
 author: "A. Blejec, ... , K. Gruden"
-date: '2018-01-08'
+date: '2018-03-29'
 output:
-  pdf_document: 
-    number_sections: yes
-    toc: yes
   html_document:
     number_sections: yes
     toc: yes
   word_document: default
+  pdf_document: 
+    number_sections: yes
+    toc: yes
 ---
 # What is the pISA-tree?
 
@@ -19,9 +19,9 @@ This set of batch files is used to create standard directory tree for research p
 
 At the top layer, you have to create a directory (`pISA_projects` root directory) 
 which will contain future projects. The root directory is the place for initial batch files.
-Step one is to copy/download the batch files from the [[set source]] into the root directory.
+The first step is to copy/download the batch files from the [pISA GitHub](https://github.com/ablejec/pISA/) into the root directory.
  
-**Project** is organized as a collection of one or more **investigations**. An **investigation** is similarly organized as a collection of one or more **studies**. Each **study** has it's own collection of one or more **assays**. Assays can be of specific type (e.g. conected to MicroArray, NGS, Modeling, Statistical analysis, ...) and are structured accordingly.
+A **Project** is organized as a collection of one or more **investigations**. An **investigation** is similarly organized as a collection of one or more **studies**. Each **study** has it's own collection of one or more **assays**. Assays can be of specific type (e.g. connected to MicroArray, NGS, Modeling, Statistical analysis, ...) and are structured accordingly.
 
 ## Batch files
 
@@ -48,14 +48,14 @@ of `makeInvestigation.bat`. Short project name (ID), automatically prefixed with
 ## Investigation
 
 To create a new investigation, run (double click) the file `makeInvestigation.bat` and enter
-the study short name (ID). This will make a direcory tree, metadata files and a local copy
+the study short name (ID). This will make a directory tree, metadata files and a local copy
 of `makeStudy.bat`. Short investigation name (ID), automatically prefixed with `_I_`,  is used as the name of the directory (no spaces or special characters, file name conventions apply!!). The investigation directory name for the investigation `ble` will be `_I_ble`.
 
 
 ## Study
 
 To create a new study, run the `makeStudy.bat` and enter the study ID (Short name). 
-This will make a direcory tree with several standard folders, metadata and auxiliary files and a local copy of `makeAssay.bat`. The study folder name will be `_S_blu` for a study with short name (ID) `blu`.
+This will make a direcory tree with several standard folders, metadata and auxiliary files and a local copy of `makeAssay.bat`. The study folder name will be `_S_blu` for a study with the short name (ID) `blu`.
 
 ## Assay
 
@@ -75,10 +75,10 @@ according to the need of the specific Class.
 
 Assay classes and types are defined as subfolders of the `Templates` subfolder. An example is `../Templates/Wet/RT`.   To add another type of *Wet* assay (named *mytype*) , one can create a new subfolder  with the name *mytype*: `../Templates/Wet/mytype`. To add another class, create subfolder *myclass*: `../Templates/myclass`.
 
-## Description files
+## Metadata files
 
 Each level has a *metadata* file, listing the informative items for that level. 
-Description files are tab delimited files with two columns:  
+Metadata files are tab delimited files with two columns:  
 
 1. item name (ended by a colon)
 2. item metadata or value
@@ -98,7 +98,7 @@ The project level directory contains the file `common.ini`, which is organized i
 as metadata files. This file contains fields and metadatas that are fixed for the project, for example principal investigator name. Information in this file will be appended to the 
 metadata files for all investigations, studies, and assays within a project.
 
-### Analytes files
+## Analytes files
 
 In addition to the basic items, one can use also assay specific items. The assay specific items are prespecified in the `Analytes.ini` files, placed in the *Class/Type* subfolder of subfolder `Templates`. 
 
@@ -117,7 +117,7 @@ Date Homogenisation \t	%today%
 ## `showMetadata.bat`
 
 Collects all metadata files in a tree below the current level. 
-Descriptions are typeset in the file **METADATA.MD**. 
+Metadata are typeset in the file **METADATA.MD**. 
 (plain text file in a `markdown` format)
 
 ## `xcheckMetadata.bat`
@@ -132,4 +132,4 @@ List a directory tree below the current level in the file **TREE.TXT**.
 ## `update.bat`
 
 Replaces batch files in existing tree with the updated versions in the project directory.
-Use after update from [GitHub](https://github.com/ablejec/pISA/)
+Use after update from [pISA GitHub](https://github.com/ablejec/pISA/)
