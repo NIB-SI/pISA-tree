@@ -6,7 +6,7 @@ Batch files are provided to make standardized nested directories in accordance w
 Installation:
 
 1. Download (zip file) or clone the repository.
-2. Extract files from in the subdirectory ***main*** into your local pISA projects directory.
+2. Extract files from the subdirectory ***main*** into your local pISA projects directory.
 3. User instructions are in INSTRUCTIONS.\* files.
 
 Additional info:
