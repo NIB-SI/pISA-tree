@@ -30,6 +30,22 @@ D:
 
 ---
 
+* /_p_pr1/_I_inv1/_S_22/_STUDY_METADATA.TXT 
+---
+
+ ?? MISSING: Title:	*   
+ ?? MISSING: Description:	*   
+
+---
+
+* /_p_pr1/_I_inv1/_S_22/_A_sldhkjs-Demo/_ASSAY_METADATA.TXT 
+---
+
+ ?? MISSING: Title:	*   
+ ?? MISSING: Description:	*   
+
+---
+
 * /_p_pr1/_I_inv1/_S_Std1/_STUDY_DESCRIPTION.TXT 
 ---
 
@@ -39,6 +55,21 @@ D:
 * /_p_pr1/_I_inv1/_S_Std1/_STUDY_METADATA.TXT 
 ---
 
+
+---
+
+* /_p_pr1/_I_inv1/_S_Std1/_A_111-R/_ASSAY_METADATA.TXT 
+---
+
+ ?? MISSING: Description:	*   
+
+---
+
+* /_p_pr1/_I_inv1/_S_Std1/_A_222-R/_ASSAY_METADATA.TXT 
+---
+
+ ?? MISSING: Title:	*   
+ ?? MISSING: Description:	*   
 
 ---
 
@@ -75,6 +106,50 @@ D:
  ?? MISSING: Title:	*   
  ?? MISSING: Description:	*   
  ?? MISSING: Operator:	*   
+
+---
+
+* /_p_pr2/_PROJECT_METADATA.TXT 
+---
+
+ ?? MISSING: Title:	*   
+ ?? MISSING: Description:	*   
+
+---
+
+* /_p_pr2/_I_Inv2/_INVESTIGATION_METADATA.TXT 
+---
+
+ ?? MISSING: Title:	*   
+ ?? MISSING: Description:	*   
+
+---
+
+* /_p_pr2/_I_Inv2/_S_st2/_STUDY_METADATA.TXT 
+---
+
+ ?? MISSING: Title:	*   
+ ?? MISSING: Description:	*   
+
+---
+
+* /_p_pr2/_I_Inv2/_S_st2/_A_ass1-R/_ASSAY_METADATA.TXT 
+---
+
+ ?? MISSING: Title:	*   
+ ?? MISSING: Description:	*   
+
+---
+
+* /_p_pr2/_I_Inv2/_S_st2/_A_xxx-Stat/_ASSAY_METADATA.TXT 
+---
+
+
+---
+
+* /_p_pr23/_PROJECT_METADATA.TXT 
+---
+
 
 ---
 

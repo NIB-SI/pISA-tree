@@ -3,12 +3,13 @@
 */bla/
 doc/
 other/
+# pISA specific
 main/xx*/
 main/_p_*/
 main/_I_*/*
-# Description files are recreated with .bat files
-main/Description.md
-main/xCheckDescription.md
+# Metadata files are recreated with .bat files
+main/Metadata.md
+main/xCheckMetadata.md
 =======
 */bla*/
 >>>>>>> refs/remotes/origin/fix-structure

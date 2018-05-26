@@ -67,6 +67,54 @@ Phenodata:	./data/phenodata.txt
 Featuredata:	./data/featuredata.txt  
 #### STUDIES  
 STUDY:	Std1  
+STUDY:	22  
+
+---
+
+* **/_p_pr1/_I_inv1/_S_22/_STUDY_METADATA.TXT**
+---
+
+project:	_p_pr1  
+Investigation:	_I_inv1  
+Study:	_S_22   
+### STUDY  
+Short Name:	22  
+Title:	*   
+Description:	*   
+Investigator:	Name Lastname  
+Fitobase link:	  
+Raw Data:	  
+#### ASSAYS  
+ASSAY:	sldhkjs-Demo  
+
+---
+
+* **/_p_pr1/_I_inv1/_S_22/_A_sldhkjs-Demo/_ASSAY_METADATA.TXT**
+---
+
+project:	_p_pr1  
+Investigation:	_I_inv1  
+Study:	_S_22  
+Assay:	_A_sldhkjs-Demo  
+### ASSAY  
+Short Name:	sldhkjs-Demo  
+Assay Class:	 WET  
+Assay Type:	 Demo  
+Title:	*   
+Description:	*   
+RT ID:	RT_$   
+Add column 1:	""    
+Add column 2:	Blank1   
+RT1:	RT Option 1   
+RT2:	RT2 Option 1   
+Date ...:	2018-03-29   
+Text field (required):	1   
+Another ID :	Another_$   
+RT One option:	CU0370   
+Text with options:	Anton   
+Notes:	    
+Data:	  
+Investigator:	Name Lastname  
 
 ---
 
@@ -130,6 +178,88 @@ ASSAY:	test9-RT
 ASSAY:	dgfg-RT  
 ASSAY:	nova-RT  
 ASSAY:	testdate3-DNAse  
+ASSAY:	ass1-R  
+
+---
+
+* **/_p_pr1/_I_inv1/_S_Std1/_STUDY_METADATA.TXT**
+---
+
+ASSAY:	ass3-STAT  
+ASSAY:	111-R  
+ASSAY:	222-R  
+
+---
+
+* **/_p_pr1/_I_inv1/_S_Std1/_A_111-R/_ASSAY_METADATA.TXT**
+---
+
+project:	_p_pr1  
+Investigation:	_I_inv1  
+Study:	_S_Std1  
+Assay:	_A_111-R  
+### ASSAY  
+Short Name:	111-R  
+Assay Class:	 DRY  
+Assay Type:	 R  
+Title:	test metadata   
+Description:	*   
+Data:	  
+Investigator:	Name Lastname  
+
+---
+
+* **/_p_pr1/_I_inv1/_S_Std1/_A_222-R/_ASSAY_METADATA.TXT**
+---
+
+project:	_p_pr1  
+Investigation:	_I_inv1  
+Study:	_S_Std1  
+Assay:	_A_222-R  
+### ASSAY  
+Short Name:	222-R  
+Assay Class:	 DRY  
+Assay Type:	 R  
+Title:	*   
+Description:	*   
+Data:	  
+Investigator:	Name Lastname  
+
+---
+
+* **/_p_pr1/_I_inv1/_S_Std1/_A_ass1-R/_ASSAY_DESCRIPTION.TXT**
+---
+
+project:	_p_pr1  
+Investigation:	_I_inv1  
+Study:	_S_Std1  
+Assay:	_A_ass1-R  
+### ASSAY  
+Short Name:	ass1-R  
+Assay Class:	 DRY  
+Assay Type:	 R  
+Title:	R jevski assay   
+Description:	dolgo r jevski opis, ki sega cez vec vrstic. Mora biti lepo nastavljen   
+Data:	  
+Investigator:	Name Lastname  
+
+---
+
+* **/_p_pr1/_I_inv1/_S_Std1/_A_ass3-STAT/_ASSAY_METADATA.TXT**
+---
+
+project:	_p_pr1  
+Investigation:	_I_inv1  
+Study:	_S_Std1  
+Assay:	_A_ass3-STAT  
+### ASSAY  
+Short Name:	ass3-STAT  
+Assay Class:	 DRY  
+Assay Type:	 STAT  
+Title:	naslov   
+Description:	Opis   
+Data:	  
+Investigator:	Name Lastname  
 
 ---
 
@@ -212,6 +342,102 @@ Operator:	Anton
 Notes:	    
 Data:	  
 Investigator:	Name Lastname  
+
+---
+
+* **/_p_pr2/_PROJECT_METADATA.TXT**
+---
+
+project:	_p_pr2   
+### PROJECT  
+Short Name:	pr2  
+Title:	*   
+Description:	*   
+Project Path:	D:\OMIKE\pISA\main\_p_pr2   
+Investigator:	Name Lastname  
+##### INVESTIGATIONS  
+INVESTIGATION:	Inv2  
+
+---
+
+* **/_p_pr2/_I_Inv2/_INVESTIGATION_METADATA.TXT**
+---
+
+project:	_p_pr2  
+Investigation:	_I_Inv2   
+### INVESTIGATION  
+Short Name:	Inv2  
+Title:	*   
+Description:	*   
+Investigator:	Name Lastname  
+Phenodata:	./data/phenodata.txt  
+Featuredata:	./data/featuredata.txt  
+#### STUDIES  
+STUDY:	st2  
+
+---
+
+* **/_p_pr2/_I_Inv2/_S_st2/_STUDY_METADATA.TXT**
+---
+
+project:	_p_pr2  
+Investigation:	_I_Inv2  
+Study:	_S_st2   
+### STUDY  
+Short Name:	st2  
+Title:	*   
+Description:	*   
+Investigator:	Name Lastname  
+Fitobase link:	  
+Raw Data:	  
+#### ASSAYS  
+ASSAY:	ass1-R  
+
+---
+
+* **/_p_pr2/_I_Inv2/_S_st2/_A_ass1-R/_ASSAY_METADATA.TXT**
+---
+
+project:	_p_pr2  
+Investigation:	_I_Inv2  
+Study:	_S_st2  
+Assay:	_A_ass1-R  
+### ASSAY  
+Short Name:	ass1-R  
+Assay Class:	 DRY  
+Assay Type:	 R  
+Title:	*   
+Description:	*   
+Data:	  
+Investigator:	Name Lastname  
+
+---
+
+* **/_p_pr2/_I_Inv2/_S_st2/_A_xxx-Stat/_ASSAY_METADATA.TXT**
+---
+
+project:	_p_pr2  
+Investigation:	_I_Inv2  
+Study:	_S_st2  
+Assay:	_A_xxx-Stat  
+### ASSAY  
+Short Name:	xxx-Stat  
+Assay Class:	 DRY  
+Assay Type:	 Stat  
+
+---
+
+* **/_p_pr23/_PROJECT_METADATA.TXT**
+---
+
+project:	_p_pr23   
+### PROJECT  
+Short Name:	pr23  
+Title:	Test project   
+Description:	Project description   
+Project Path:	D:\OMIKE\pISA\main\_p_pr23   
+Investigator:	Name Lastname  
+##### INVESTIGATIONS  
 
 ---
 
