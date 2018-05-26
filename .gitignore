@@ -10,6 +10,7 @@ main/_I_*/*
 # Metadata files are recreated with .bat files 
 main/Metadata.md
 main/xCheckMetadata.md
+main/TREE.TXT
 =======
 */bla*/
 >>>>>>> refs/remotes/origin/fix-structure
