@@ -25,7 +25,6 @@ rem echo %ID%
 set ID=%1
 )
 :Ask
-echo za ask
 if %ID% EQU "" set /p ID=Enter project ID: 
 if %ID% EQU "" goto Ask
 REM Check existence/uniqueness
@@ -111,7 +110,7 @@ rem Functions
 ::          ---                * : can be skipped, return *
 :: Example: call:getInpt "Type something" xx default
 SETLOCAL
-:Aski
+:Ask
 set x=%~3
 set /p x=Enter %~1 [%x%]: 
 rem if %x% EQU "" set x="%~3"
@@ -122,7 +121,7 @@ IF EXIST "%x%" (
 REM Dir exists
 echo ERROR: %~1 *%x%* already exists
 set x=""
-goto Aski
+goto Ask
 ) 
 :done
 (ENDLOCAL
