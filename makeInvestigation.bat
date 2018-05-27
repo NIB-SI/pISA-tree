@@ -18,9 +18,9 @@ set descFile=".\_INVESTIGATION_METADATA.TXT"
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
-echo @
+rem echo @
 set /p ID=Enter Investigation ID: 
-echo %ID%
+rem echo %ID%
 ) else (
 set ID=%1
 )
@@ -115,18 +115,18 @@ rem Functions
 ::          ---                * : can be skipped, return *
 :: Example: call:getInpt "Type something" xx default
 SETLOCAL
-:Ask
+:Ask1
 set x=%~3
 set /p x=Enter %~1 [%x%]:
 rem if %x% EQU "" set x="%~3"
-if "%x%" EQU "" goto Ask
+if "%x%" EQU "" goto Ask1
 REM Check existence/uniqueness
 if "%x%" EQU "*" goto done
 IF EXIST "%x%" (
 REM Dir exists
 echo ERROR: %~1 *%x%* already exists
 set x=""
-goto Ask
+goto Ask1
 ) 
 :done
 (ENDLOCAL

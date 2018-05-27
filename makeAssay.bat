@@ -334,7 +334,7 @@ rem Functions
 ::                             ! : input required, no empty string
 :: Example: call:getInpt "Type something" xx default
 SETLOCAL
-:Ask
+:Ask1
 echo.
 echo =======================================================
 echo.
@@ -347,14 +347,14 @@ if "%x%" EQU "" goto done
 if "%x%" EQU "*" goto done
 REM Is input required and not entered?
 REM Mostly intended for pISA file names
-if "%x%" EQU "!" goto Ask
+if "%x%" EQU "!" goto Ask1
 goto done
 REM Check existence/uniqueness
 IF EXIST "%x%" (
 REM Dir exists
 echo ERROR: %~1 *%x%* already exists
 set x=""
-goto Ask
+goto Ask1
 ) 
 :done
 (ENDLOCAL
