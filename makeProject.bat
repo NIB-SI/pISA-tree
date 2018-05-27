@@ -18,9 +18,9 @@ set descFile=".\_PROJECT_METADATA.TXT"
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
-echo @
+rem echo @
 set /p ID=Enter project ID: 
-echo %ID%
+rem echo %ID%
 ) else (
 set ID=%1
 )
@@ -28,14 +28,14 @@ set ID=%1
 if %ID% EQU "" set /p ID=Enter project ID: 
 if %ID% EQU "" goto Ask
 REM Check existence/uniqueness
-IF EXIST %ID% (
+IF EXIST _p_%ID% (
 REM Dir exists
 echo ERROR: project named *%ID%* already exists
 set ID=""
 goto Ask
 ) ELSE (
 REM Continue creating directory
-echo %ID%
+echo Creating project %ID%
 )
 rem ----------------------------------------------
 
@@ -112,7 +112,7 @@ rem Functions
 SETLOCAL
 :Ask
 set x=%~3
-set /p x=Enter %~1 [%x%]:
+set /p x=Enter %~1 [%x%]: 
 rem if %x% EQU "" set x="%~3"
 if "%x%" EQU "" goto Ask
 REM Check existence/uniqueness
