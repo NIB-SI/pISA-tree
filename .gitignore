@@ -6,8 +6,10 @@ other/
 devel/
 # pISA specific
 main/xx*/
-main/_p_*/
-main/_I_*/*
+_p_*/*
+*/_I_*/*
+*/_S_*/*
+*/_A_*/*
 # Metadata files are recreated with .bat files 
 main/Metadata.md
 main/xCheckMetadata.md
