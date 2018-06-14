@@ -14,6 +14,16 @@ rem ------------------------------------------------------
 echo =============================
 echo pISA-tree: make INVESTIGATION 
 echo -----------------------------
+call:getLayer _p_ pname
+rem Check project existence
+if x%pname::=%==x%pname% goto pok
+echo.
+echo ERROR: Make project first!
+echo.
+pause
+goto:eof
+:pok
+rem project already created
 set descFile=".\_INVESTIGATION_METADATA.TXT"
 rem Ask for study ID, loop if empty
 set ID=""
