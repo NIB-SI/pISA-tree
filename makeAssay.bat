@@ -21,6 +21,16 @@ set "TAB=	"
 echo =================================
 echo pISA-tree: make ASSAY 
 echo ---------------------------------
+call:getLayer _S_ sname
+rem Check Study existence
+if x%sname::=%==x%sname% goto sok
+echo.
+echo ERROR: Make Study first!
+echo.
+pause
+goto:eof
+:sok
+rem Study already created
 set hd=---------------------------------/
 set hd=%hd%pISA-tree: make ASSAY/
 set hd=%hd%---------------------------------/
