@@ -165,7 +165,6 @@ goto Forall
 rem ----------------------------------------------
 :wet
 REM set IDClass=Wet
-echo %cd%
 md reports
 md output
 cd output
@@ -182,6 +181,7 @@ goto Forall
 rem ----------------------------------------------
 :Forall
 rem
+echo %cd%
 setlocal EnableDelayedExpansion
 set LF=^
 
@@ -205,7 +205,6 @@ echo ### ASSAY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
 echo Assay Class:	 %IDClass%>> %descFile%
 echo Assay Type:	 %IDType%>> %descFile%
-
 rem ECHO ON
   rem set analytesInput=Analytes.txt
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )

@@ -52,6 +52,7 @@ rem Make new Study directory tree
 set Sdir=_S_%ID%
 md %Sdir%
 cd %Sdir%
+echo %cd%
 set sroot=%cd%
 set "iroot=.."
 set "proot=..\%iroot%"

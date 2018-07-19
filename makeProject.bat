@@ -25,7 +25,6 @@ rem echo %ID%
 set ID=%1
 )
 :Ask
-echo za ask
 if %ID% EQU "" set /p ID=Enter project ID: 
 if %ID% EQU "" goto Ask
 REM Check existence/uniqueness
@@ -50,6 +49,7 @@ rem
 set pdir=_p_%ID%
 md %pdir%
 cd %pdir%
+echo %cd%
 set proot=%cd%
 set mroot=".."
 md presentations

@@ -58,6 +58,7 @@ rem
 set Idir=_I_%ID%
 md %Idir%
 cd %Idir%
+echo %cd%
 set iroot=%cd%
 set "proot=.."
 set "mroot=..\%proot%"
