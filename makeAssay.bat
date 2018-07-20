@@ -211,11 +211,7 @@ rem ECHO ON
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
 rem ---- Type specific fields
-if /I "%IDClass%"=="WET" goto Demo
-if /I "%IDType%" == "DNAse" goto Demo
-if /I "%IDType%" == "RNAisol" goto Demo
-if /I "%IDType%" == "Demo" goto Demo
-if /I "%IDType%" == "RT" goto Demo
+if /I "%IDClass%"=="WET" goto wetclass
 if /I "%IDType%" == "R" goto R
 if /I "%IDType%" == "Stat" goto Stat
 echo .
@@ -224,8 +220,8 @@ echo .
 pause
 goto Finish
 rem
-:Demo
-REM ------------------------------------------ Demo
+:wetclass
+REM ------------------------------------------ wetclass
 rem cd
 rem echo tst %tmpldir%\%IDClass%\%IDType%\analytes.ini
 rem dir %tmpldir%
@@ -246,56 +242,7 @@ rem echo tst after processAnalytes: line2 %line2%
 REM
 rem PAUSE
   goto Finish
-REM ------------------------------------------/Demo
-:NGS
-REM ------------------------------------------ NGS
-  set analytesInput=Analytes.txt
-  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
-  set line1=
-  set line2=
-  call:putMeta2 "RNA ID" a01 RNA XIDX_
-  rem set "line1=RNA-ID	ng/ul	260/280	260/230"
-  rem set "line2=XIDX_%a01%_%IDType%			"
-  set "line2=%line2%_%IDType%"
-  call:putMeta2 "ng/ul" a100 Blank
-  call:putMeta2 "260/280" a100 Blank
-  call:putMeta2 "260/230" a100 Blank
-  call:putMeta2 "Homogenisation protocol" a02 fastPrep/slowPrep
-  call:putMeta2 "Date Homogenisation" a03 %today%
-  call:putMeta2 "Isolation Protocol" a04 Rneasy_Plant
-  call:putMeta2 "Date Isolation" a05 %today%
-  call:putMeta2 "Storage RNA" a06 CU0369
-  call:putMeta2 "Dnase treatment protocol" a7 *
-  call:putMeta2 "Dnase ID" a8 DNase XIDX_
-  call:putMeta2 "Date DNAse_treatment" a9 %today%
-  call:putMeta2 "Storage_DNAse_treated" a10 CU0370
-  call:putMeta2 "Operator" a11 "*"
-  call:putMeta2 "cDNA ID" a12 cDNA XIDX_
-  call:putMeta2 "DateRT" a13 %today%
-  call:putMeta2 "Operator" a14 %a11%
-  call:putMeta2 "Notes" a15 " "
-  call:putMeta2 "Fluidigm_chip" a16 Chip10
-
-  call:writeAnalytes %analytesInput% "%line1%" "%line2%"
-REM
-  goto Finish
-REM ---------------------------------------- /NGS
-:RT
-REM ---------------------------------------- RT
-  set analytesInput=Analytes.txt
-  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
-  set line1=
-  set line2=
-  call:putMeta2 "Dnase ID" a03	DNASE	XIDX_
-  call:putMeta2 "RTprotocol" a04 " "
-  call:putMeta2 "cDNA ID" a05 cDNA XIDX_
-  call:putMeta2 "DateRT" a06 %today%
-  call:putMeta2 "Operator" a07 *
-  
-  call:writeAnalytes %analytesInput% "%line1%" "%line2%"
-REM
-    goto Finish
-REM ---------------------------------------- /RT
+REM ------------------------------------------/wetclass
 :R
 REM ---------------------------------------- R
     goto Finish
