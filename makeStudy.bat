@@ -14,6 +14,16 @@ rem ------------------------------------------------------
 echo ============================
 echo pISA-tree: make STUDY 
 echo ----------------------------
+call:getLayer _I_ iname
+rem Check Investigation existence
+if x%iname::=%==x%iname% goto iok
+echo.
+echo ERROR: Make Investigation first!
+echo.
+pause
+goto:eof
+:iok
+rem Investigation already created
 set descFile=".\_STUDY_METADATA.TXT"
 rem Ask for study ID, loop if empty
 set ID=""
@@ -42,6 +52,7 @@ rem Make new Study directory tree
 set Sdir=_S_%ID%
 md %Sdir%
 cd %Sdir%
+echo %cd%
 set sroot=%cd%
 set "iroot=.."
 set "proot=..\%iroot%"
