@@ -601,8 +601,8 @@ FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
  rem echo tst processAnalytes: line2 %line2%
  rem echo tst %analytesInput%
  rem pause
-
-call:writeAnalytes %analytesInput% "%line1%" "%line2%"
+if exists %analytesInput% (
+call:writeAnalytes %analytesInput% "%line1%" "%line2%" )
 goto :eof
 rem ------------------------------------------------------------
 :processLine  --- compose metadata menu for a line
