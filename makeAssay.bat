@@ -1,7 +1,7 @@
 @echo off
 rem -------------------------------------  pISA-tree v.0.4.2
 rem
-rem Create a new Assay tree _A_xxx in current directory
+rem Create a new Assay tree _A_xxx in the current study directory
 rem ------------------------------------------------------
 rem Author: A Blejec <andrej.blejec@nib.si>
 rem (c) National Institute of Biology, Ljubljana, Slovenia
@@ -189,12 +189,10 @@ set LF=^
 REM Keep two empty lines above - they are neccessary!!
 set "TAB=	"
 rem -----------------------------------------------
-rem -----------------------------------------------
 call:getLayer _p_ pname
 call:getLayer _I_ iname
 call:getLayer _S_ sname
 call:getLayer _A_ aname
-rem -----------------------------------------------
 rem -------------------------------------- make ASSAY_DESCRIPTION
 set descFile=".\_ASSAY_METADATA.TXT"
 echo project:	%pname%> %descFile%
@@ -282,6 +280,7 @@ goto:eof
 rem ====================================== / makeAssay
 rem --------------------------------------------------------
 rem Functions
+rem --------------------------------------------------------
 :getInput   --- get text from keyboard
 ::          --- %~1 Input message (what to enter)
 ::          --- %~2 Variable to get result
