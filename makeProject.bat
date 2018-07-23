@@ -15,19 +15,18 @@ echo =============================
 echo pISA-tree: make PROJECT 
 echo -----------------------------
 set descFile=".\_PROJECT_METADATA.TXT"
+
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
 rem echo @
-set /p ID=Enter project ID: 
-rem echo %ID%
+call:askFile "Enter project ID: " ID
 ) else (
 set ID=%1
 )
 :Ask
-if %ID% EQU "" set /p ID=Enter project ID: 
+if %ID% EQU "" call:askFile "Enter project ID: " ID
 if %ID% EQU "" goto Ask
-REM Check existence/uniqueness
 IF EXIST _p_%ID% (
 REM Dir exists
 echo ERROR: project named *%ID%* already exists
@@ -193,4 +192,76 @@ SETLOCAL EnableDelayedExpansion
    set "%~2=%_result%")
    rem echo %iname%
    endlocal
+goto :eof
+setlocal enableextensions disabledelayedexpansion
+
+:askFile    --- get file name
+::          --- %~1 Question
+::          --- %~2 Variable to get result 
+::
+:: Example: call:askFile "Enter project ID: " ID
+
+    rem Retrieve filename. On empty input ask again
+    set /p "my_file=%~1" || goto :askFile
+
+    rem See Naming Files, Paths, and Namespaces
+    rem     https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx
+
+    rem NOTE: From here, we will be enabling/disabling delayed expansion 
+    rem       to avoid problems with special characters
+
+    setlocal enabledelayedexpansion
+    rem Ensure we do not have restricted characters in file name trying to use them as 
+    rem delimiters and requesting the second token in the line
+    for /f tokens^=2^ delims^=^<^>^:^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
+        rem If we are here there is a second token, so, there is a special character
+        echo Error : Non allowed characters in file name
+        endlocal & goto :askFile
+    )
+
+    rem Check MAX_PATH (260) limitation
+    set "my_temp_file=!cd!\!my_file!" & if not "!my_temp_file:~260!"=="" (
+        echo Error : file name too long
+        endlocal & goto :askFile
+    )
+
+    rem Check path inclusion, file name correction
+    for /f delims^=^ eol^= %%a in ("!my_file!") do (
+        rem Cancel delayed expansion to avoid ! removal during expansion
+        endlocal
+
+        rem Until checked, we don't have a valid file
+        set "my_file="
+
+        rem Check we don't have a path 
+        if /i not "%%~a"=="%%~nxa" (
+            echo Error : Paths are not allowed
+            goto :askFile
+        )
+
+        rem Check it is not a folder 
+        if exist "%%~nxa\" (
+            echo Error : Folder with same name present 
+            goto :askFile
+        )
+
+        rem ASCII 0-31 check. Check file name can be created
+        2>nul ( >>"%%~nxa" type nul ) || (
+            echo Error : File name is not valid for this file system
+            goto :askFile
+        )
+
+        rem Ensure it was not a special file name by trying to delete the newly created file
+        2>nul ( del /q /f /a "%%~nxa" ) || (
+            echo Error : Reserved file name used
+            goto :askFile
+        )
+
+        rem Everything was OK - We have a file name 
+        set "my_file=%%~nxa"
+    )
+
+    rem echo Selected file is "%my_file%"
+    (endlocal 
+     set "%~2=%my_file%")
 goto :eof
