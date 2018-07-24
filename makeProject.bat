@@ -207,6 +207,11 @@ setlocal enableextensions disabledelayedexpansion
     rem See Naming Files, Paths, and Namespaces
     rem     https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx
 
+    for /f "tokens=2" %%a in ("%my_file%") do (
+        Echo Error: Space is not allowed in ID
+        goto :askFile
+    )
+
     rem NOTE: From here, we will be enabling/disabling delayed expansion 
     rem       to avoid problems with special characters
 
@@ -215,13 +220,13 @@ setlocal enableextensions disabledelayedexpansion
     rem delimiters and requesting the second token in the line
     for /f tokens^=2^ delims^=^<^>^:^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
         rem If we are here there is a second token, so, there is a special character
-        echo Error : Non allowed characters in file name
+        echo Error : Non allowed characters in ID
         endlocal & goto :askFile
     )
 
     rem Check MAX_PATH (260) limitation
     set "my_temp_file=!cd!\!my_file!" & if not "!my_temp_file:~260!"=="" (
-        echo Error : file name too long
+        echo Error : ID name too long
         endlocal & goto :askFile
     )
 
