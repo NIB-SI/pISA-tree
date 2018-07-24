@@ -114,7 +114,7 @@ rem ----------------------------------------------
 rem ID : use argument 3 if present
 set IDName=""
 if "%3" EQU "" (
-set /p IDName=Enter Assay ID: 
+call:askFile "Enter Assay ID: " IDName 
 ) else (
 set IDName=%3
 )
@@ -122,7 +122,7 @@ rem dir %IDType%* /B /AD
 rem Similar Assay IDs
 rem %IDType%* /AD
 :Ask3
-if %IDName% EQU "" set /p IDName=Enter Assay ID: 
+if %IDName% EQU "" call:askFile "Enter Assay ID: " IDName 
 if %IDName% EQU "" goto Ask3
 rem ----------------------------------------------
 rem concatenate ID name
