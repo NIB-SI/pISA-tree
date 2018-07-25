@@ -45,13 +45,14 @@ rem pause
 rem ----------------------------------------------
 rem Class: use argument 1 if present
 set today=%date:~13,4%-%date:~9,2%-%date:~5,2%
-set IDClass=
+rem set IDClass=
 rem if "%1" EQU "" (
 rem echo @
 rem set /p IDClass=Enter Assay Class [ Wet/Dry ]: 
 rem ) else (
 rem set IDClass=%1
 rem )
+rem ---------------------------------------------
 rem Ask for Class, loop if empty
 :Ask1
 rem if %IDClass% EQU "" set /p IDClass=Enter Assay Class [ Wet/Dry ]: 
@@ -62,28 +63,36 @@ rem if /I %IDClass% EQU d set IDClass=Dry
 rem if /I %IDClass% EQU wet set IDClass=Wet
 rem if /I %IDClass% EQU w set IDClass=Wet
 SETLOCAL ENABLEDELAYEDEXPANSION
+rem Supported classes
 SET "types="
 FOR /f "delims=" %%i IN ('dir %tmpldir% /b') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
-set "IdClass="
-call:getMenu "Select Assay Class" %types% IDClass
+if "%1" EQU "" (
+ set "IdClass="
+ call:getMenu "Select Assay Class" %types% IDClass ) else (
+ set "IdClass=%1"
+)
 set "hd=%hd%Assay Class:		 %~4%IDClass%/"
 call:displayhd "%hd%"
-rem echo Selected: %IDClass%
+echo Selected: %IDClass%
 rem ----------------------------------------------
 rem Supported types
-if /I %IDClass% EQU Wet set "types=NGS / RT"
-if /I %IDClass% EQU Dry set "types=R / Stat"
+rem if /I %IDClass% EQU Wet set "types=NGS / RT"
+rem if /I %IDClass% EQU Dry set "types=R / Stat"
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "types="
 FOR /f "delims=" %%i IN ('dir %tmpldir%\%IDClass% /b') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
+if "%2" EQU "" (
 set "IDType="
-call:getMenu "Select Assay Type" %types% IDType
+echo %tmpldir%\%IDClass%
+call:getMenu "Select Assay Type" %types% IDType ) else (
+set "IDType=%2"
+)
 set "hd=%hd%Assay Type:		 %~4%IDType%/"
 call:displayhd "%hd%"
 rem echo Selected: %IDType%
@@ -105,15 +114,15 @@ rem ----------------------------------------------
 rem ID : use argument 3 if present
 set IDName=""
 if "%3" EQU "" (
-set /p IDName=Enter Assay ID: 
+call:askFile "Enter Assay ID: " IDName 
 ) else (
-set IDType=%3
+set IDName=%3
 )
 rem dir %IDType%* /B /AD
 rem Similar Assay IDs
 rem %IDType%* /AD
 :Ask3
-if %IDName% EQU "" set /p IDName=Enter Assay ID: 
+if %IDName% EQU "" call:askFile "Enter Assay ID: " IDName 
 if %IDName% EQU "" goto Ask3
 rem ----------------------------------------------
 rem concatenate ID name
@@ -121,7 +130,7 @@ set ID=%IDName%-%IDType%
 echo %ID%
 rem ----------------------------------------------
 rem Check existence
-IF EXIST %ID% (
+IF EXIST _A_%ID% (
 REM Dir exists
 echo ERROR: Assay named *%ID%* already exists
 rem set IDType=""
@@ -215,7 +224,6 @@ if /I "%IDType%" == "Stat" goto Stat
 echo .
 echo Warning: Unseen Assay Type: *%IDType%* - will make Generic %IDClass% Assay
 echo .
-pause
 goto Finish
 rem
 :wetclass
@@ -227,19 +235,18 @@ rem dir ..\%tmpldir%
 set tasdir=%tmpldir%\%IDClass%\%IDType%
 rem dir %tasdir%
 rem dir %tmpldir%
-rem cd
-set analytesInput=Analytes.txt
+rem echo %cd%
+set "analytesInput=Analytes.txt"
   if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   set "line1="
   set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
+  
 call:processAnalytes %tasdir%\analytes.ini
 
-rem echo tst after processAnalytes: line1 %line1%
-rem echo tst after processAnalytes: line2 %line2%
-REM
-rem PAUSE
-  goto Finish
+ rem echo tst after processAnalytes: line1 %line1%
+ rem echo tst after processAnalytes: line2 %line2%
+ goto Finish
 REM ------------------------------------------/wetclass
 :R
 REM ---------------------------------------- R
@@ -462,7 +469,7 @@ rem ---------------------------------------------------
 ::              --- %~1 file to process
 ::              --- %~2 string for the first line
 ::              --- %~3 string for other lines
-rem SETLOCAL
+SETLOCAL
 rem IF EXIST %~1 (
 
     rem First line
@@ -487,15 +494,16 @@ rem IF EXIST %~1 (
       rem	set "line=!line:%search%=%replace%!"
       SET "modified=!line:%SEARCHTEXT%=%%a!"
       rem echo %searchtext% %modified%
-      	rem should replace special token with SampleId before writing
+      rem pause
+      rem should replace special token with SampleId before writing
        echo %%a	%%b!modified! >> tmp.txt 
        rem echo Write: %%a	%%b!modified!
        endlocal
-       echo off
+       rem echo off
        )
     copy tmp.txt %~1 >NUL
 rem )
-rem ENDLOCAL
+ENDLOCAL
 del tmp.txt
 GOTO:EOF
 rem --------------------------------------------------
@@ -547,7 +555,7 @@ FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
  rem echo tst processAnalytes: line2 %line2%
  rem echo tst %analytesInput%
  rem pause
-if exists %analytesInput% (
+if exist "%analytesInput%" (
 call:writeAnalytes %analytesInput% "%line1%" "%line2%" )
 goto :eof
 rem ------------------------------------------------------------
@@ -614,4 +622,82 @@ SETLOCAL EnableDelayedExpansion
    set "%~2=%_result%")
    rem echo %iname%
    endlocal
+goto :eof
+rem ---------------------------------------------------
+setlocal enableextensions disabledelayedexpansion
+
+:askFile    --- get file name
+::          --- %~1 Question
+::          --- %~2 Variable to get result 
+::
+:: Example: call:askFile "Enter project ID: " ID
+
+    rem Retrieve filename. On empty input ask again
+    set /p "my_file=%~1" || goto :askFile
+
+    rem See Naming Files, Paths, and Namespaces
+    rem     https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx
+
+    for /f "tokens=2" %%a in ("%my_file%") do (
+        Echo Error: Space is not allowed in ID
+        goto :askFile
+    )
+
+    rem NOTE: From here, we will be enabling/disabling delayed expansion 
+    rem       to avoid problems with special characters
+
+    setlocal enabledelayedexpansion
+    rem Ensure we do not have restricted characters in file name trying to use them as 
+    rem delimiters and requesting the second token in the line
+    for /f tokens^=2^ delims^=^<^>^:^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
+        rem If we are here there is a second token, so, there is a special character
+        echo Error : Non allowed characters in ID
+        endlocal & goto :askFile
+    )
+
+    rem Check MAX_PATH (260) limitation
+    set "my_temp_file=!cd!\!my_file!" & if not "!my_temp_file:~260!"=="" (
+        echo Error : ID name too long
+        endlocal & goto :askFile
+    )
+
+    rem Check path inclusion, file name correction
+    for /f delims^=^ eol^= %%a in ("!my_file!") do (
+        rem Cancel delayed expansion to avoid ! removal during expansion
+        endlocal
+
+        rem Until checked, we don't have a valid file
+        set "my_file="
+
+        rem Check we don't have a path 
+        if /i not "%%~a"=="%%~nxa" (
+            echo Error : Paths are not allowed
+            goto :askFile
+        )
+
+        rem Check it is not a folder 
+        if exist "%%~nxa\" (
+            echo Error : Folder with same name present 
+            goto :askFile
+        )
+
+        rem ASCII 0-31 check. Check file name can be created
+        2>nul ( >>"%%~nxa" type nul ) || (
+            echo Error : File name is not valid for this file system
+            goto :askFile
+        )
+
+        rem Ensure it was not a special file name by trying to delete the newly created file
+        2>nul ( del /q /f /a "%%~nxa" ) || (
+            echo Error : Reserved file name used
+            goto :askFile
+        )
+
+        rem Everything was OK - We have a file name 
+        set "my_file=%%~nxa"
+    )
+
+    rem echo Selected file is "%my_file%"
+    (endlocal 
+     set "%~2=%my_file%")
 goto :eof
