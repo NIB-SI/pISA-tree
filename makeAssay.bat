@@ -224,7 +224,6 @@ if /I "%IDType%" == "Stat" goto Stat
 echo .
 echo Warning: Unseen Assay Type: *%IDType%* - will make Generic %IDClass% Assay
 echo .
-pause
 goto Finish
 rem
 :wetclass
@@ -236,19 +235,18 @@ rem dir ..\%tmpldir%
 set tasdir=%tmpldir%\%IDClass%\%IDType%
 rem dir %tasdir%
 rem dir %tmpldir%
-rem cd
-set analytesInput=Analytes.txt
+rem echo %cd%
+set "analytesInput=Analytes.txt"
   if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   set "line1="
   set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
+  
 call:processAnalytes %tasdir%\analytes.ini
 
-rem echo tst after processAnalytes: line1 %line1%
-rem echo tst after processAnalytes: line2 %line2%
-REM
-rem PAUSE
-  goto Finish
+ rem echo tst after processAnalytes: line1 %line1%
+ rem echo tst after processAnalytes: line2 %line2%
+ goto Finish
 REM ------------------------------------------/wetclass
 :R
 REM ---------------------------------------- R
@@ -471,7 +469,7 @@ rem ---------------------------------------------------
 ::              --- %~1 file to process
 ::              --- %~2 string for the first line
 ::              --- %~3 string for other lines
-rem SETLOCAL
+SETLOCAL
 rem IF EXIST %~1 (
 
     rem First line
@@ -496,15 +494,16 @@ rem IF EXIST %~1 (
       rem	set "line=!line:%search%=%replace%!"
       SET "modified=!line:%SEARCHTEXT%=%%a!"
       rem echo %searchtext% %modified%
-      	rem should replace special token with SampleId before writing
+      rem pause
+      rem should replace special token with SampleId before writing
        echo %%a	%%b!modified! >> tmp.txt 
        rem echo Write: %%a	%%b!modified!
        endlocal
-       echo off
+       rem echo off
        )
     copy tmp.txt %~1 >NUL
 rem )
-rem ENDLOCAL
+ENDLOCAL
 del tmp.txt
 GOTO:EOF
 rem --------------------------------------------------
@@ -556,7 +555,7 @@ FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
  rem echo tst processAnalytes: line2 %line2%
  rem echo tst %analytesInput%
  rem pause
-if exists %analytesInput% (
+if exist "%analytesInput%" (
 call:writeAnalytes %analytesInput% "%line1%" "%line2%" )
 goto :eof
 rem ------------------------------------------------------------

@@ -193,6 +193,7 @@ SETLOCAL EnableDelayedExpansion
    rem echo %iname%
    endlocal
 goto :eof
+rem ---------------------------------------------------
 setlocal enableextensions disabledelayedexpansion
 
 :askFile    --- get file name
