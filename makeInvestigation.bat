@@ -94,8 +94,8 @@ echo Short Name:	%ID%>> %descFile%
 copy %descFile%+..\common.ini %descFile%
 copy ..\common.ini .
 rem copy bla.tmp %descFile%
-echo Phenodata:	./data/phenodata.txt>> %descFile%
-echo Featuredata:	./data/featuredata.txt>> %descFile%
+echo Phenodata:	./phenodata.txt>> %descFile%
+echo Featuredata:	./featuredata.txt>> %descFile%
 echo #### STUDIES!LF!>>  %descFile%
 echo INVESTIGATION:	%ID%>> ..\_PROJECT_METADATA.TXT
 
