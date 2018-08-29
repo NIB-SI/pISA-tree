@@ -59,7 +59,6 @@ REM
 echo # Project %ID% >  .\README.MD
 echo # Reports for project %ID% >  .\reports\README.MD
 echo # Presentations for project %ID% >  .\presentations\README.MD
-echo # Describe samples > .\phenodata.txt
 echo # Feature Summary Table> .\FST.txt
 rem
 setlocal EnableDelayedExpansion
