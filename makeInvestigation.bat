@@ -121,6 +121,14 @@ rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
 rem dir .\%ID% /s/b
 rem pause
+echo.
+echo ============================== pISA ==
+echo.
+echo Investigation %ID% is ready.
+echo .
+echo ======================================
+
+PAUSE
 goto:eof
 rem --------------------------------------------------------
 rem Functions
