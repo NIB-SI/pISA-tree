@@ -235,9 +235,11 @@ rem dir ..\%tmpldir%
 set tasdir=%tmpldir%\%IDClass%\%IDType%
 rem dir %tasdir%
 rem dir %tmpldir%
-rem echo %cd%
+:: echo %cd%
 set "analytesInput=Analytes.txt"
-  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
+call:getSamples %IDName% %iroot%\phenodata.txt %aroot%\%analytesInput%
+setlocal disabledelayedexpansion
+rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   set "line1="
   set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
@@ -701,3 +703,81 @@ setlocal enableextensions disabledelayedexpansion
     (endlocal 
      set "%~2=%my_file%")
 goto :eof
+rem ----------------------------------------------------------
+:getSamples --- get sample names from phenodata.txt
+::          --- %~1 column name
+::          --- %~2 phenodata file name (default is "%iroot%/phenodata.txt")
+::          --- %~3 output file (default is "%sroot%/Analytes.txt")
+:: Return: writes the sample names to the output file
+:: Example: call:getSamples %Assay_ID%
+::
+set "infile="
+set "outfile="
+if "%~2" NEQ "" (set "infile=%~2") else (set "infile=%iroot%/phenodata.txt")
+if "%~3" NEQ "" (set "outfile=%~3") else (set "outfile=%sroot%/Analytes.txt")
+:: dir %infile%
+:: First line
+set /P line1=<%infile%
+:: echo - %line1%
+setlocal enabledelayedexpansion
+call:strfind %~1 "%line1%" where
+:: echo -- %where%
+:: echo ---- end
+if %where% NEQ 0 (
+if exist %outfile% del %outfile%
+:: Process other lines
+rem for /f "skip=1 tokens=1,2 delims=	 " %%a in (%infile%) do (
+rem echo + %%a	%%b	%%c	%%d	%e
+rem )
+rem https://www.dostips.com/forum/viewtopic.php?t=3599
+setlocal DisableDelayedExpansion
+for /f "EOL=: delims=" %%L in (%infile%) do (
+  set "line=%%L"
+  setlocal EnableDelayedExpansion
+  rem set "preparedLine=#!line:;=;#!"
+  set "preparedLine=#!line:	=;#!"
+  FOR /F "tokens=1,%where% delims=;" %%c in ("!preparedLine!") DO (
+    endlocal
+    set "param1=%%c"
+    set "param2=%%d"
+    setlocal EnableDelayedExpansion
+    set "param1=!param1:~1!"
+    set "param2=!param2:~1!"
+    :: echo $1=!param1! $2=*!param2!*
+    if "!param2!" NEQ "" echo !param1!	!param2! >> %outfile%
+    endlocal
+  )
+)
+) else (echo No column %~1 in: & echo %line1%)
+setlocal disabledelayedexpansion
+goto:eof
+rem ------------------------------------------------------------
+:strfind    --- locate the first occurence of a string in a tab-separated set of strings
+::          --- %~1 string to find/locate
+::          --- %~2 longer tab separated set of strings
+::          --- %~3 variable to get result
+::
+:: Return: index if found, 0 if not found
+:: Example: call:strfind ble "bla	ble	blu" where (returns 2)
+set "TAB=	"
+set "what=%~1"
+set "strings=%~2"
+set what=%what: =.%
+set strings=%strings: =.%
+:: echo / %strings%
+set pos=0
+set found=0
+for %%i in (%strings%) do (
+  if !found!==0 set /a "pos=!pos!+1"
+  :: echo //!pos! !found! %%i !what!
+  if %%i==%what% set found=1 & goto:found
+)
+:found
+(if %found% == 1 (
+    :: echo /// %what% Found on position: %pos%
+    set "%~3=%pos%") else (
+    :: echo /// %what% not found
+    set "%~3=0" )
+
+)
+goto:eof

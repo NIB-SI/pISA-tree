@@ -93,12 +93,7 @@ copy %mroot%\makeAssay.bat .
 copy %iroot%\showTree.bat .
 copy %iroot%\showMetadata.bat .
 copy %iroot%\xcheckMetadata.bat .
-rem Make test Analytes file
-echo Sample ID	Field1	Field2> Analytes.txt
-echo SMPL001	A1	B1>> Analytes.txt
-echo SMPL002	A2	B2>> Analytes.txt
-echo SMPL003	A3	B3>> Analytes.txt
-rem End Analytes.txt
+
 type README.MD
 del *.tmp
 dir .
