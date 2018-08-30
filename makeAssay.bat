@@ -229,7 +229,7 @@ rem
 :wetclass
 REM ------------------------------------------ wetclass
 rem cd
-rem echo tst %tmpldir%\%IDClass%\%IDType%\analytes.ini
+rem echo tst %tmpldir%\%IDClass%\%IDType%\AssayType.ini
 rem dir %tmpldir%
 rem dir ..\%tmpldir%
 set tasdir=%tmpldir%\%IDClass%\%IDType%
@@ -242,7 +242,7 @@ set "analytesInput=Analytes.txt"
   set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
   
-call:processAnalytes %tasdir%\analytes.ini
+call:processAnalytes %tasdir%\AssayType.ini
 
  rem echo tst after processAnalytes: line1 %line1%
  rem echo tst after processAnalytes: line2 %line2%
@@ -538,15 +538,15 @@ SET %~2=%files:~0,-1%
 )
 GOTO:EOF
 REM ----------------------------------------------------------
-:processAnalytes  --- read analytes.ini and loop through lines
+:processAnalytes  --- read AssayType.ini and loop through lines
 ::                --- %~1 file path
 ::                --- %~2 Variable to get result
 :: Return:    >>> 
-:: Example: call:processAnalytes %tmpldir%\%IDClass%\%IDType%\analytes.ini"
+:: Example: call:processAnalytes %tmpldir%\%IDClass%\%IDType%\AssayType.ini"
 rem first id is prefixed. will be reset to empty after the first line
 set postfix=_%IDName%
 set "lfn=%~1"
-if %lfn%=="" set "lfn=%tmpldir%\%IDClass%\%IDType%\analytes.ini"
+if %lfn%=="" set "lfn=%tmpldir%\%IDClass%\%IDType%\AssayType.ini"
 SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
@@ -560,7 +560,7 @@ call:writeAnalytes %analytesInput% "%line1%" "%line2%" )
 goto :eof
 rem ------------------------------------------------------------
 :processLine  --- compose metadata menu for a line
-::            --- %~1 line from analytes.ini template (two tab delimited strings)
+::            --- %~1 line from AssayType.ini template (two tab delimited strings)
 ::
 :: Example: call:processLine "Descriptor	Option1/Option2"
 SET "string=%~1"
@@ -580,7 +580,7 @@ goto :eof
 
 REM ----------------------------------------------------------
 :processLine2  --- compose metadata menu for a line
-::            --- %~1 line from analytes.ini template (two tab delimited strings)
+::            --- %~1 line from AssayType.ini template (two tab delimited strings)
 ::
 :: Example: call:processLine "Descriptor	Option1/Option2"
 SETLOCAL enabledelayedexpansion
