@@ -1,7 +1,7 @@
 # pISA-tree: Standard project directory tree (ISA compliant)
 
 This set of batch files is used to create standard directory tree for research projects.
-Batch files are provided to make standardized nested directories in accordance with ISA-tab framework (**I**nvestigation/**S**tudy/**A**ssay).
+Batch files are provided to make standardized nested directories in accordance with the ISA-tab framework (**I**nvestigation/**S**tudy/**A**ssay).
 
 Installation:
 
