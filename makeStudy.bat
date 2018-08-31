@@ -81,22 +81,18 @@ echo ### STUDY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
-copy %descFile%+..\common.ini %descFile%
-copy ..\common.ini .
-echo Fitobase link:	>> %descFile%
+copy %descFile%+..\common.ini %descFile% > NUL
+copy ..\common.ini . > NUL
 echo Raw Data:	>> %descFile%
 echo #### ASSAYS>>  %descFile%
 echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
 rem 
 rem  make main readme.md file
-copy %mroot%\makeAssay.bat .
-copy %iroot%\showTree.bat .
-copy %iroot%\showMetadata.bat .
-copy %iroot%\xcheckMetadata.bat .
-
-type README.MD
-del *.tmp
-dir .
+copy %mroot%\makeAssay.bat . > NUL
+copy %iroot%\showTree.bat . > NUL
+copy %iroot%\showMetadata.bat . > NUL
+copy %iroot%\xcheckMetadata.bat . > NUL
+REM
 type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
