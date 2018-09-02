@@ -57,7 +57,7 @@ set sroot=%cd%
 set "iroot=.."
 set "proot=..\%iroot%"
 set "mroot=..\%proot%"
-
+set "tmpldir=%mroot%\Templates"
 md reports
 rem put something to the directories
 rem to force git to add them
