@@ -5,7 +5,7 @@ Batch files are provided to make standardized nested directories in accordance w
 
 Installation:
 
-1. Download (zip file) or clone the repository from [NIB GitHub](https://github.com/NIB-SI/pISA-tree/archive/master.zip).
+1. Download (zip file) or clone the repository from [NIB GitHub](https://github.com/NIB-SI/pISA/archive/projects.zip).
 2. Extract files into your local pISA projects directory (ignore or delete .git-related files).
 3. User instructions are in INSTRUCTIONS.\* files.
 
@@ -14,6 +14,7 @@ Additional info:
 * <http://ablejec.nib.si/doc>
 
 Links:
+* pISA-tree GitHub page: https://nib-si.github.io/pISA/index.html
 * [ISA Model & Serialization Specifications](http://isa-tools.org/format/specification/)
 * [FAIRDOM hub](https://seek.sysmo-db.org/)
 
