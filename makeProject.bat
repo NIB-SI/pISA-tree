@@ -50,7 +50,8 @@ md %pdir%
 cd %pdir%
 echo %cd%
 set proot=%cd%
-set mroot=".."
+set "mroot=.."
+set "batdir=%mroot%\Templates"
 md presentations
 md reports
 rem put something to the directories
@@ -79,20 +80,21 @@ echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
 echo Project Path:	%cd% >> %descFile%
-copy %descFile%+..\common.ini %descFile%
-copy ..\common.ini .
+copy %descFile%+..\common.ini %descFile% > NUL
+copy ..\common.ini . > NUL
 rem copy bla.tmp %descFile%
 echo ##### INVESTIGATIONS!LF!>>  %descFile%
 rem
 rem  make main readme.md file
-copy %mroot%\makeInvestigation.bat .
-copy %mroot%\showTree.bat .
-copy %mroot%\showMetadata.bat .
-copy %mroot%\xcheckMetadata.bat .
-
+copy %batdir%\makeInvestigation.bat . >NUL 
+copy %mroot%\showTree.bat . > NUL
+copy %mroot%\showMetadata.bat . > NUL
+copy %mroot%\xcheckMetadata.bat . > NUL
 type README.MD
-del *.tmp
-dir.
+rem del *.tmp > NUL
+echo.
+echo project METADATA
+echo.
 type %descFile%
 cd..
 rem copy existing files from nonversioned tree (if any)

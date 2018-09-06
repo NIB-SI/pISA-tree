@@ -58,6 +58,7 @@ set "iroot=.."
 set "proot=..\%iroot%"
 set "mroot=..\%proot%"
 set "tmpldir=%mroot%\Templates"
+set "batdir=%mroot%\Templates"
 md reports
 rem put something to the directories
 rem to force git to add them
@@ -88,7 +89,7 @@ echo #### ASSAYS>>  %descFile%
 echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
 rem 
 rem  make main readme.md file
-copy %mroot%\makeAssay.bat . > NUL
+copy %batdir%\makeAssay.bat . > NUL
 copy %iroot%\showTree.bat . > NUL
 copy %iroot%\showMetadata.bat . > NUL
 copy %iroot%\xcheckMetadata.bat . > NUL
