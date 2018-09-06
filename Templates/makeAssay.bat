@@ -40,6 +40,7 @@ set "iroot=.."
 set "proot=..\%iroot%"
 set "mroot=..\%proot%"
 set "tmpldir=%mroot%\Templates"
+set "batdir=%mroot%\Templates"
 rem dir %tmpldir%
 rem pause
 rem ----------------------------------------------
@@ -152,6 +153,7 @@ set "iroot=..\%sroot%"
 set "proot=..\%iroot%"
 set "mroot=..\%proot%"
 set "tmpldir=%mroot%\Templates"
+set "batdir=%mroot%\Templates"
 goto %IDClass%
 rem ----------------------------------------------
 rem Make new assay directory tree

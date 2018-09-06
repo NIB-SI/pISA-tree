@@ -63,6 +63,7 @@ set iroot=%cd%
 set "proot=.."
 set "mroot=..\%proot%"
 set "tmpldir=%mroot%\Templates"
+set "batdir=%mroot%\Templates"
 call:getLayer _p_ pname
 md presentations
 md reports
@@ -109,12 +110,12 @@ echo INVESTIGATION:	%ID%>> ..\_PROJECT_METADATA.TXT
 
 rem
 rem  make main readme.md file
-copy %mroot%\makeStudy.bat . > NUL
+copy %batdir%\makeStudy.bat . > NUL
 copy %proot%\showTree.bat . > NUL
 copy %proot%\showMetadata.bat . > NUL
 copy %proot%\xcheckMetadata.bat . > NUL
 
-del *.tmp
+rem del *.tmp
 type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
