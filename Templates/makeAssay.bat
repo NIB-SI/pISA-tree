@@ -66,7 +66,7 @@ rem if /I %IDClass% EQU w set IDClass=Wet
 SETLOCAL ENABLEDELAYEDEXPANSION
 rem Supported classes
 SET "types="
-FOR /f "delims=" %%i IN ('dir %tmpldir% /b') DO (
+FOR /f "delims=" %%i IN ('dir %tmpldir% /AD/B') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
@@ -84,7 +84,7 @@ rem if /I %IDClass% EQU Wet set "types=NGS / RT"
 rem if /I %IDClass% EQU Dry set "types=R / Stat"
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "types="
-FOR /f "delims=" %%i IN ('dir %tmpldir%\%IDClass% /b') DO (
+FOR /f "delims=" %%i IN ('dir %tmpldir%\%IDClass% /AD/B') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
