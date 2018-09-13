@@ -254,10 +254,12 @@ call:processAnalytes %tasdir%\AssayType.ini
 REM ------------------------------------------/wetclass
 :R
 REM ---------------------------------------- R
+    copy %tmpldir%\_upload.bat . > NUL
     goto Finish
 REM ---------------------------------------- /R
 :Stat
 REM ---------------------------------------- R
+    copy %tmpldir%\_upload.bat . > NUL
     goto Finish
 REM ---------------------------------------- /R
 :Finish
