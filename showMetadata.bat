@@ -27,14 +27,20 @@ rem Shorten the path( remove project root) and change \ to /
 set "fname=%%i"
 set "fname=!fname:%cd%= * **!"
 set "fname=!fname:\=/!"
+set "fname=!fname:_=\_!"
 (echo.|set /p =" !fname!**!LF!")>>!lfn!
 echo !LF!---!LF!>>!lfn!
 REM set /p="TextHere" <nul >>!lfn!
 REM Add two blanks to each line
 set addtext="  "
 if exist tmpfile.tmp del /q tmpfile.tmp
+echo ^|Item^|Value^| >> tmpfile.tmp
+echo ^|:---^|:---^| >> tmpfile.tmp
 for /f "delims=" %%l in (%%i) Do (
-      echo %%l %addtext% >> tmpfile.tmp
+      set "iv=%%l"
+      set "iv=!iv::=:|!"
+      set "iv=!iv:_=\_!"
+      echo ^| !iv!  %addtext% ^| >> tmpfile.tmp
 )
 REM
 copy !lfn!+tmpfile.tmp !lfn!
