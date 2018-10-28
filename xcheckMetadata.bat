@@ -17,7 +17,9 @@ echo !LF!*!LF!>line.tmp
 where /R . _*.txt > src.tmp
 rem change \ with /
 echo # Check for missing metadata >!lfn!
-echo %cd:\=  !LF!/%>>!lfn!
+set "mycd=%cd:\=;%"
+set "mycd=%mycd:_=\_%
+echo %mycd:;=  !LF!/%>>!lfn!
 For /F "tokens=1*" %%i in (src.tmp) do (
 	rem (echo.|set /p =## %%i!LF!)>name.tmp
 	rem copy !lfn!+line.tmp !lfn!
@@ -27,6 +29,8 @@ For /F "tokens=1*" %%i in (src.tmp) do (
 	set "fname=%%i"
 	set "fname=!fname:%cd%= * !"
 	set "fname=!fname:\=/!"
+	set "fname=!fname:_=\_!"
+	echo !fname!
 	(echo.|set /p =" !fname! !LF!")>>!lfn!
 	echo !LF!---!LF!>>!lfn!
 	REM set /p="TextHere" <nul >>!lfn!

@@ -17,7 +17,9 @@ echo !LF!*!LF!>line.tmp
 where /R . _*.txt > src.tmp
 rem change \ with /
 echo # Metadata files>!lfn!
-echo %cd:\=  !LF!/%>>!lfn!
+set "mycd=%cd:\=;%"
+set "mycd=%mycd:_=\_%
+echo %mycd:;=  !LF!/%>>!lfn!
 For /F "tokens=1*" %%i in (src.tmp) do (
 	rem (echo.|set /p =## %%i!LF!)>name.tmp
 	rem copy !lfn!+line.tmp !lfn!
