@@ -17,11 +17,11 @@ call:Update %mroot% xcheckMetadata.bat
 call:Update %mroot% showMetadata.bat
 call:Update %mroot% showTree.bat
 del *.tmp
-echo ======================
+echo ==========================
 echo
 echo pISA-Projects are updated
 echo
-echo ======================
+echo ==========================
 pause
 goto:eof
 rem ---------- functions ---------------------------------
