@@ -17,17 +17,19 @@ call:Update %mroot% xcheckMetadata.bat
 call:Update %mroot% showMetadata.bat
 call:Update %mroot% showTree.bat
 del *.tmp
+echo ==========================
+echo
+echo pISA-Projects are updated
+echo
+echo ==========================
+pause
 goto:eof
 rem ---------- functions ---------------------------------
 :Update --- Copy and overwrite file down the directory tree
-::      --- %~1 File name to be copied
-::      --- %~2 Directory
+::      --- %~1 Origin directory
+::      --- %~2 File name to be copied
+echo Updating: %~2
 where /R . %~2 > src.tmp
 For /F "tokens=1*" %%a in (src.tmp) do copy /y "%~1\%~2" "%%a"
-echo ======================
-echo
-echo pISA-tree is updated
-echo
-echo ======================
-pause
+
 goto:EOF
