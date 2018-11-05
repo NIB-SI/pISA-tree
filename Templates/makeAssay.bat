@@ -234,6 +234,7 @@ rem cd
 rem echo tst %tmpldir%\%IDClass%\%IDType%\AssayType.ini
 rem dir %tmpldir%
 rem dir ..\%tmpldir%
+rem Assay type directory
 set tasdir=%tmpldir%\%IDClass%\%IDType%
 rem dir %tasdir%
 rem dir %tmpldir%
@@ -714,7 +715,7 @@ rem ----------------------------------------------------------
 ::          --- %~1 column name
 ::          --- %~2 phenodata file name (default is "%iroot%/phenodata.txt")
 ::          --- %~3 output file (default is "%sroot%/Analytes.txt")
-:: Return: writes the sample names to the output file
+:: Return: writes the sample names (first two columns) to the output file
 :: Example: call:getSamples %Assay_ID%
 ::
 set "infile="
@@ -742,15 +743,18 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
   setlocal EnableDelayedExpansion
   rem set "preparedLine=#!line:;=;#!"
   set "preparedLine=#!line:	=;#!"
-  FOR /F "tokens=1,%where% delims=;" %%c in ("!preparedLine!") DO (
+  rem get first two and 'assayID' tokens
+  FOR /F "tokens=1-2,%where% delims=;" %%c in ("!preparedLine!") DO (
     endlocal
     set "param1=%%c"
     set "param2=%%d"
+    set "param3=%%e"
     setlocal EnableDelayedExpansion
     set "param1=!param1:~1!"
     set "param2=!param2:~1!"
-    :: echo $1=!param1! $2=*!param2!*
-    if "!param2!" NEQ "" echo !param1!	!param2! >> %outfile%
+    set "param3=!param3:~1!"
+    rem echo $1=!param1! $2=*!param2!* $3=*!param3!*
+    if "!param3!" NEQ "" echo !param1!	!param2!	!param3! >> %outfile%
     endlocal
   )
 )
