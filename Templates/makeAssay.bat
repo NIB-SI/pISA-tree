@@ -90,10 +90,25 @@ FOR /f "delims=" %%i IN ('dir %tmpldir%\%IDClass% /AD/B') DO (
 SETLOCAL DISABLEDELAYEDEXPANSION
 if "%2" EQU "" (
 set "IDType="
-echo %tmpldir%\%IDClass%
-call:getMenu "Select Assay Type" %types% IDType ) else (
+rem echo %tmpldir%\%IDClass%
+call:getMenu "Select Assay Type" "%types%Other" IDType ) else (
 set "IDType=%2"
 )
+rem process Other type
+if %IDType% EQU Other (
+rem Create new assay type if needed
+echo:
+set NewType=""
+:Ask4
+if %NewType%* EQU * call:askFile "Enter new %IDClass% Assay Type ID: " NewType 
+if %NewType%* EQU * goto Ask4
+
+md %tmpldir%\%IDClass%\%NewType%
+copy NUL %tmpldir%\%IDClass%\%NewType%\AssayType.ini /Y > NUL
+echo New %IDClass% Assay Type was created: %NewType%
+set "IDType=%NewType%"
+)
+rem Other finished
 set "hd=%hd%Assay Type:		 %~4%IDType%/"
 call:displayhd "%hd%"
 rem echo Selected: %IDType%
@@ -221,8 +236,9 @@ rem ECHO ON
   call:inputMeta "Description" aDesc *
 rem ---- Type specific fields
 if /I "%IDClass%"=="WET" goto wetclass
-if /I "%IDType%" == "R" goto R
-if /I "%IDType%" == "Stat" goto Stat
+if /I "%IDClass%"=="DRY" goto dryclass
+rem if /I "%IDType%" == "R" goto R
+rem if /I "%IDType%" == "Stat" goto Stat
 echo .
 echo Warning: Unseen Assay Type: *%IDType%* - will make Generic %IDClass% Assay
 echo .
@@ -246,25 +262,19 @@ rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%an
   set "line1="
   set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
-  
-call:processAnalytes %tasdir%\AssayType.ini
+if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
 
  rem echo tst after processAnalytes: line1 %line1%
  rem echo tst after processAnalytes: line2 %line2%
  goto Finish
 REM ------------------------------------------/wetclass
-:R
-REM ---------------------------------------- R
+:dryclass
+REM ---------------------------------------- dryclass
     copy %tmpldir%\upload.bat . > NUL
     copy %tmpldir%\ignore.txt . > NUL
+    if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
     goto Finish
-REM ---------------------------------------- /R
-:Stat
-REM ---------------------------------------- R
-    copy %tmpldir%\upload.bat . > NUL
-    copy %tmpldir%\ignore.txt . > NUL
-    goto Finish
-REM ---------------------------------------- /R
+REM ---------------------------------------- /dryclass
 :Finish
 echo Data:	>> %descFile%
 rem ------------------------------------  include common.ini from project level
@@ -309,7 +319,7 @@ SETLOCAL
 echo.
 echo =======================================================
 echo.
-:: Default for typing is is the first item (needed for Other)
+:: Default for typing is the first item (needed for Other)
 set "x=%~3"
 set /p x=Enter %~1 [ %x% ]: 
 rem if %x% EQU "" set x="%~3"
@@ -660,7 +670,7 @@ setlocal enableextensions disabledelayedexpansion
     setlocal enabledelayedexpansion
     rem Ensure we do not have restricted characters in file name trying to use them as 
     rem delimiters and requesting the second token in the line
-    for /f tokens^=2^ delims^=^<^>^:^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
+    for /f tokens^=2^ delims^=^<^>^:^(^)^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
         rem If we are here there is a second token, so, there is a special character
         echo Error : Non allowed characters in ID
         endlocal & goto :askFile
@@ -760,7 +770,8 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
     endlocal
   )
 )
-) else (echo No column %~1 in: & echo %line1%)
+) 
+rem else (echo No column %~1 in: & echo %line1%)
 setlocal disabledelayedexpansion
 goto:eof
 rem ------------------------------------------------------------
