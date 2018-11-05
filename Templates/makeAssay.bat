@@ -98,24 +98,29 @@ rem process Other type
 if %IDType% EQU Other (
 rem Create new assay type if needed
 echo:
-set NewType=""
+set "NewType=""
 :Ask4
-if %NewType%* EQU * call:askFile "Enter new %IDClass% Assay Type ID: " NewType 
+if %NewType%* EQU * call:askFile "Enter new Assay Type ID: " NewType 
 if %NewType%* EQU * goto Ask4
-echo on
-if exist %tmpldir%\%IDClass%\%NewType% ( 
-  echo. ERROR: Assay type %NewType% already exists
-  set NewType="" 
+rem check type existence/uniqueness
+if exist %tmpldir%\DRY\%NewType% ( 
+  echo.
+  echo. ERROR: DRY assay type %NewType% already exists
+  echo.
+  set "NewType=" 
+  goto Ask4)
+  if exist %tmpldir%\WET\%NewType% ( 
+  echo.
+  echo. ERROR: WET assay type %NewType% already exists
+  echo.
+  set "NewType=" 
   goto Ask4)
 rem type ok
-echo on
 md %tmpldir%\%IDClass%\%NewType%
 copy NUL %tmpldir%\%IDClass%\%NewType%\AssayType.ini /Y > NUL
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
 )
-pause
-echo off
 rem Other finished
 set "hd=%hd%Assay Type:		 %~4%IDType%/"
 call:displayhd "%hd%"
@@ -678,15 +683,15 @@ setlocal enableextensions disabledelayedexpansion
     setlocal enabledelayedexpansion
     rem Ensure we do not have restricted characters in file name trying to use them as 
     rem delimiters and requesting the second token in the line
-    for /f tokens^=2^ delims^=^<^>^:^(^)^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
+    for /f tokens^=2^ delims^=^<^>^:^.^,^(^)^[^]^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
         rem If we are here there is a second token, so, there is a special character
-        echo Error : Non allowed characters in ID
+        echo. Error : Non allowed characters in ID
         endlocal & goto :askFile
     )
 
     rem Check MAX_PATH (260) limitation
     set "my_temp_file=!cd!\!my_file!" & if not "!my_temp_file:~260!"=="" (
-        echo Error : ID name too long
+        echo. Error : ID name too long
         endlocal & goto :askFile
     )
 
@@ -700,25 +705,25 @@ setlocal enableextensions disabledelayedexpansion
 
         rem Check we don't have a path 
         if /i not "%%~a"=="%%~nxa" (
-            echo Error : Paths are not allowed
+            echo. Error : Paths are not allowed
             goto :askFile
         )
 
         rem Check it is not a folder 
         if exist "%%~nxa\" (
-            echo Error : Folder with same name present 
+            echo. Error : Folder with same name present 
             goto :askFile
         )
 
         rem ASCII 0-31 check. Check file name can be created
         2>nul ( >>"%%~nxa" type nul ) || (
-            echo Error : File name is not valid for this file system
+            echo. Error : File name is not valid for this file system
             goto :askFile
         )
 
         rem Ensure it was not a special file name by trying to delete the newly created file
         2>nul ( del /q /f /a "%%~nxa" ) || (
-            echo Error : Reserved file name used
+            echo. Error : Reserved file name used
             goto :askFile
         )
 
