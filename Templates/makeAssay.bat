@@ -102,12 +102,20 @@ set NewType=""
 :Ask4
 if %NewType%* EQU * call:askFile "Enter new %IDClass% Assay Type ID: " NewType 
 if %NewType%* EQU * goto Ask4
-
+echo on
+if exist %tmpldir%\%IDClass%\%NewType% ( 
+  echo. ERROR: Assay type %NewType% already exists
+  set NewType="" 
+  goto Ask4)
+rem type ok
+echo on
 md %tmpldir%\%IDClass%\%NewType%
 copy NUL %tmpldir%\%IDClass%\%NewType%\AssayType.ini /Y > NUL
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
 )
+pause
+echo off
 rem Other finished
 set "hd=%hd%Assay Type:		 %~4%IDType%/"
 call:displayhd "%hd%"
