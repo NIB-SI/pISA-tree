@@ -560,6 +560,8 @@ SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
     )
+ rem no spaces in item names
+ set "line1=%line1: =_%"
  rem echo tst processAnalytes: line1 %line1%
  rem echo tst processAnalytes: line2 %line2%
  rem echo tst %analytesInput%
