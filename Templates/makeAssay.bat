@@ -45,7 +45,8 @@ rem dir %tmpldir%
 rem pause
 rem ----------------------------------------------
 rem Class: use argument 1 if present
-set today=%date:~13,4%-%date:~9,2%-%date:~5,2%
+rem set today=%date:~13,4%-%date:~9,2%-%date:~5,2%
+call:normalizeDate today -
 rem set IDClass=
 rem if "%1" EQU "" (
 rem echo @
@@ -817,3 +818,38 @@ for %%i in (%strings%) do (
 
 )
 goto:eof
+rem ------------------------------------------------------------
+:normalizeDate --- normalize current date into YYYYMMDD
+::                 should work for all native formats 0=m-d-y; 1=d-m-y; 2=y-m-d
+::             --- %~1 variable to accept result
+::             --- %~2 optional delimiter
+:: Return: current date in YYYYMMDD form
+:: Example: call:normalizeDate
+@echo on
+echo %~1
+echo +%~2+
+@Echo OFF
+rem get date format info from registry
+rem https://docs.microsoft.com/en-us/windows/desktop/intl/locale-idate
+SETLOCAL
+If "%Date%A" LSS "A" (Set _NumTok=1-3) Else (Set _NumTok=2-4)
+:: Default Delimiter of TAB and Space are used
+For /F "TOKENS=2*" %%A In ('REG QUERY "HKCU\Control Panel\International" /v iDate') Do Set _iDate=%%B
+For /F "TOKENS=2*" %%A In ('REG QUERY "HKCU\Control Panel\International" /v sDate') Do Set _sDate=%%B
+IF %_iDate%==0 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%H %%F %%G %~2
+IF %_iDate%==1 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%H %%G %%F %~2
+IF %_iDate%==2 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%F %%G %%H %~2
+endlocal&SET YYYYMMDD=%YYYYMMDD%&set "%~1=%YYYYMMDD%"
+GOTO :eof
+::
+:: Date elements are supplied in Y,M,D order but may have a leading zero
+::
+:procdate
+set sep=%4
+:: if single-digit day then 1%3 will be <100 else 2-digit
+IF 1%3 LSS 100 (SET YYYYMMDD=0%3) ELSE (SET YYYYMMDD=%3)
+:: if single-digit month then 1%2 will be <100 else 2-digit
+IF 1%2 LSS 100 (SET YYYYMMDD=0%2%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%2%sep%%YYYYMMDD%)
+:: Similarly for the year - I've never seen a single-digit year
+IF 1%1 LSS 100 (SET YYYYMMDD=20%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%1%sep%%YYYYMMDD%)
+GOTO :eof
