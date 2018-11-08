@@ -45,7 +45,8 @@ rem dir %tmpldir%
 rem pause
 rem ----------------------------------------------
 rem Class: use argument 1 if present
-set today=%date:~13,4%-%date:~9,2%-%date:~5,2%
+rem set today=%date:~13,4%-%date:~9,2%-%date:~5,2%
+call:normalizeDate today -
 rem set IDClass=
 rem if "%1" EQU "" (
 rem echo @
@@ -90,10 +91,38 @@ FOR /f "delims=" %%i IN ('dir %tmpldir%\%IDClass% /AD/B') DO (
 SETLOCAL DISABLEDELAYEDEXPANSION
 if "%2" EQU "" (
 set "IDType="
-echo %tmpldir%\%IDClass%
-call:getMenu "Select Assay Type" %types% IDType ) else (
+rem echo %tmpldir%\%IDClass%
+call:getMenu "Select Assay Type" "%types%Other" IDType ) else (
 set "IDType=%2"
 )
+rem process Other type
+if %IDType% EQU Other (
+rem Create new assay type if needed
+echo:
+set "NewType=""
+:Ask4
+if %NewType%* EQU * call:askFile "Enter new Assay Type ID: " NewType 
+if %NewType%* EQU * goto Ask4
+rem check type existence/uniqueness
+if exist %tmpldir%\DRY\%NewType% ( 
+  echo.
+  echo. ERROR: DRY assay type %NewType% already exists
+  echo.
+  set "NewType=" 
+  goto Ask4)
+  if exist %tmpldir%\WET\%NewType% ( 
+  echo.
+  echo. ERROR: WET assay type %NewType% already exists
+  echo.
+  set "NewType=" 
+  goto Ask4)
+rem type ok
+md %tmpldir%\%IDClass%\%NewType%
+copy NUL %tmpldir%\%IDClass%\%NewType%\AssayType.ini /Y > NUL
+echo New %IDClass% Assay Type was created: %NewType%
+set "IDType=%NewType%"
+)
+rem Other finished
 set "hd=%hd%Assay Type:		 %~4%IDType%/"
 call:displayhd "%hd%"
 rem echo Selected: %IDType%
@@ -221,8 +250,9 @@ rem ECHO ON
   call:inputMeta "Description" aDesc *
 rem ---- Type specific fields
 if /I "%IDClass%"=="WET" goto wetclass
-if /I "%IDType%" == "R" goto R
-if /I "%IDType%" == "Stat" goto Stat
+if /I "%IDClass%"=="DRY" goto dryclass
+rem if /I "%IDType%" == "R" goto R
+rem if /I "%IDType%" == "Stat" goto Stat
 echo .
 echo Warning: Unseen Assay Type: *%IDType%* - will make Generic %IDClass% Assay
 echo .
@@ -234,6 +264,7 @@ rem cd
 rem echo tst %tmpldir%\%IDClass%\%IDType%\AssayType.ini
 rem dir %tmpldir%
 rem dir ..\%tmpldir%
+rem Assay type directory
 set tasdir=%tmpldir%\%IDClass%\%IDType%
 rem dir %tasdir%
 rem dir %tmpldir%
@@ -245,25 +276,19 @@ rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%an
   set "line1="
   set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
-  
-call:processAnalytes %tasdir%\AssayType.ini
+if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
 
  rem echo tst after processAnalytes: line1 %line1%
  rem echo tst after processAnalytes: line2 %line2%
  goto Finish
 REM ------------------------------------------/wetclass
-:R
-REM ---------------------------------------- R
+:dryclass
+REM ---------------------------------------- dryclass
     copy %tmpldir%\upload.bat . > NUL
     copy %tmpldir%\ignore.txt . > NUL
+    if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
     goto Finish
-REM ---------------------------------------- /R
-:Stat
-REM ---------------------------------------- R
-    copy %tmpldir%\upload.bat . > NUL
-    copy %tmpldir%\ignore.txt . > NUL
-    goto Finish
-REM ---------------------------------------- /R
+REM ---------------------------------------- /dryclass
 :Finish
 echo Data:	>> %descFile%
 rem ------------------------------------  include common.ini from project level
@@ -308,7 +333,7 @@ SETLOCAL
 echo.
 echo =======================================================
 echo.
-:: Default for typing is is the first item (needed for Other)
+:: Default for typing is the first item (needed for Other)
 set "x=%~3"
 set /p x=Enter %~1 [ %x% ]: 
 rem if %x% EQU "" set x="%~3"
@@ -559,6 +584,8 @@ SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
     )
+ rem no spaces in item names
+ set "line1=%line1: =_%"
  rem echo tst processAnalytes: line1 %line1%
  rem echo tst processAnalytes: line2 %line2%
  rem echo tst %analytesInput%
@@ -657,15 +684,15 @@ setlocal enableextensions disabledelayedexpansion
     setlocal enabledelayedexpansion
     rem Ensure we do not have restricted characters in file name trying to use them as 
     rem delimiters and requesting the second token in the line
-    for /f tokens^=2^ delims^=^<^>^:^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
+    for /f tokens^=2^ delims^=^<^>^:^.^,^(^)^[^]^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
         rem If we are here there is a second token, so, there is a special character
-        echo Error : Non allowed characters in ID
+        echo. Error : Non allowed characters in ID
         endlocal & goto :askFile
     )
 
     rem Check MAX_PATH (260) limitation
     set "my_temp_file=!cd!\!my_file!" & if not "!my_temp_file:~260!"=="" (
-        echo Error : ID name too long
+        echo. Error : ID name too long
         endlocal & goto :askFile
     )
 
@@ -679,25 +706,25 @@ setlocal enableextensions disabledelayedexpansion
 
         rem Check we don't have a path 
         if /i not "%%~a"=="%%~nxa" (
-            echo Error : Paths are not allowed
+            echo. Error : Paths are not allowed
             goto :askFile
         )
 
         rem Check it is not a folder 
         if exist "%%~nxa\" (
-            echo Error : Folder with same name present 
+            echo. Error : Folder with same name present 
             goto :askFile
         )
 
         rem ASCII 0-31 check. Check file name can be created
         2>nul ( >>"%%~nxa" type nul ) || (
-            echo Error : File name is not valid for this file system
+            echo. Error : File name is not valid for this file system
             goto :askFile
         )
 
         rem Ensure it was not a special file name by trying to delete the newly created file
         2>nul ( del /q /f /a "%%~nxa" ) || (
-            echo Error : Reserved file name used
+            echo. Error : Reserved file name used
             goto :askFile
         )
 
@@ -714,7 +741,7 @@ rem ----------------------------------------------------------
 ::          --- %~1 column name
 ::          --- %~2 phenodata file name (default is "%iroot%/phenodata.txt")
 ::          --- %~3 output file (default is "%sroot%/Analytes.txt")
-:: Return: writes the sample names to the output file
+:: Return: writes the sample names (first two columns) to the output file
 :: Example: call:getSamples %Assay_ID%
 ::
 set "infile="
@@ -742,19 +769,23 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
   setlocal EnableDelayedExpansion
   rem set "preparedLine=#!line:;=;#!"
   set "preparedLine=#!line:	=;#!"
-  FOR /F "tokens=1,%where% delims=;" %%c in ("!preparedLine!") DO (
+  rem get first two and 'assayID' tokens
+  FOR /F "tokens=1-2,%where% delims=;" %%c in ("!preparedLine!") DO (
     endlocal
     set "param1=%%c"
     set "param2=%%d"
+    set "param3=%%e"
     setlocal EnableDelayedExpansion
     set "param1=!param1:~1!"
     set "param2=!param2:~1!"
-    :: echo $1=!param1! $2=*!param2!*
-    if "!param2!" NEQ "" echo !param1!	!param2! >> %outfile%
+    set "param3=!param3:~1!"
+    rem echo $1=!param1! $2=*!param2!* $3=*!param3!*
+    if "!param3!" NEQ "" echo !param1!	!param2!	!param3! >> %outfile%
     endlocal
   )
 )
-) else (echo No column %~1 in: & echo %line1%)
+) 
+rem else (echo No column %~1 in: & echo %line1%)
 setlocal disabledelayedexpansion
 goto:eof
 rem ------------------------------------------------------------
@@ -787,3 +818,38 @@ for %%i in (%strings%) do (
 
 )
 goto:eof
+rem ------------------------------------------------------------
+:normalizeDate --- normalize current date into YYYYMMDD
+::                 should work for all native formats 0=m-d-y; 1=d-m-y; 2=y-m-d
+::             --- %~1 variable to accept result
+::             --- %~2 optional delimiter
+:: Return: current date in YYYYMMDD form
+:: Example: call:normalizeDate
+@echo on
+echo %~1
+echo +%~2+
+@Echo OFF
+rem get date format info from registry
+rem https://docs.microsoft.com/en-us/windows/desktop/intl/locale-idate
+SETLOCAL
+If "%Date%A" LSS "A" (Set _NumTok=1-3) Else (Set _NumTok=2-4)
+:: Default Delimiter of TAB and Space are used
+For /F "TOKENS=2*" %%A In ('REG QUERY "HKCU\Control Panel\International" /v iDate') Do Set _iDate=%%B
+For /F "TOKENS=2*" %%A In ('REG QUERY "HKCU\Control Panel\International" /v sDate') Do Set _sDate=%%B
+IF %_iDate%==0 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%H %%F %%G %~2
+IF %_iDate%==1 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%H %%G %%F %~2
+IF %_iDate%==2 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%F %%G %%H %~2
+endlocal&SET YYYYMMDD=%YYYYMMDD%&set "%~1=%YYYYMMDD%"
+GOTO :eof
+::
+:: Date elements are supplied in Y,M,D order but may have a leading zero
+::
+:procdate
+set sep=%4
+:: if single-digit day then 1%3 will be <100 else 2-digit
+IF 1%3 LSS 100 (SET YYYYMMDD=0%3) ELSE (SET YYYYMMDD=%3)
+:: if single-digit month then 1%2 will be <100 else 2-digit
+IF 1%2 LSS 100 (SET YYYYMMDD=0%2%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%2%sep%%YYYYMMDD%)
+:: Similarly for the year - I've never seen a single-digit year
+IF 1%1 LSS 100 (SET YYYYMMDD=20%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%1%sep%%YYYYMMDD%)
+GOTO :eof
