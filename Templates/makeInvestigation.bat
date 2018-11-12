@@ -87,8 +87,8 @@ call:getLayer _p_ pname
 call:getLayer _I_ iname
 REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
-echo project:	%pname%> %descFile%
-echo Investigation:	%iname%>> %descFile%
+echo Investigation:	%iname%> %descFile%
+echo project:	%pname%>> %descFile%
 echo ### INVESTIGATION>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *

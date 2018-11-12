@@ -235,10 +235,10 @@ call:getLayer _S_ sname
 call:getLayer _A_ aname
 rem -------------------------------------- make ASSAY_DESCRIPTION
 set descFile=".\_ASSAY_METADATA.TXT"
-echo project:	%pname%> %descFile%
-echo Investigation:	%iname%>> %descFile%
+echo Assay:	%Adir%> %descFile%
 echo Study:	%sname%>> %descFile%
-echo Assay:	%Adir%>> %descFile%
+echo Investigation:	%iname%>> %descFile%
+echo project:	%pname%>> %descFile%
 echo ### ASSAY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
 echo Assay Class:	 %IDClass%>> %descFile%

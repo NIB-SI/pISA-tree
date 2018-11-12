@@ -75,9 +75,9 @@ call:getLayer _p_ pname
 call:getLayer _I_ iname
 call:getLayer _S_ sname
 rem -----------------------------------------------
-echo project:	%pname%> %descFile%
+echo Study:	%sname%> %descFile%
 echo Investigation:	%iname%>> %descFile%
-echo Study:	%sname%>> %descFile%
+echo project:	%pname%>> %descFile%
 echo ### STUDY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
