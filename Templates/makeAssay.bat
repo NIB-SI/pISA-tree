@@ -12,6 +12,7 @@ rem Backup copy if assay folder exists
 rem robocopy %1 X-%1 /MIR
 rem ------------------------------------------------------
 rem
+TITLE pISA-tree
 setlocal EnableDelayedExpansion
 set LF=^
 
@@ -302,8 +303,12 @@ rem
 rem  make main readme.md file
 rem type README.MD
 rem dir .
-rem cls
-rem type %descFile%
+cls
+echo ======================================
+echo Assay METADATA
+echo ======================================
+rem call:showDesc %descFile%
+type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
@@ -825,9 +830,9 @@ rem ------------------------------------------------------------
 ::             --- %~2 optional delimiter
 :: Return: current date in YYYYMMDD form
 :: Example: call:normalizeDate
-@echo on
-echo %~1
-echo +%~2+
+rem @echo on
+rem echo %~1
+rem echo +%~2+
 @Echo OFF
 rem get date format info from registry
 rem https://docs.microsoft.com/en-us/windows/desktop/intl/locale-idate
@@ -853,3 +858,13 @@ IF 1%2 LSS 100 (SET YYYYMMDD=0%2%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%2%sep%%YYYY
 :: Similarly for the year - I've never seen a single-digit year
 IF 1%1 LSS 100 (SET YYYYMMDD=20%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%1%sep%%YYYYMMDD%)
 GOTO :eof
+rem -------------------------------------------------------------------
+:showDesc   --- show description file in columns 
+::          --- %~1 file name
+::
+:: Example: call:showDesc %descFile%
+::
+setlocal
+For /F "TOKENS=1,2" %%A In (%~1) echo %%A		%%B
+endlocal
+goto :EOF

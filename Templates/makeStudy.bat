@@ -11,6 +11,7 @@ rem cd d:\_X
 rem Backup copy if project folder exists
 rem robocopy %1 X-%1 /MIR
 rem ------------------------------------------------------
+TITLE pISA-tree
 echo ============================
 echo pISA-tree: make STUDY 
 echo ----------------------------
@@ -94,6 +95,10 @@ copy %iroot%\showTree.bat . > NUL
 copy %iroot%\showMetadata.bat . > NUL
 copy %iroot%\xcheckMetadata.bat . > NUL
 REM
+cls
+echo ======================================
+echo Study METADATA
+echo ======================================
 type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)

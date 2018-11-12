@@ -11,6 +11,7 @@ rem cd d:\_X
 rem Backup copy if the folder exists
 rem robocopy %ID% X-%ID% /MIR
 rem ------------------------------------------------------
+TITLE pISA-tree
 echo =============================
 echo pISA-tree: make INVESTIGATION 
 echo -----------------------------
@@ -116,6 +117,10 @@ copy %proot%\showMetadata.bat . > NUL
 copy %proot%\xcheckMetadata.bat . > NUL
 
 rem del *.tmp
+cls
+echo ======================================
+echo Investigation METADATA
+echo ======================================
 type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
