@@ -73,7 +73,7 @@ rem to force git to add them
 echo # Investigation %ID% >  .\README.MD
 echo # Reports for investigation %ID% >  .\reports\README.MD
 echo # Presentations for investigation %ID% >  .\presentations\README.MD
-echo # Describe samples > .\phenodata.txt
+echo # Describe samples > .\%pfn%
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -98,14 +98,17 @@ echo Investigation Path:	%cd%>> %descFile%
 copy %descFile%+..\common.ini %descFile% > NUL
 copy ..\common.ini .  > NUL
 rem copy bla.tmp %descFile%
-echo Phenodata:	./phenodata.txt>> %descFile%
+rem create phenodata file name
+call:normalizeDate danes
+set pfn=phenodata_%danes%.txt
 rem Make test phenodata file
-echo SampleID	SampleName	AdditionalField1	Assay001> phenodata.txt
-echo SMPL001	Sample_001	B1	1>> phenodata.txt
-echo SMPL002	Sample_002	B2	>> phenodata.txt
-echo SMPL003	Sample_003	B3	1>> phenodata.txt
-echo SMPL004	Sample_004	B4	>> phenodata.txt
-rem End test phenodata.txt
+echo Phenodata:	./%pfn%>> %descFile%
+echo SampleID	SampleName	AdditionalField1	Assay001> %pfn%
+echo SMPL001	Sample_001	B1	x>> %pfn%
+echo SMPL002	Sample_002	B2	>> %pfn%
+echo SMPL003	Sample_003	B3	x>> %pfn%
+echo SMPL004	Sample_004	B4	>> %pfn%
+rem End test %pfn%
 echo Featuredata:	./featuredata.txt>> %descFile%
 rem echo INVESTIGATION:	%ID%>> ..\_PROJECT_METADATA.TXT
 
@@ -307,3 +310,48 @@ setlocal enableextensions disabledelayedexpansion
     (endlocal 
      set "%~2=%my_file%")
 goto :eof
+rem ------------------------------------------------------------
+:normalizeDate --- normalize current date into YYYYMMDD
+::                 should work for all native formats 0=m-d-y; 1=d-m-y; 2=y-m-d
+::             --- %~1 variable to accept result
+::             --- %~2 optional delimiter
+:: Return: current date in YYYYMMDD form
+:: Example: call:normalizeDate
+rem @echo on
+rem echo %~1
+rem echo +%~2+
+@Echo OFF
+rem get date format info from registry
+rem https://docs.microsoft.com/en-us/windows/desktop/intl/locale-idate
+SETLOCAL
+If "%Date%A" LSS "A" (Set _NumTok=1-3) Else (Set _NumTok=2-4)
+:: Default Delimiter of TAB and Space are used
+For /F "TOKENS=2*" %%A In ('REG QUERY "HKCU\Control Panel\International" /v iDate') Do Set _iDate=%%B
+For /F "TOKENS=2*" %%A In ('REG QUERY "HKCU\Control Panel\International" /v sDate') Do Set _sDate=%%B
+IF %_iDate%==0 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%H %%F %%G %~2
+IF %_iDate%==1 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%H %%G %%F %~2
+IF %_iDate%==2 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%F %%G %%H %~2
+endlocal&SET YYYYMMDD=%YYYYMMDD%&set "%~1=%YYYYMMDD%"
+GOTO :eof
+::
+:: Date elements are supplied in Y,M,D order but may have a leading zero
+::
+:procdate
+set sep=%4
+:: if single-digit day then 1%3 will be <100 else 2-digit
+IF 1%3 LSS 100 (SET YYYYMMDD=0%3) ELSE (SET YYYYMMDD=%3)
+:: if single-digit month then 1%2 will be <100 else 2-digit
+IF 1%2 LSS 100 (SET YYYYMMDD=0%2%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%2%sep%%YYYYMMDD%)
+:: Similarly for the year - I've never seen a single-digit year
+IF 1%1 LSS 100 (SET YYYYMMDD=20%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%1%sep%%YYYYMMDD%)
+GOTO :eof
+rem -------------------------------------------------------------------
+:showDesc   --- show description file in columns 
+::          --- %~1 file name
+::
+:: Example: call:showDesc %descFile%
+::
+setlocal
+For /F "TOKENS=1,2" %%A In (%~1) echo %%A		%%B
+endlocal
+goto :EOF
