@@ -100,10 +100,10 @@ copy ..\common.ini .  > NUL
 rem copy bla.tmp %descFile%
 echo Phenodata:	./phenodata.txt>> %descFile%
 rem Make test phenodata file
-echo SampleID	SampleName	AdditionalField1	get1> phenodata.txt
-echo SMPL001	Sample_001	B1	x>> phenodata.txt
+echo SampleID	SampleName	AdditionalField1	Assay001> phenodata.txt
+echo SMPL001	Sample_001	B1	1>> phenodata.txt
 echo SMPL002	Sample_002	B2	>> phenodata.txt
-echo SMPL003	Sample_003	B3	x>> phenodata.txt
+echo SMPL003	Sample_003	B3	1>> phenodata.txt
 echo SMPL004	Sample_004	B4	>> phenodata.txt
 rem End test phenodata.txt
 echo Featuredata:	./featuredata.txt>> %descFile%
