@@ -119,7 +119,7 @@ if exist %tmpldir%\DRY\%NewType% (
   goto Ask4)
 rem type ok
 md %tmpldir%\%IDClass%\%NewType%
-copy NUL %tmpldir%\%IDClass%\%NewType%\AssayType.ini /Y > NUL
+echo Date	%today%> %tmpldir%\%IDClass%\%NewType%\AssayType.ini
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
 )
@@ -240,7 +240,7 @@ echo Assay:	%Adir%> %descFile%
 echo Study:	%sname%>> %descFile%
 echo Investigation:	%iname%>> %descFile%
 echo project:	%pname%>> %descFile%
-echo ### ASSAY>> %descFile%
+rem echo ### ASSAY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
 echo Assay Class:	 %IDClass%>> %descFile%
 echo Assay Type:	 %IDType%>> %descFile%
@@ -249,6 +249,7 @@ rem ECHO ON
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
+echo Assay Path:	%cd%>> %descFile%
 rem ---- Type specific fields
 if /I "%IDClass%"=="WET" goto wetclass
 if /I "%IDClass%"=="DRY" goto dryclass
@@ -294,7 +295,7 @@ REM ---------------------------------------- /dryclass
 echo Data:	>> %descFile%
 rem ------------------------------------  include common.ini from project level
 copy %descFile%+..\common.ini %descFile% >NUL
-echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
+rem echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
 copy %sroot%\showTree.bat . >NUL
 copy %sroot%\showMetadata.bat . >NUL
 copy %sroot%\xcheckMetadata.bat . >NUL
@@ -374,7 +375,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getMenu "%~1" %~3/getMenu xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -402,7 +403,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getInput "%~1" xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -481,7 +482,7 @@ for /f "tokens=1 delims=/" %%a in ("%~3") do set first=%%a
 rem echo =%~3=%first%= REM test
 if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%first%"
 :next
-echo %~1:	%xMeta%%prefix% >> %descFile%
+echo %~1:	%xMeta%%prefix%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 REM (ENDLOCAL
@@ -534,7 +535,7 @@ rem IF EXIST %~1 (
       rem echo %searchtext% %modified%
       rem pause
       rem should replace special token with SampleId before writing
-       echo %%a	%%b!modified! >> tmp.txt 
+       echo %%a	%%b!modified!>> tmp.txt 
        rem echo Write: %%a	%%b!modified!
        endlocal
        rem echo off
@@ -785,7 +786,7 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
     set "param2=!param2:~1!"
     set "param3=!param3:~1!"
     rem echo $1=!param1! $2=*!param2!* $3=*!param3!*
-    if "!param3!" NEQ "" echo !param1!	!param2!	!param3! >> %outfile%
+    if "!param3!" NEQ "" echo !param1!	!param2!	!param3!>> %outfile%
     endlocal
   )
 )
