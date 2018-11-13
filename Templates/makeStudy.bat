@@ -11,6 +11,7 @@ rem cd d:\_X
 rem Backup copy if project folder exists
 rem robocopy %1 X-%1 /MIR
 rem ------------------------------------------------------
+TITLE pISA-tree
 echo ============================
 echo pISA-tree: make STUDY 
 echo ----------------------------
@@ -75,18 +76,19 @@ call:getLayer _p_ pname
 call:getLayer _I_ iname
 call:getLayer _S_ sname
 rem -----------------------------------------------
-echo project:	%pname%> %descFile%
+echo Study:	%sname%> %descFile%
 echo Investigation:	%iname%>> %descFile%
-echo Study:	%sname%>> %descFile%
-echo ### STUDY>> %descFile%
+echo project:	%pname%>> %descFile%
+rem echo ### STUDY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
+rem echo Study Path:	%cd:\=/%>> %descFile%
 copy %descFile%+..\common.ini %descFile% > NUL
 copy ..\common.ini . > NUL
 echo Raw Data:	>> %descFile%
-echo #### ASSAYS>>  %descFile%
-echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
+rem echo #### ASSAYS>>  %descFile%
+rem echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
 rem 
 rem  make main readme.md file
 copy %batdir%\makeAssay.bat . > NUL
@@ -94,6 +96,10 @@ copy %iroot%\showTree.bat . > NUL
 copy %iroot%\showMetadata.bat . > NUL
 copy %iroot%\xcheckMetadata.bat . > NUL
 REM
+cls
+echo ======================================
+echo Study METADATA
+echo ======================================
 type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
@@ -149,7 +155,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getInput "%~1" xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -183,7 +189,7 @@ SETLOCAL EnableDelayedExpansion
    CALL SET _result=%%_test:\%_endbit%=%%
    rem echo %_result%
    (endlocal 
-   set "%~2=%_result%")
+   set "%~2=%_result: =%")
    rem echo %iname%
    endlocal
 goto :eof

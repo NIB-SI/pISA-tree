@@ -12,6 +12,7 @@ rem Backup copy if assay folder exists
 rem robocopy %1 X-%1 /MIR
 rem ------------------------------------------------------
 rem
+TITLE pISA-tree
 setlocal EnableDelayedExpansion
 set LF=^
 
@@ -118,7 +119,7 @@ if exist %tmpldir%\DRY\%NewType% (
   goto Ask4)
 rem type ok
 md %tmpldir%\%IDClass%\%NewType%
-copy NUL %tmpldir%\%IDClass%\%NewType%\AssayType.ini /Y > NUL
+echo Creation date	%today%> %tmpldir%\%IDClass%\%NewType%\AssayType.ini
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
 )
@@ -235,11 +236,11 @@ call:getLayer _S_ sname
 call:getLayer _A_ aname
 rem -------------------------------------- make ASSAY_DESCRIPTION
 set descFile=".\_ASSAY_METADATA.TXT"
-echo project:	%pname%> %descFile%
-echo Investigation:	%iname%>> %descFile%
+echo Assay:	%Adir%> %descFile%
 echo Study:	%sname%>> %descFile%
-echo Assay:	%Adir%>> %descFile%
-echo ### ASSAY>> %descFile%
+echo Investigation:	%iname%>> %descFile%
+echo project:	%pname%>> %descFile%
+rem echo ### ASSAY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
 echo Assay Class:	 %IDClass%>> %descFile%
 echo Assay Type:	 %IDType%>> %descFile%
@@ -248,7 +249,21 @@ rem ECHO ON
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
+rem echo Assay Path:	%cd:\=/%>> %descFile%
+rem set phenodata file
+SETLOCAL ENABLEDELAYEDEXPANSION
+SET "pfns="
+FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_20*.* /B') DO (
+    SET pfns=!pfns!%%i/
+)
+SETLOCAL DISABLEDELAYEDEXPANSION
+call:getMenu "Select phenodata file" "%pfns%None" pfn
+if "%pfn%" EQU "None" ( echo Phenodata:	%pfn%>> %descFile%
+) ELSE ( echo Phenodata:	%iroot:\=/%/%pfn%>> %descFile%)
 rem ---- Type specific fields
+set tasdir=%tmpldir%\%IDClass%\%IDType%
+    set "line1="
+    set "line2="
 if /I "%IDClass%"=="WET" goto wetclass
 if /I "%IDClass%"=="DRY" goto dryclass
 rem if /I "%IDType%" == "R" goto R
@@ -265,16 +280,13 @@ rem echo tst %tmpldir%\%IDClass%\%IDType%\AssayType.ini
 rem dir %tmpldir%
 rem dir ..\%tmpldir%
 rem Assay type directory
-set tasdir=%tmpldir%\%IDClass%\%IDType%
 rem dir %tasdir%
 rem dir %tmpldir%
 :: echo %cd%
 set "analytesInput=Analytes.txt"
-call:getSamples %IDName% %iroot%\phenodata.txt %aroot%\%analytesInput%
+call:getSamples %IDName% %iroot%\%pfn% %aroot%\%analytesInput%
 setlocal disabledelayedexpansion
 rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
-  set "line1="
-  set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
 if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
 
@@ -292,8 +304,8 @@ REM ---------------------------------------- /dryclass
 :Finish
 echo Data:	>> %descFile%
 rem ------------------------------------  include common.ini from project level
-copy %descFile%+..\common.ini %descFile% >NUL
-echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
+copy %descFile%+..\common.ini %descFile% \b >NUL
+rem echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
 copy %sroot%\showTree.bat . >NUL
 copy %sroot%\showMetadata.bat . >NUL
 copy %sroot%\xcheckMetadata.bat . >NUL
@@ -302,8 +314,12 @@ rem
 rem  make main readme.md file
 rem type README.MD
 rem dir .
-rem cls
-rem type %descFile%
+cls
+echo ======================================
+echo Assay METADATA
+echo ======================================
+rem call:showDesc %descFile%
+type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
@@ -369,7 +385,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getMenu "%~1" %~3/getMenu xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -397,7 +413,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getInput "%~1" xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -476,7 +492,7 @@ for /f "tokens=1 delims=/" %%a in ("%~3") do set first=%%a
 rem echo =%~3=%first%= REM test
 if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%first%"
 :next
-echo %~1:	%xMeta%%prefix% >> %descFile%
+echo %~1:	%xMeta%%prefix%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 REM (ENDLOCAL
@@ -529,7 +545,7 @@ rem IF EXIST %~1 (
       rem echo %searchtext% %modified%
       rem pause
       rem should replace special token with SampleId before writing
-       echo %%a	%%b!modified! >> tmp.txt 
+       echo %%a	%%b!modified!>> tmp.txt 
        rem echo Write: %%a	%%b!modified!
        endlocal
        rem echo off
@@ -737,16 +753,16 @@ setlocal enableextensions disabledelayedexpansion
      set "%~2=%my_file%")
 goto :eof
 rem ----------------------------------------------------------
-:getSamples --- get sample names from phenodata.txt
+:getSamples --- get sample names from %pfn%
 ::          --- %~1 column name
-::          --- %~2 phenodata file name (default is "%iroot%/phenodata.txt")
+::          --- %~2 phenodata file name (default is "%iroot%/%pfn%")
 ::          --- %~3 output file (default is "%sroot%/Analytes.txt")
 :: Return: writes the sample names (first two columns) to the output file
 :: Example: call:getSamples %Assay_ID%
 ::
 set "infile="
 set "outfile="
-if "%~2" NEQ "" (set "infile=%~2") else (set "infile=%iroot%/phenodata.txt")
+if "%~2" NEQ "" (set "infile=%~2") else (set "infile=%iroot%/%pfn%")
 if "%~3" NEQ "" (set "outfile=%~3") else (set "outfile=%sroot%/Analytes.txt")
 :: dir %infile%
 :: First line
@@ -780,7 +796,7 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
     set "param2=!param2:~1!"
     set "param3=!param3:~1!"
     rem echo $1=!param1! $2=*!param2!* $3=*!param3!*
-    if "!param3!" NEQ "" echo !param1!	!param2!	!param3! >> %outfile%
+    if "!param3!" NEQ "" echo !param1!	!param2!	!param3!>> %outfile%
     endlocal
   )
 )
@@ -825,9 +841,9 @@ rem ------------------------------------------------------------
 ::             --- %~2 optional delimiter
 :: Return: current date in YYYYMMDD form
 :: Example: call:normalizeDate
-@echo on
-echo %~1
-echo +%~2+
+rem @echo on
+rem echo %~1
+rem echo +%~2+
 @Echo OFF
 rem get date format info from registry
 rem https://docs.microsoft.com/en-us/windows/desktop/intl/locale-idate
@@ -853,3 +869,13 @@ IF 1%2 LSS 100 (SET YYYYMMDD=0%2%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%2%sep%%YYYY
 :: Similarly for the year - I've never seen a single-digit year
 IF 1%1 LSS 100 (SET YYYYMMDD=20%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%1%sep%%YYYYMMDD%)
 GOTO :eof
+rem -------------------------------------------------------------------
+:showDesc   --- show description file in columns 
+::          --- %~1 file name
+::
+:: Example: call:showDesc %descFile%
+::
+setlocal
+For /F "TOKENS=1,2" %%A In (%~1) echo %%A		%%B
+endlocal
+goto :EOF
