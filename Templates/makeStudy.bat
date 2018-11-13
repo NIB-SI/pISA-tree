@@ -79,15 +79,16 @@ rem -----------------------------------------------
 echo Study:	%sname%> %descFile%
 echo Investigation:	%iname%>> %descFile%
 echo project:	%pname%>> %descFile%
-echo ### STUDY>> %descFile%
+rem echo ### STUDY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
+echo Study Path:	%cd%>> %descFile%
 copy %descFile%+..\common.ini %descFile% > NUL
 copy ..\common.ini . > NUL
 echo Raw Data:	>> %descFile%
-echo #### ASSAYS>>  %descFile%
-echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
+rem echo #### ASSAYS>>  %descFile%
+rem echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
 rem 
 rem  make main readme.md file
 copy %batdir%\makeAssay.bat . > NUL
@@ -154,7 +155,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getInput "%~1" xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -188,7 +189,7 @@ SETLOCAL EnableDelayedExpansion
    CALL SET _result=%%_test:\%_endbit%=%%
    rem echo %_result%
    (endlocal 
-   set "%~2=%_result%")
+   set "%~2=%_result: =%")
    rem echo %iname%
    endlocal
 goto :eof
