@@ -76,15 +76,13 @@ call:getLayer _p_ pname
 REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!PROJECT	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo project:	%pname%> %descFile%
-echo ### PROJECT>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
-echo Project Path:	%cd% >> %descFile%
+echo Project Path:	%cd%>> %descFile%
 copy %descFile%+..\common.ini %descFile% > NUL
 copy ..\common.ini . > NUL
 rem copy bla.tmp %descFile%
-echo ##### INVESTIGATIONS!LF!>>  %descFile%
 rem
 rem  make main readme.md file
 copy %batdir%\makeInvestigation.bat . >NUL 
@@ -161,7 +159,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getInput "%~1" xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -201,7 +199,7 @@ SETLOCAL EnableDelayedExpansion
    CALL SET _result=%%_test:\%_endbit%=%%
    rem echo %_result%
    (endlocal 
-   set "%~2=%_result%")
+   set "%~2=%_result: =%")
    rem echo %iname%
    endlocal
 goto :eof
