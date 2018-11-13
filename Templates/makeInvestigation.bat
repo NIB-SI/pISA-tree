@@ -94,7 +94,7 @@ rem echo ### INVESTIGATION>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
-echo Investigation Path:	%cd%>> %descFile%
+rem echo Investigation Path:	%cd:\=/%>> %descFile%
 copy %descFile%+..\common.ini %descFile% > NUL
 copy ..\common.ini .  > NUL
 rem copy bla.tmp %descFile%

@@ -83,7 +83,7 @@ rem echo ### STUDY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
-echo Study Path:	%cd%>> %descFile%
+rem echo Study Path:	%cd:\=/%>> %descFile%
 copy %descFile%+..\common.ini %descFile% > NUL
 copy ..\common.ini . > NUL
 echo Raw Data:	>> %descFile%

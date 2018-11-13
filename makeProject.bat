@@ -47,6 +47,7 @@ rem set "PPath=!PPath:\=/!"
 rem echo %PPath%
 rem
 set pdir=_p_%ID%
+set pISAroot=%cd%
 md %pdir%
 cd %pdir%
 echo %cd%
@@ -79,7 +80,7 @@ echo project:	%pname%> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
-echo Project Path:	%cd%>> %descFile%
+echo pISA projects path:	%pISAroot:\=/%>> %descFile%
 copy %descFile%+..\common.ini %descFile% > NUL
 copy ..\common.ini . > NUL
 rem copy bla.tmp %descFile%

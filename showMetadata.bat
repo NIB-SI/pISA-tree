@@ -49,10 +49,10 @@ For /F "tokens=1*" %%i in (src.tmp) do (
 		)
 		for /f "delims=" %%l in (%%i) Do (
 			if "%rtyp%" EQU "md" (
-			set "iv=%%l"
-			set "iv=!iv::=:|!"
-			set "iv=!iv:_=\_!"
-			echo ^| !iv!  %addtext% ^| >> tmpfile.tmp
+				set "iv=%%l"
+				set "iv=!iv::	=:|!"
+				set "iv=!iv:_=\_!"
+				echo ^| !iv!  %addtext% ^| >> tmpfile.tmp
 			) ELSE (
 			echo %%l >> tmpfile.tmp
 			)

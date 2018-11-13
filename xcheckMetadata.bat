@@ -46,4 +46,4 @@ del *.tmp
 @echo on
 rem type Metadata.md
 @echo Metadata levels below %cd%
-write !lfn!
+open !lfn!

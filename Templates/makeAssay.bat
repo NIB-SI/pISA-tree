@@ -119,7 +119,7 @@ if exist %tmpldir%\DRY\%NewType% (
   goto Ask4)
 rem type ok
 md %tmpldir%\%IDClass%\%NewType%
-echo Date	%today%> %tmpldir%\%IDClass%\%NewType%\AssayType.ini
+echo Creation date	%today%> %tmpldir%\%IDClass%\%NewType%\AssayType.ini
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
 )
@@ -249,8 +249,21 @@ rem ECHO ON
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
-echo Assay Path:	%cd%>> %descFile%
+rem echo Assay Path:	%cd:\=/%>> %descFile%
+rem set phenodata file
+SETLOCAL ENABLEDELAYEDEXPANSION
+SET "pfns="
+FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_20*.* /B') DO (
+    SET pfns=!pfns!%%i/
+)
+SETLOCAL DISABLEDELAYEDEXPANSION
+call:getMenu "Select phenodata file" "%pfns%None" pfn
+if "%pfn%" EQU "None" ( echo Phenodata:	%pfn%>> %descFile%
+) ELSE ( echo Phenodata:	%iroot:\=/%/%pfn%>> %descFile%)
 rem ---- Type specific fields
+set tasdir=%tmpldir%\%IDClass%\%IDType%
+    set "line1="
+    set "line2="
 if /I "%IDClass%"=="WET" goto wetclass
 if /I "%IDClass%"=="DRY" goto dryclass
 rem if /I "%IDType%" == "R" goto R
@@ -267,16 +280,13 @@ rem echo tst %tmpldir%\%IDClass%\%IDType%\AssayType.ini
 rem dir %tmpldir%
 rem dir ..\%tmpldir%
 rem Assay type directory
-set tasdir=%tmpldir%\%IDClass%\%IDType%
 rem dir %tasdir%
 rem dir %tmpldir%
 :: echo %cd%
 set "analytesInput=Analytes.txt"
-call:getSamples %IDName% %iroot%\phenodata.txt %aroot%\%analytesInput%
+call:getSamples %IDName% %iroot%\%pfn% %aroot%\%analytesInput%
 setlocal disabledelayedexpansion
 rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
-  set "line1="
-  set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
 if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
 
@@ -743,16 +753,16 @@ setlocal enableextensions disabledelayedexpansion
      set "%~2=%my_file%")
 goto :eof
 rem ----------------------------------------------------------
-:getSamples --- get sample names from phenodata.txt
+:getSamples --- get sample names from %pfn%
 ::          --- %~1 column name
-::          --- %~2 phenodata file name (default is "%iroot%/phenodata.txt")
+::          --- %~2 phenodata file name (default is "%iroot%/%pfn%")
 ::          --- %~3 output file (default is "%sroot%/Analytes.txt")
 :: Return: writes the sample names (first two columns) to the output file
 :: Example: call:getSamples %Assay_ID%
 ::
 set "infile="
 set "outfile="
-if "%~2" NEQ "" (set "infile=%~2") else (set "infile=%iroot%/phenodata.txt")
+if "%~2" NEQ "" (set "infile=%~2") else (set "infile=%iroot%/%pfn%")
 if "%~3" NEQ "" (set "outfile=%~3") else (set "outfile=%sroot%/Analytes.txt")
 :: dir %infile%
 :: First line
