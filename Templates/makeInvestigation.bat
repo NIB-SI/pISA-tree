@@ -90,24 +90,24 @@ REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo Investigation:	%iname%> %descFile%
 echo project:	%pname%>> %descFile%
-echo ### INVESTIGATION>> %descFile%
+rem echo ### INVESTIGATION>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
+echo Investigation Path:	%cd%>> %descFile%
 copy %descFile%+..\common.ini %descFile% > NUL
 copy ..\common.ini .  > NUL
 rem copy bla.tmp %descFile%
 echo Phenodata:	./phenodata.txt>> %descFile%
 rem Make test phenodata file
-echo SampleID	Field1	Field2	get1> phenodata.txt
-echo SMPL001	A1	B1	x>> phenodata.txt
-echo SMPL002	A2	B2	>> phenodata.txt
-echo SMPL003	A3	B3	x>> phenodata.txt
-echo SMPL004	A4	B4	>> phenodata.txt
+echo SampleID	SampleName	AdditionalField1	get1> phenodata.txt
+echo SMPL001	Sample_001	B1	x>> phenodata.txt
+echo SMPL002	Sample_002	B2	>> phenodata.txt
+echo SMPL003	Sample_003	B3	x>> phenodata.txt
+echo SMPL004	Sample_004	B4	>> phenodata.txt
 rem End test phenodata.txt
 echo Featuredata:	./featuredata.txt>> %descFile%
-echo #### STUDIES!LF!>>  %descFile%
-echo INVESTIGATION:	%ID%>> ..\_PROJECT_METADATA.TXT
+rem echo INVESTIGATION:	%ID%>> ..\_PROJECT_METADATA.TXT
 
 rem
 rem  make main readme.md file
@@ -176,7 +176,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getInput "%~1" xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -219,7 +219,7 @@ SETLOCAL EnableDelayedExpansion
    CALL SET _result=%%_test:\%_endbit%=%%
    rem echo %_result%
    (endlocal 
-   set "%~2=%_result%")
+   set "%~2=%_result: =%")
    rem echo %iname%
    endlocal
 goto :eof
