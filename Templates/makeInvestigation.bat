@@ -109,7 +109,7 @@ echo SMPL002	Sample_002	B2	>> %pfn%
 echo SMPL003	Sample_003	B3	x>> %pfn%
 echo SMPL004	Sample_004	B4	>> %pfn%
 rem End test %pfn%
-echo Featuredata:	./featuredata.txt>> %descFile%
+echo Featuredata:	>> %descFile%
 rem echo INVESTIGATION:	%ID%>> ..\_PROJECT_METADATA.TXT
 
 rem
