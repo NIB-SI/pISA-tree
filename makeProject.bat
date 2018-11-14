@@ -81,8 +81,8 @@ echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
 echo pISA projects path:	%pISAroot:\=/%>> %descFile%
-copy %descFile%+..\common.ini %descFile% > NUL
-copy ..\common.ini . > NUL
+copy %descFile%+..\common.ini %descFile% /b > NUL
+copy ..\common.ini . /b> NUL
 rem copy bla.tmp %descFile%
 rem
 rem  make main readme.md file
