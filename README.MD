@@ -7,7 +7,7 @@ Installation:
 
 1. Download (zip file) or clone the repository from [NIB GitHub repository](https://github.com/NIB-SI/pISA/archive/projects.zip).
 2. Extract files into your local pISA projects directory (ignore or delete .git-related files).
-3. User instructions are in **INSTRUCTIONS** file.
+3. User instructions are in **INSTRUCTIONS** file. 
 
 Additional info:  
 * Files in `doc` folder  
@@ -17,4 +17,5 @@ Links:
 * [pISA-tree Web page](https://nib-si.github.io/pISA/index.html)  
 * [ISA Model & Serialization   Specifications](http://isa-tools.org/format/specification/)
 * [FAIRDOM hub](https://seek.sysmo-db.org/)  
+
 
