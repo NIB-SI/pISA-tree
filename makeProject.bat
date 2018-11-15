@@ -11,6 +11,7 @@ rem cd d:\_X
 rem Backup copy if the folder exists
 rem robocopy %ID% X-%ID% /MIR
 rem ------------------------------------------------------
+TITLE pISA-tree
 echo =============================
 echo pISA-tree: make PROJECT 
 echo -----------------------------
@@ -46,6 +47,7 @@ rem set "PPath=!PPath:\=/!"
 rem echo %PPath%
 rem
 set pdir=_p_%ID%
+set pISAroot=%cd%
 md %pdir%
 cd %pdir%
 echo %cd%
@@ -75,26 +77,26 @@ call:getLayer _p_ pname
 REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!PROJECT	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo project:	%pname%> %descFile%
-echo ### PROJECT>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
-echo Project Path:	%cd% >> %descFile%
-copy %descFile%+..\common.ini %descFile% > NUL
-copy ..\common.ini . > NUL
+echo pISA projects path:	%pISAroot:\=/%>> %descFile%
 rem copy bla.tmp %descFile%
-echo ##### INVESTIGATIONS!LF!>>  %descFile%
 rem
 rem  make main readme.md file
 copy %batdir%\makeInvestigation.bat . >NUL 
 copy %mroot%\showTree.bat . > NUL
 copy %mroot%\showMetadata.bat . > NUL
 copy %mroot%\xcheckMetadata.bat . > NUL
-type README.MD
 rem del *.tmp > NUL
-echo.
+rem append common.ini
+copy %descFile%+..\common.ini %descFile% /b> NUL
+copy ..\common.ini . /b > NUL
+rem Display metadata
+cls
+echo ======================================
 echo project METADATA
-echo.
+echo ======================================
 type %descFile%
 cd..
 rem copy existing files from nonversioned tree (if any)
@@ -159,7 +161,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getInput "%~1" xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -199,7 +201,7 @@ SETLOCAL EnableDelayedExpansion
    CALL SET _result=%%_test:\%_endbit%=%%
    rem echo %_result%
    (endlocal 
-   set "%~2=%_result%")
+   set "%~2=%_result: =%")
    rem echo %iname%
    endlocal
 goto :eof

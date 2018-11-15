@@ -12,6 +12,7 @@ rem Backup copy if assay folder exists
 rem robocopy %1 X-%1 /MIR
 rem ------------------------------------------------------
 rem
+TITLE pISA-tree
 setlocal EnableDelayedExpansion
 set LF=^
 
@@ -45,7 +46,8 @@ rem dir %tmpldir%
 rem pause
 rem ----------------------------------------------
 rem Class: use argument 1 if present
-set today=%date:~13,4%-%date:~9,2%-%date:~5,2%
+rem set today=%date:~13,4%-%date:~9,2%-%date:~5,2%
+call:normalizeDate today -
 rem set IDClass=
 rem if "%1" EQU "" (
 rem echo @
@@ -66,7 +68,7 @@ rem if /I %IDClass% EQU w set IDClass=Wet
 SETLOCAL ENABLEDELAYEDEXPANSION
 rem Supported classes
 SET "types="
-FOR /f "delims=" %%i IN ('dir %tmpldir% /b') DO (
+FOR /f "delims=" %%i IN ('dir %tmpldir% /AD/B') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
@@ -84,16 +86,44 @@ rem if /I %IDClass% EQU Wet set "types=NGS / RT"
 rem if /I %IDClass% EQU Dry set "types=R / Stat"
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "types="
-FOR /f "delims=" %%i IN ('dir %tmpldir%\%IDClass% /b') DO (
+FOR /f "delims=" %%i IN ('dir %tmpldir%\%IDClass% /AD/B') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
 if "%2" EQU "" (
 set "IDType="
-echo %tmpldir%\%IDClass%
-call:getMenu "Select Assay Type" %types% IDType ) else (
+rem echo %tmpldir%\%IDClass%
+call:getMenu "Select Assay Type" "%types%Other" IDType ) else (
 set "IDType=%2"
 )
+rem process Other type
+if %IDType% EQU Other (
+rem Create new assay type if needed
+echo:
+set "NewType=""
+:Ask4
+if %NewType%* EQU * call:askFile "Enter new Assay Type ID: " NewType 
+if %NewType%* EQU * goto Ask4
+rem check type existence/uniqueness
+if exist %tmpldir%\DRY\%NewType% ( 
+  echo.
+  echo. ERROR: DRY assay type %NewType% already exists
+  echo.
+  set "NewType=" 
+  goto Ask4)
+  if exist %tmpldir%\WET\%NewType% ( 
+  echo.
+  echo. ERROR: WET assay type %NewType% already exists
+  echo.
+  set "NewType=" 
+  goto Ask4)
+rem type ok
+md %tmpldir%\%IDClass%\%NewType%
+echo Creation date	%today%> %tmpldir%\%IDClass%\%NewType%\AssayType.ini
+echo New %IDClass% Assay Type was created: %NewType%
+set "IDType=%NewType%"
+)
+rem Other finished
 set "hd=%hd%Assay Type:		 %~4%IDType%/"
 call:displayhd "%hd%"
 rem echo Selected: %IDType%
@@ -206,11 +236,11 @@ call:getLayer _S_ sname
 call:getLayer _A_ aname
 rem -------------------------------------- make ASSAY_DESCRIPTION
 set descFile=".\_ASSAY_METADATA.TXT"
-echo project:	%pname%> %descFile%
-echo Investigation:	%iname%>> %descFile%
+echo Assay:	%Adir%> %descFile%
 echo Study:	%sname%>> %descFile%
-echo Assay:	%Adir%>> %descFile%
-echo ### ASSAY>> %descFile%
+echo Investigation:	%iname%>> %descFile%
+echo project:	%pname%>> %descFile%
+rem echo ### ASSAY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
 echo Assay Class:	 %IDClass%>> %descFile%
 echo Assay Type:	 %IDType%>> %descFile%
@@ -219,10 +249,25 @@ rem ECHO ON
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
+rem echo Assay Path:	%cd:\=/%>> %descFile%
+rem set phenodata file
+SETLOCAL ENABLEDELAYEDEXPANSION
+SET "pfns="
+FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_20*.* /B') DO (
+    SET pfns=!pfns!%%i/
+)
+SETLOCAL DISABLEDELAYEDEXPANSION
+call:getMenu "Select phenodata file" "%pfns%None" pfn
+if "%pfn%" EQU "None" ( echo Phenodata:	%pfn%>> %descFile%
+) ELSE ( echo Phenodata:	%iroot:\=/%/%pfn%>> %descFile%)
 rem ---- Type specific fields
+set tasdir=%tmpldir%\%IDClass%\%IDType%
+    set "line1="
+    set "line2="
 if /I "%IDClass%"=="WET" goto wetclass
-if /I "%IDType%" == "R" goto R
-if /I "%IDType%" == "Stat" goto Stat
+if /I "%IDClass%"=="DRY" goto dryclass
+rem if /I "%IDType%" == "R" goto R
+rem if /I "%IDType%" == "Stat" goto Stat
 echo .
 echo Warning: Unseen Assay Type: *%IDType%* - will make Generic %IDClass% Assay
 echo .
@@ -234,37 +279,37 @@ rem cd
 rem echo tst %tmpldir%\%IDClass%\%IDType%\AssayType.ini
 rem dir %tmpldir%
 rem dir ..\%tmpldir%
-set tasdir=%tmpldir%\%IDClass%\%IDType%
+rem Assay type directory
 rem dir %tasdir%
 rem dir %tmpldir%
 :: echo %cd%
 set "analytesInput=Analytes.txt"
-call:getSamples %IDName% %iroot%\phenodata.txt %aroot%\%analytesInput%
+call:getSamples %IDName% %iroot%\%pfn% %aroot%\%analytesInput%
 setlocal disabledelayedexpansion
 rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
-  set "line1="
-  set "line2="
   rem dir %tmpldir%\%IDClass%\%IDType%\
-  
-call:processAnalytes %tasdir%\AssayType.ini
+    set "line1="
+    set "line2="
+if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
 
  rem echo tst after processAnalytes: line1 %line1%
  rem echo tst after processAnalytes: line2 %line2%
  goto Finish
 REM ------------------------------------------/wetclass
-:R
-REM ---------------------------------------- R
+:dryclass
+REM ---------------------------------------- dryclass
+    copy %tmpldir%\upload.bat . > NUL
+    copy %tmpldir%\ignore.txt . > NUL
+    set "line1="
+    set "line2="
+    if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
     goto Finish
-REM ---------------------------------------- /R
-:Stat
-REM ---------------------------------------- R
-    goto Finish
-REM ---------------------------------------- /R
+REM ---------------------------------------- /dryclass
 :Finish
 echo Data:	>> %descFile%
 rem ------------------------------------  include common.ini from project level
-copy %descFile%+..\common.ini %descFile% >NUL
-echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
+copy %descFile%+..\common.ini %descFile% \b >NUL
+rem echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
 copy %sroot%\showTree.bat . >NUL
 copy %sroot%\showMetadata.bat . >NUL
 copy %sroot%\xcheckMetadata.bat . >NUL
@@ -273,8 +318,12 @@ rem
 rem  make main readme.md file
 rem type README.MD
 rem dir .
-rem cls
-rem type %descFile%
+cls
+echo ======================================
+echo Assay METADATA
+echo ======================================
+rem call:showDesc %descFile%
+type %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
@@ -304,7 +353,7 @@ SETLOCAL
 echo.
 echo =======================================================
 echo.
-:: Default for typing is is the first item (needed for Other)
+:: Default for typing is the first item (needed for Other)
 set "x=%~3"
 set /p x=Enter %~1 [ %x% ]: 
 rem if %x% EQU "" set x="%~3"
@@ -340,7 +389,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getMenu "%~1" %~3/getMenu xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -368,7 +417,7 @@ rem call:getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
 call:getInput "%~1" xMeta "%~3"
-echo %~1:	%xMeta% >> %descFile%
+echo %~1:	%xMeta%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
@@ -447,7 +496,7 @@ for /f "tokens=1 delims=/" %%a in ("%~3") do set first=%%a
 rem echo =%~3=%first%= REM test
 if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%first%"
 :next
-echo %~1:	%xMeta%%prefix% >> %descFile%
+echo %~1:	%xMeta%%prefix%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 REM (ENDLOCAL
@@ -500,7 +549,7 @@ rem IF EXIST %~1 (
       rem echo %searchtext% %modified%
       rem pause
       rem should replace special token with SampleId before writing
-       echo %%a	%%b!modified! >> tmp.txt 
+       echo %%a	%%b!modified!>> tmp.txt 
        rem echo Write: %%a	%%b!modified!
        endlocal
        rem echo off
@@ -555,6 +604,8 @@ SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
     )
+ rem no spaces in item names
+ set "line1=%line1: =_%"
  rem echo tst processAnalytes: line1 %line1%
  rem echo tst processAnalytes: line2 %line2%
  rem echo tst %analytesInput%
@@ -653,15 +704,15 @@ setlocal enableextensions disabledelayedexpansion
     setlocal enabledelayedexpansion
     rem Ensure we do not have restricted characters in file name trying to use them as 
     rem delimiters and requesting the second token in the line
-    for /f tokens^=2^ delims^=^<^>^:^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
+    for /f tokens^=2^ delims^=^<^>^:^.^,^(^)^[^]^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
         rem If we are here there is a second token, so, there is a special character
-        echo Error : Non allowed characters in ID
+        echo. Error : Non allowed characters in ID
         endlocal & goto :askFile
     )
 
     rem Check MAX_PATH (260) limitation
     set "my_temp_file=!cd!\!my_file!" & if not "!my_temp_file:~260!"=="" (
-        echo Error : ID name too long
+        echo. Error : ID name too long
         endlocal & goto :askFile
     )
 
@@ -675,25 +726,25 @@ setlocal enableextensions disabledelayedexpansion
 
         rem Check we don't have a path 
         if /i not "%%~a"=="%%~nxa" (
-            echo Error : Paths are not allowed
+            echo. Error : Paths are not allowed
             goto :askFile
         )
 
         rem Check it is not a folder 
         if exist "%%~nxa\" (
-            echo Error : Folder with same name present 
+            echo. Error : Folder with same name present 
             goto :askFile
         )
 
         rem ASCII 0-31 check. Check file name can be created
         2>nul ( >>"%%~nxa" type nul ) || (
-            echo Error : File name is not valid for this file system
+            echo. Error : File name is not valid for this file system
             goto :askFile
         )
 
         rem Ensure it was not a special file name by trying to delete the newly created file
         2>nul ( del /q /f /a "%%~nxa" ) || (
-            echo Error : Reserved file name used
+            echo. Error : Reserved file name used
             goto :askFile
         )
 
@@ -706,16 +757,16 @@ setlocal enableextensions disabledelayedexpansion
      set "%~2=%my_file%")
 goto :eof
 rem ----------------------------------------------------------
-:getSamples --- get sample names from phenodata.txt
+:getSamples --- get sample names from %pfn%
 ::          --- %~1 column name
-::          --- %~2 phenodata file name (default is "%iroot%/phenodata.txt")
+::          --- %~2 phenodata file name (default is "%iroot%/%pfn%")
 ::          --- %~3 output file (default is "%sroot%/Analytes.txt")
-:: Return: writes the sample names to the output file
+:: Return: writes the sample names (first two columns) to the output file
 :: Example: call:getSamples %Assay_ID%
 ::
 set "infile="
 set "outfile="
-if "%~2" NEQ "" (set "infile=%~2") else (set "infile=%iroot%/phenodata.txt")
+if "%~2" NEQ "" (set "infile=%~2") else (set "infile=%iroot%/%pfn%")
 if "%~3" NEQ "" (set "outfile=%~3") else (set "outfile=%sroot%/Analytes.txt")
 :: dir %infile%
 :: First line
@@ -738,19 +789,23 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
   setlocal EnableDelayedExpansion
   rem set "preparedLine=#!line:;=;#!"
   set "preparedLine=#!line:	=;#!"
-  FOR /F "tokens=1,%where% delims=;" %%c in ("!preparedLine!") DO (
+  rem get first two and 'assayID' tokens
+  FOR /F "tokens=1-2,%where% delims=;" %%c in ("!preparedLine!") DO (
     endlocal
     set "param1=%%c"
     set "param2=%%d"
+    set "param3=%%e"
     setlocal EnableDelayedExpansion
     set "param1=!param1:~1!"
     set "param2=!param2:~1!"
-    :: echo $1=!param1! $2=*!param2!*
-    if "!param2!" NEQ "" echo !param1!	!param2! >> %outfile%
+    set "param3=!param3:~1!"
+    rem echo $1=!param1! $2=*!param2!* $3=*!param3!*
+    if "!param3!" NEQ "" echo !param1!	!param2!	!param3!>> %outfile%
     endlocal
   )
 )
-) else (echo No column %~1 in: & echo %line1%)
+) 
+rem else (echo No column %~1 in: & echo %line1%)
 setlocal disabledelayedexpansion
 goto:eof
 rem ------------------------------------------------------------
@@ -783,3 +838,48 @@ for %%i in (%strings%) do (
 
 )
 goto:eof
+rem ------------------------------------------------------------
+:normalizeDate --- normalize current date into YYYYMMDD
+::                 should work for all native formats 0=m-d-y; 1=d-m-y; 2=y-m-d
+::             --- %~1 variable to accept result
+::             --- %~2 optional delimiter
+:: Return: current date in YYYYMMDD form
+:: Example: call:normalizeDate
+rem @echo on
+rem echo %~1
+rem echo +%~2+
+@Echo OFF
+rem get date format info from registry
+rem https://docs.microsoft.com/en-us/windows/desktop/intl/locale-idate
+SETLOCAL
+If "%Date%A" LSS "A" (Set _NumTok=1-3) Else (Set _NumTok=2-4)
+:: Default Delimiter of TAB and Space are used
+For /F "TOKENS=2*" %%A In ('REG QUERY "HKCU\Control Panel\International" /v iDate') Do Set _iDate=%%B
+For /F "TOKENS=2*" %%A In ('REG QUERY "HKCU\Control Panel\International" /v sDate') Do Set _sDate=%%B
+IF %_iDate%==0 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%H %%F %%G %~2
+IF %_iDate%==1 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%H %%G %%F %~2
+IF %_iDate%==2 For /F "TOKENS=%_NumTok% DELIMS=%_sdate% " %%F In ("%Date%") Do CALL :procdate %%F %%G %%H %~2
+endlocal&SET YYYYMMDD=%YYYYMMDD%&set "%~1=%YYYYMMDD%"
+GOTO :eof
+::
+:: Date elements are supplied in Y,M,D order but may have a leading zero
+::
+:procdate
+set sep=%4
+:: if single-digit day then 1%3 will be <100 else 2-digit
+IF 1%3 LSS 100 (SET YYYYMMDD=0%3) ELSE (SET YYYYMMDD=%3)
+:: if single-digit month then 1%2 will be <100 else 2-digit
+IF 1%2 LSS 100 (SET YYYYMMDD=0%2%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%2%sep%%YYYYMMDD%)
+:: Similarly for the year - I've never seen a single-digit year
+IF 1%1 LSS 100 (SET YYYYMMDD=20%sep%%YYYYMMDD%) ELSE (SET YYYYMMDD=%1%sep%%YYYYMMDD%)
+GOTO :eof
+rem -------------------------------------------------------------------
+:showDesc   --- show description file in columns 
+::          --- %~1 file name
+::
+:: Example: call:showDesc %descFile%
+::
+setlocal
+For /F "TOKENS=1,2" %%A In (%~1) echo %%A		%%B
+endlocal
+goto :EOF
