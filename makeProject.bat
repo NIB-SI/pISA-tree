@@ -81,8 +81,6 @@ echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
 echo pISA projects path:	%pISAroot:\=/%>> %descFile%
-copy %descFile%+..\common.ini %descFile% > NUL
-copy ..\common.ini . > NUL
 rem copy bla.tmp %descFile%
 rem
 rem  make main readme.md file
@@ -90,8 +88,11 @@ copy %batdir%\makeInvestigation.bat . >NUL
 copy %mroot%\showTree.bat . > NUL
 copy %mroot%\showMetadata.bat . > NUL
 copy %mroot%\xcheckMetadata.bat . > NUL
-type README.MD
 rem del *.tmp > NUL
+rem append common.ini
+copy %descFile%+..\common.ini %descFile% /b> NUL
+copy ..\common.ini . /b > NUL
+rem Display metadata
 cls
 echo ======================================
 echo project METADATA
