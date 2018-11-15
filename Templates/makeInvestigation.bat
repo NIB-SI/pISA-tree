@@ -65,6 +65,7 @@ set "proot=.."
 set "mroot=..\%proot%"
 set "tmpldir=%mroot%\Templates"
 set "batdir=%mroot%\Templates"
+
 call:getLayer _p_ pname
 md presentations
 md reports
@@ -73,7 +74,6 @@ rem to force git to add them
 echo # Investigation %ID% >  .\README.MD
 echo # Reports for investigation %ID% >  .\reports\README.MD
 echo # Presentations for investigation %ID% >  .\presentations\README.MD
-echo # Describe samples > .\%pfn%
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -95,21 +95,23 @@ echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
 rem echo Investigation Path:	%cd:\=/%>> %descFile%
-copy %descFile%+..\common.ini %descFile% > NUL
-copy ..\common.ini .  > NUL
 rem copy bla.tmp %descFile%
 rem create phenodata file name
 call:normalizeDate danes
 set pfn=phenodata_%danes%.txt
-rem Make test phenodata file
-echo Phenodata:	./%pfn%>> %descFile%
-echo SampleID	SampleName	AdditionalField1	Assay001> %pfn%
-echo SMPL001	Sample_001	B1	x>> %pfn%
-echo SMPL002	Sample_002	B2	>> %pfn%
-echo SMPL003	Sample_003	B3	x>> %pfn%
-echo SMPL004	Sample_004	B4	>> %pfn%
+if exist %pfn% (
+	echo Phenodata %pfn% already exists: will not overwrite it
+	) else (
+	rem Make test phenodata file
+	echo Phenodata:	./%pfn%>> %descFile%
+	echo SampleID	SampleName	AdditionalField1	Assay001> %pfn%
+	echo SMPL001	Sample_001	B1	x>> %pfn%
+	echo SMPL002	Sample_002	B2	>> %pfn%
+	echo SMPL003	Sample_003	B3	x>> %pfn%
+	echo SMPL004	Sample_004	B4	>> %pfn%
 rem End test %pfn%
-echo Featuredata:	./featuredata.txt>> %descFile%
+)
+echo Featuredata:	>> %descFile%
 rem echo INVESTIGATION:	%ID%>> ..\_PROJECT_METADATA.TXT
 
 rem
@@ -118,8 +120,10 @@ copy %batdir%\makeStudy.bat . > NUL
 copy %proot%\showTree.bat . > NUL
 copy %proot%\showMetadata.bat . > NUL
 copy %proot%\xcheckMetadata.bat . > NUL
-
-rem del *.tmp
+rem append common.ini
+copy %descFile%+..\common.ini %descFile% /b> NUL
+copy ..\common.ini . /b > NUL
+rem Display metadata
 cls
 echo ======================================
 echo Investigation METADATA

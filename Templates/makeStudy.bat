@@ -84,8 +84,6 @@ echo Short Name:	%ID%>> %descFile%
   call:inputMeta "Title" aTitle *
   call:inputMeta "Description" aDesc *
 rem echo Study Path:	%cd:\=/%>> %descFile%
-copy %descFile%+..\common.ini %descFile% > NUL
-copy ..\common.ini . > NUL
 echo Raw Data:	>> %descFile%
 rem echo #### ASSAYS>>  %descFile%
 rem echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
@@ -96,6 +94,10 @@ copy %iroot%\showTree.bat . > NUL
 copy %iroot%\showMetadata.bat . > NUL
 copy %iroot%\xcheckMetadata.bat . > NUL
 REM
+rem append common.ini
+copy %descFile%+..\common.ini %descFile% /b> NUL
+copy ..\common.ini . /b > NUL
+rem Display metadata
 cls
 echo ======================================
 echo Study METADATA

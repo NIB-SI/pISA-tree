@@ -288,6 +288,8 @@ call:getSamples %IDName% %iroot%\%pfn% %aroot%\%analytesInput%
 setlocal disabledelayedexpansion
 rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   rem dir %tmpldir%\%IDClass%\%IDType%\
+    set "line1="
+    set "line2="
 if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
 
  rem echo tst after processAnalytes: line1 %line1%
@@ -298,6 +300,8 @@ REM ------------------------------------------/wetclass
 REM ---------------------------------------- dryclass
     copy %tmpldir%\upload.bat . > NUL
     copy %tmpldir%\ignore.txt . > NUL
+    set "line1="
+    set "line2="
     if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
     goto Finish
 REM ---------------------------------------- /dryclass
