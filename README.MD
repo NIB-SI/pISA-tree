@@ -14,7 +14,7 @@ Additional info:
 * Files at [http://ablejec.nib.si/doc](http://ablejec.nib.si/doc)  
 
 Links:  
-* pISA-tree [GitHub page](https://nib-si.github.io/pISA/index.html)  
+* [pISA-tree Web page](https://nib-si.github.io/pISA/index.html)  
 * [ISA Model & Serialization   Specifications](http://isa-tools.org/format/specification/)
 * [FAIRDOM hub](https://seek.sysmo-db.org/)  
 
