@@ -126,9 +126,9 @@ copy ..\common.ini . /b > NUL
 rem Display metadata
 cls
 echo ======================================
-echo Investigation METADATA
+echo      Investigation METADATA
 echo ======================================
-type %descFile%
+call:showDesc %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
@@ -355,7 +355,21 @@ rem -------------------------------------------------------------------
 ::
 :: Example: call:showDesc %descFile%
 ::
-setlocal
-For /F "TOKENS=1,2" %%A In (%~1) echo %%A		%%B
+SETLOCAL EnableDelayedExpansion
+For /F "TOKENS=1-2 delims=	" %%A In (%~1) do (
+    call:showTwoCol "%%A" "%%B"
+    )
 endlocal
 goto :EOF
+rem -------------------------------------------------------------------
+:showTwoCol --- show one line
+::			--- %~1 first column
+::			--- %~2 second column
+::
+:: Example: call:showTwoCol "Item name" "Item value"
+::
+	set "_sp=                                         "
+    set "iname=%~1%_sp%"
+    set "iname=%iname:~0,30%"
+    echo %iname% %~2
+goto:eof
