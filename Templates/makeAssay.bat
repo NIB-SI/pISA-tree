@@ -242,8 +242,8 @@ echo Investigation:	%iname%>> %descFile%
 echo project:	%pname%>> %descFile%
 rem echo ### ASSAY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
-echo Assay Class:	 %IDClass%>> %descFile%
-echo Assay Type:	 %IDType%>> %descFile%
+echo Assay Class:	%IDClass%>> %descFile%
+echo Assay Type:	%IDType%>> %descFile%
 rem ECHO ON
   rem set analytesInput=Analytes.txt
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
@@ -495,7 +495,7 @@ for /f "tokens=1 delims=/" %%a in ("%~3") do set first=%%a
 rem echo =%~3=%first%= REM test
 if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%first%"
 :next
-echo %~1:	%xMeta%%prefix%>> %descFile%
+if /I "%~3" NEQ "Blank" echo %~1:	%xMeta%%prefix%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 REM (ENDLOCAL
