@@ -467,7 +467,7 @@ rem :done
 echo. 
 choice /C:%mch% /M:Select 
 (ENDLOCAL
-    for /F "tokens=%errorlevel% delims=/" %%H in ("%_mn%") DO set "%~3=%%H
+    for /F "tokens=%errorlevel% delims=/" %%H in ("%_mn%") DO set "%~3=%%H"
 )
 GOTO:EOF
 rem -----------------------------------------------------
