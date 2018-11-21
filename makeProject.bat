@@ -90,6 +90,8 @@ copy %mroot%\showMetadata.bat . > NUL
 copy %mroot%\xcheckMetadata.bat . > NUL
 rem del *.tmp > NUL
 rem append common.ini
+rem call lib.cmd :processMeta .\Templates\meta_p.ini
+ call %batdir%\lib.cmd :processMeta %batdir%\meta_p.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
 rem Display metadata
@@ -307,3 +309,22 @@ rem -------------------------------------------------------------------
     set "iname=%iname:~0,30%"
     echo %iname% %~2
 goto:eof
+rem -------------------------------------------------------------------
+:processMeta  --- read meta ini file and loop through lines
+::                --- %~1 file path
+::                --- %~2 Variable to get result
+:: Return:    >>> 
+:: Example: call:processMeta %tmpldir%\%IDClass%\%IDType%\AssayType.ini"
+rem first id is prefixed. will be reset to empty after the first line
+echo off
+echo processMeta
+set "lfn=%~1"
+if %lfn%=="" echo Nothing to process
+SETLOCAL EnableDelayedExpansion
+FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
+echo %%a
+    call :processLine "%%a"
+    )
+echo off
+pause
+goto :eof
