@@ -5,22 +5,6 @@ D:
 
 ---
 
-* **/devel/_PROJECT_METADATA.TXT**
----
-
-Item	Value 
-project:	_p_bla 
-Short Name:	bla 
-Title:	* 
-Description:	* 
-pISA projects path:	D:/OMIKE/pISA 
-Principal investigator:	* 
-License:	Creative Commons Attribution 4.0 
-Sharing permission:	Private 
-Upload to FAIRDOMHub:	Yes 
-
----
-
 * **/devel/main/_p_bla/_PROJECT_METADATA.TXT**
 ---
 
@@ -217,6 +201,399 @@ Principal investigator:	*
 License:	Creative Commons Attribution 4.0 
 Sharing permission:	Private 
 Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_dd/_PROJECT_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_dd  
+Short Name:	dd 
+Title      :	* 
+Description:	* 
+pISA projects path:	D:/OMIKE/pISA 
+Local pISA-tree organisation:	NIB 
+pISA project creation date:	2018-11-22 
+pISA project creator:	* 
+Project funding code:	* 
+Project coordinator:	* 
+Project partners:	* 
+Project start date:	* 
+Project end date:	* 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_ss/_PROJECT_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_ss  
+Short Name:	ss 
+Title      :	naslov projekta 
+Description:	OPis prijekta, za novo vrstico lahko pisemo \n in nadaljujemo 
+pISA projects path:	D:/OMIKE/pISA 
+Local pISA-tree organisation:	NIB 
+pISA project creation date:	2018-11-22 
+pISA project creator:	Andrej Blejec 
+Project funding code:	unknown 
+Project coordinator:	* 
+Project partners:	* 
+Project start date:	* 
+Project end date:	* 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_ss/_I_inv1/_INVESTIGATION_METADATA.TXT**
+---
+
+Item	Value 
+Investigation:	_I_inv1  
+project:	_p_ss 
+Short Name:	inv1 
+Title:	* 
+Description:	* 
+Phenodata:	./phenodata_20181122.txt 
+Featuredata:	 
+pISA Investigation creation date:	2018-11-22 
+pISA Investigation creator:	* 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_ss/_I_inv1/_S_new/_STUDY_METADATA.TXT**
+---
+
+Item	Value 
+Study:	_S_new  
+Investigation:	_I_inv1 
+project:	_p_ss 
+Short Name:	new 
+Title:	* 
+Description:	* 
+Raw Data:	 
+pISA Study creation date:	2018-11-22 
+pISA Study creator:	* 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_ss/_I_inv1/_S_st1/_STUDY_METADATA.TXT**
+---
+
+Item	Value 
+Study:	_S_st1  
+Investigation:	_I_inv1 
+project:	_p_ss 
+Short Name:	st1 
+Title:	* 
+Description:	* 
+Raw Data:	 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_ss/_I_inv1/_S_st2/_STUDY_METADATA.TXT**
+---
+
+Item	Value 
+Study:	_S_st2  
+Investigation:	_I_inv1 
+project:	_p_ss 
+Short Name:	st2 
+Title:	* 
+Description:	* 
+Raw Data:	 
+pISA Study creation date:	2018-11-22 
+pISA Study creator:	jaz 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_ss/_I_inv1/_S_st222/_STUDY_METADATA.TXT**
+---
+
+Item	Value 
+Study:	_S_st222  
+Investigation:	_I_inv1 
+project:	_p_ss 
+Short Name:	st222 
+Title:	* 
+Description:	* 
+Raw Data:	 
+
+---
+
+* **/_p_ss/_I_inv1/_S_st3/_STUDY_METADATA.TXT**
+---
+
+Item	Value 
+Study:	_S_st3  
+Investigation:	_I_inv1 
+project:	_p_ss 
+Short Name:	st3 
+Title:	* 
+Description:	* 
+Raw Data:	 
+pISA Study creation date:	2018-11-22 
+pISA Study creator:	* 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_ss/_I_inv1/_S_st3/_A_as2-RT/_Assay_METADATA.TXT**
+---
+
+Item	Value 
+Assay:	_A_as2-RT 
+Study:	_S_st3 
+Investigation:	_I_inv1 
+project:	_p_ss 
+Short Name:	as2-RT 
+Assay Class:	WET 
+Assay Type:	RT 
+Title:	* 
+Description:	* 
+pISA Assay creation date:	2018-11-22 
+pISA Assay creator:	* 
+
+---
+
+* **/_p_ss/_I_inv1/_S_st3/_A_as4-RT/_Assay_METADATA.TXT**
+---
+
+Item	Value 
+Assay:	_A_as4-RT 
+Study:	_S_st3 
+Investigation:	_I_inv1 
+project:	_p_ss 
+Short Name:	as4-RT 
+Assay Class:	WET 
+Assay Type:	RT 
+Title:	* 
+Description:	* 
+pISA Assay creation date:	2018-11-22 
+pISA Assay creator:	* 
+Phenodata:	../../phenodata_20181122.txt 
+Creation date:	2018-11-22 
+RT ID:	RT_$ 
+RT1:	RT1 Option  
+RT2:	RT2 Option  
+Date of ...:	2018-11-22 
+Text field (required):	 
+Another ID:	Another-$ 
+RT One option:	CU0370 
+Text with options:	Anton 
+Notes:	 
+Data:	 
+
+---
+
+* **/_p_ss/_I_inv1/_S_st3/_A_assw-RNAisol/_Assay_METADATA.TXT**
+---
+
+Item	Value 
+Assay:	_A_assw-RNAisol 
+Study:	_S_st3 
+Investigation:	_I_inv1 
+project:	_p_ss 
+Short Name:	assw-RNAisol 
+Assay Class:	WET 
+Assay Type:	RNAisol 
+Title:	* 
+Description:	* 
+pISA Assay creation date:	2018-11-22 
+pISA Assay creator:	jaz 
+Phenodata:	../../phenodata_20181122.txt 
+Creation date:	2018-11-22 
+RNA ID:	$_RNA 
+Homogenisation protocol:	fastPrep 
+Date Homogenisation:	2018-11-22 
+Isolation Protocol:	Rneasy_Plant 
+Date Isolation:	2018-11-22 
+Storage RNA:	CU0369 
+Dnase treatment protocol:	* 
+Dnase ID:	$_DNase 
+Date DNAse_treatment:	2018-11-22 
+Storage_DNAse_treated:	CU0370 
+Operator:	Katja Stare 
+cDNA ID:	$_cDNA 
+DateRT:	2018-11-22 
+Notes:	 
+Data:	 
+
+---
+
+* **/_p_ss/_I_inv1/_S_st3/_A_sdsf-RNAisol/_Assay_METADATA.TXT**
+---
+
+Item	Value 
+Assay:	_A_sdsf-RNAisol 
+Study:	_S_st3 
+Investigation:	_I_inv1 
+project:	_p_ss 
+Short Name:	sdsf-RNAisol 
+Assay Class:	WET 
+Assay Type:	RNAisol 
+Title:	* 
+Description:	* 
+pISA Assay creation date:	2018-11-22 
+pISA Assay creator:	* 
+Phenodata:	../../phenodata_20181122.txt 
+Creation date:	2018-11-22 
+RNA ID:	$_RNA 
+Homogenisation protocol:	fastPrep 
+Date Homogenisation:	2018-11-22 
+Isolation Protocol:	Rneasy_Plant 
+Date Isolation:	2018-11-22 
+Storage RNA:	CU0369 
+Dnase treatment protocol:	* 
+Dnase ID:	$_DNase 
+Date DNAse_treatment:	2018-11-22 
+Storage_DNAse_treated:	CU0370 
+Operator:	Katja Stare 
+cDNA ID:	$_cDNA 
+DateRT:	2018-11-22 
+Notes:	 
+Data:	 
+
+---
+
+* **/_p_ss/_I_inv1/_S_st3/_A_test-R/_Assay_METADATA.TXT**
+---
+
+Item	Value 
+Assay:	_A_test-R 
+Study:	_S_st3 
+Investigation:	_I_inv1 
+project:	_p_ss 
+Short Name:	test-R 
+Assay Class:	DRY 
+Assay Type:	R 
+Title:	* 
+Description:	* 
+pISA Assay creation date:	2018-11-22 
+pISA Assay creator:	Andrej Blejec 
+Phenodata:	../../phenodata_20181122.txt 
+Creation date:	2018-11-22 
+Data:	 
+
+---
+
+* **/_p_tralala/_PROJECT_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_tralala  
+Short Name:	tralala 
+Title:	* 
+Description:	* 
+pISA projects path:	D:/OMIKE/pISA 
+Local pISA-tree organisation:	NIB 
+pISA project creation date:	2018-11-22 
+pISA project creator:	* 
+Project funding code:	* 
+Project coordinator:	* 
+Project partners:	* 
+Project start date:	* 
+Project end date:	* 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_tralala/_I_qq/_INVESTIGATION_METADATA.TXT**
+---
+
+Item	Value 
+Investigation:	_I_qq  
+project:	_p_tralala 
+Short Name:	qq 
+Title:	* 
+Description:	* 
+Phenodata:	./phenodata_20181122.txt 
+Featuredata:	 
+pISA Investigation creation date:	2018-11-22 
+pISA Investigation creator:	* 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_tralala/_I_qq/_S_st1/_STUDY_METADATA.TXT**
+---
+
+Item	Value 
+Study:	_S_st1  
+Investigation:	_I_qq 
+project:	_p_tralala 
+Short Name:	st1 
+Title:	* 
+Description:	* 
+Raw Data:	 
+pISA Study creation date:	2018-11-22 
+pISA Study creator:	* 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_tralala/_I_qq/_S_st1/_A_Assay001-RT/_Assay_METADATA.TXT**
+---
+
+Item	Value 
+Assay:	_A_Assay001-RT 
+Study:	_S_st1 
+Investigation:	_I_qq 
+project:	_p_tralala 
+Short Name:	Assay001-RT 
+Assay Class:	WET 
+Assay Type:	RT 
+Title:	* 
+Description:	* 
+pISA Assay creation date:	2018-11-22 
+pISA Assay creator:	* 
+Phenodata:	../../phenodata_20181122.txt 
+Creation date:	2018-11-22 
+RT ID:	RT_$ 
+RT1:	RT1 Option  
+RT2:	RT2 Option  
+Date of ...:	2018-11-22 
+Text field (required):	* 
+Another ID:	Another-$ 
+RT One option:	CU0370 
+Text with options:	Anton 
+Notes:	 
+Data:	 
 
 ---
 

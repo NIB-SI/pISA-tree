@@ -83,9 +83,6 @@ call %libdir%\lib.cmd :getLayer _I_ iname
 call %libdir%\lib.cmd :getLayer _S_ sname
 rem -----------------------------------------------
 echo Study:	%sname%> %descFile%
-echo Investigation:	%iname%>> %descFile%
-echo project:	%pname%>> %descFile%
-rem echo ### STUDY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call %libdir%\lib.cmd :inputMeta "Title" aTitle *
   call %libdir%\lib.cmd :inputMeta "Description" aDesc *

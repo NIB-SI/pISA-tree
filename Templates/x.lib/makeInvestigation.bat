@@ -93,8 +93,6 @@ call %libdir%\lib.cmd :getLayer _I_ iname
 REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo Investigation:	%iname%> %descFile%
-echo project:	%pname%>> %descFile%
-rem echo ### INVESTIGATION>> %descFile%
 echo Short Name:	%ID%>> %descFile%
   call %libdir%\lib.cmd :inputMeta "Title" aTitle *
   call %libdir%\lib.cmd :inputMeta "Description" aDesc *

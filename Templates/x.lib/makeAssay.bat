@@ -241,10 +241,6 @@ call %libdir%\lib.cmd :getLayer _S_ sname
 call %libdir%\lib.cmd :getLayer _A_ aname
 rem -------------------------------------- make ASSAY_METADATA
 echo Assay:	%Adir%> %descFile%
-echo Study:	%sname%>> %descFile%
-echo Investigation:	%iname%>> %descFile%
-echo project:	%pname%>> %descFile%
-rem echo ### ASSAY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
 echo Assay Class:	%IDClass%>> %descFile%
 echo Assay Type:	%IDType%>> %descFile%
