@@ -570,6 +570,7 @@ rem first id is prefixed. will be reset to empty after the first line
 echo off
 call:normalizeDate today -
 set "lfn=%~1"
+if not exist %lfn% goto:eof
 if %lfn%=="" echo Nothing to process
 SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (

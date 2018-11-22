@@ -22,6 +22,15 @@ set "TAB=	"
 echo =================================
 echo pISA-tree: make ASSAY 
 echo ---------------------------------
+rem ----------- init directories
+set descFile=".\_Assay_METADATA.TXT"
+set "sroot=%cd%"
+set "pISAroot=%sroot%\..\..\.."
+set "mroot=%sroot%\..\..\.."
+set "tmpldir=%mroot%\Templates"
+set "libdir=%tmpldir%\x.lib"
+set "batdir=%libdir%"
+rem -----------
 call:getLayer _S_ sname
 rem Check Study existence
 if x%sname::=%==x%sname% goto sok
@@ -40,8 +49,6 @@ set sroot=%cd%
 set "iroot=.."
 set "proot=..\%iroot%"
 set "mroot=..\%proot%"
-set "tmpldir=%mroot%\Templates"
-set "batdir=%mroot%\Templates"
 rem dir %tmpldir%
 rem pause
 rem ----------------------------------------------
@@ -68,7 +75,7 @@ rem if /I %IDClass% EQU w set IDClass=Wet
 SETLOCAL ENABLEDELAYEDEXPANSION
 rem Supported classes
 SET "types="
-FOR /f "delims=" %%i IN ('dir %tmpldir% /AD/B') DO (
+FOR /f "delims=" %%i IN ('dir %tmpldir%\*. /AD/B') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
@@ -179,11 +186,9 @@ md %Adir%
 cd %Adir%
 set aroot=%cd%
 set "sroot=.."
-set "iroot=..\%sroot%"
-set "proot=..\%iroot%"
-set "mroot=..\%proot%"
-set "tmpldir=%mroot%\Templates"
-set "batdir=%mroot%\Templates"
+set "iroot=%sroot%\.."
+set "proot=%iroot%\.."
+set "mroot=%proot%\.."
 goto %IDClass%
 rem ----------------------------------------------
 rem Make new assay directory tree
@@ -234,8 +239,7 @@ call:getLayer _p_ pname
 call:getLayer _I_ iname
 call:getLayer _S_ sname
 call:getLayer _A_ aname
-rem -------------------------------------- make ASSAY_DESCRIPTION
-set descFile=".\_ASSAY_METADATA.TXT"
+rem -------------------------------------- make ASSAY_METADATA
 echo Assay:	%Adir%> %descFile%
 echo Study:	%sname%>> %descFile%
 echo Investigation:	%iname%>> %descFile%
@@ -251,6 +255,9 @@ rem ECHO ON
   call:inputMeta "Description" aDesc *
 rem echo Assay Path:	%cd:\=/%>> %descFile%
 rem set phenodata file
+rem process level specific items
+ call %libdir%\lib.cmd :processMeta %sroot%\meta_A.ini
+ call %libdir%\lib.cmd :processMeta %tmpldir%\%IDClass%\%IDType%\meta.ini
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "pfns="
 FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_20*.* /B') DO (
