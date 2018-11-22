@@ -92,7 +92,7 @@ copy %mroot%\showMetadata.bat . > NUL
 copy %mroot%\xcheckMetadata.bat . > NUL
 rem del *.tmp > NUL
 rem process level specific items
- call %libdir%\lib.cmd :processMeta %libdir%\meta_p.ini
+ call %libdir%\lib.cmd :processMeta %mroot%\meta_p.ini
  copy %libdir%\meta_I.ini %proot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
@@ -115,3 +115,4 @@ echo project %ID% is ready.
 echo .
 echo ======================================
 PAUSE
+goto:eof

@@ -95,8 +95,6 @@ rem echo #### ASSAYS>>  %descFile%
 rem echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
 rem 
 rem  make main readme.md file
-dir %batdir%
-pause
 copy %batdir%\makeAssay.bat . > NUL
 copy %iroot%\showTree.bat . > NUL
 copy %iroot%\showMetadata.bat . > NUL
