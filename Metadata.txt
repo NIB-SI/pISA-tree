@@ -1,0 +1,222 @@
+# Metadata files
+D:  
+/OMIKE  
+/pISA
+
+---
+
+* **/devel/_PROJECT_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_bla 
+Short Name:	bla 
+Title:	* 
+Description:	* 
+pISA projects path:	D:/OMIKE/pISA 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/devel/main/_p_bla/_PROJECT_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_bla  
+### PROJECT 
+Short Name:	bla 
+Title:	Demo project  
+Description:	Demonstration of the pISA-tree  
+Project Path:	D:\OMIKE\pISA\devel\main\_p_bla  
+Investigator:	Name Lastname 
+##### INVESTIGATIONS 
+INVESTIGATION:	xyz 
+
+---
+
+* **/devel/main/_p_bla/_I_xyz/_INVESTIGATION_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_bla 
+Investigation:	_I_xyz  
+### INVESTIGATION 
+Short Name:	xyz 
+Title:	Demo investigation  
+Description:	*  
+Investigator:	Name Lastname 
+Phenodata:	./data/phenodata.txt 
+Featuredata:	./data/featuredata.txt 
+#### STUDIES 
+STUDY:	stu 
+
+---
+
+* **/devel/main/_p_bla/_I_xyz/_S_stu/_STUDY_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_bla 
+Investigation:	_I_xyz 
+Study:	_S_stu  
+### STUDY 
+Short Name:	stu 
+Title:	*  
+Description:	Note missing title  
+Investigator:	Name Lastname 
+Fitobase link:	 
+Raw Data:	 
+#### ASSAYS 
+ASSAY:	klm-R 
+ASSAY:	nop-RNAisol 
+
+---
+
+* **/devel/main/_p_bla/_I_xyz/_S_stu/_A_klm-R/_ASSAY_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_bla 
+Investigation:	_I_xyz 
+Study:	_S_stu 
+Assay:	_A_klm-R 
+### ASSAY 
+Short Name:	klm-R 
+Assay Class:	 DRY 
+Assay Type:	 R 
+Title:	DRY class assay  
+Description:	First look at the data  
+Data:	 
+Investigator:	Name Lastname 
+
+---
+
+* **/devel/main/_p_bla/_I_xyz/_S_stu/_A_nop-RNAisol/_ASSAY_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_bla 
+Investigation:	_I_xyz 
+Study:	_S_stu 
+Assay:	_A_nop-RNAisol 
+### ASSAY 
+Short Name:	nop-RNAisol 
+Assay Class:	 WET 
+Assay Type:	 RNAisol 
+Title:	WET class assay  
+Description:	Lab experiment measurements  
+RNA ID:	RNA_$  
+ng/ul:	""   
+260/280:	""   
+260/230:	""   
+Homogenisation protocol:	fastPrep  
+Date Homogenisation:	2018-05-29  
+Isolation Protocol:	Rneasy_Plant  
+Date Isolation:	2018-05-29  
+Storage RNA:	CU0369  
+Dnase treatment protocol:	prot1  
+Dnase ID :	DNase_$  
+Date DNAse_treatment:	2018-05-29  
+Storage_DNAse_treated:	CU0370  
+Operator:	Joe  
+cDNA ID:	cDNA_$  
+DateRT:	2018-05-29  
+Operator:	Anton  
+Notes:	   
+Fluidigm_chip:	Chip10  
+Data:	 
+Investigator:	Name Lastname 
+
+---
+
+* **/devel/other/pISA-tree-V2/_P_project1/_P_DESCRIPTION.TXT**
+---
+
+Item	Value 
+Project Path:	D:\OMIKE\pISA\main  
+
+---
+
+* **/devel/other/pISA-tree-V2/_P_project1/_I_Investigation1/_I_DESCRIPTION.TXT**
+---
+
+Item	Value 
+Project Path:	D:\OMIKE\pISA\main  
+
+---
+
+* **/devel/other/pISA-tree-V2/_P_project1/_I_Investigation1/_S_Study1/_S_DESCRIPTION.TXT**
+---
+
+Item	Value 
+Project Path:	D:\OMIKE\pISA\main  
+
+---
+
+* **/devel/other/pISA-tree-V2/_P_project1/_I_Investigation1/_S_Study1/_A_Assay-1-1-1-1/_A_DESCRIPTION.TXT**
+---
+
+Item	Value 
+Project Path:	D:\OMIKE\pISA\main  
+
+---
+
+* **/devel/other/pISA-tree-V2/_P_project1/_I_Investigation1/_S_Study1/_A_Assay-1-1-1-2/_A_DESCRIPTION.TXT**
+---
+
+Item	Value 
+Project Path:	D:\OMIKE\pISA\main  
+
+---
+
+* **/_p_aa/_PROJECT_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_aa  
+Short Name:	aa 
+Title:	* 
+Description:	* 
+pISA projects path:	D:/OMIKE/pISA 
+Local pISA-tree organisation:	NIB 
+pISA project creation date:	2018-11-22 
+pISA project creator:	* 
+Project funding code:	* 
+Project coordinator:	* 
+Project partners:	* 
+Project start date:	* 
+Project end date:	* 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+
+* **/_p_bbb/_PROJECT_METADATA.TXT**
+---
+
+Item	Value 
+project:	_p_bbb  
+Short Name:	bbb 
+Title:	* 
+Description:	* 
+pISA projects path:	D:/OMIKE/pISA 
+Local pISA-tree organisation:	NIB 
+pISA project creation date:	2018-11-22 
+pISA project creator:	* 
+Project funding code:	* 
+Project coordinator:	* 
+Project partners:	* 
+Project start date:	* 
+Project end date:	* 
+Principal investigator:	* 
+License:	Creative Commons Attribution 4.0 
+Sharing permission:	Private 
+Upload to FAIRDOMHub:	Yes 
+
+---
+

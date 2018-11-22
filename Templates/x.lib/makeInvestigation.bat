@@ -25,7 +25,19 @@ pause
 goto:eof
 :pok
 rem project already created
+rem ----------- init directories
 set descFile=".\_INVESTIGATION_METADATA.TXT"
+set pISAroot=%cd%
+set mroot=%cd%
+set "proot=%cd%"
+set "mroot=..\%proot%"
+set "tmpldir=%mroot%\Templates"
+set "batdir=%mroot%\Templates"
+set "tmpldir=%mroot%\Templates"
+set "libdir=%tmpldir%\x.lib"
+echo $
+pause
+rem -----------
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
@@ -61,10 +73,6 @@ md %Idir%
 cd %Idir%
 echo %cd%
 set iroot=%cd%
-set "proot=.."
-set "mroot=..\%proot%"
-set "tmpldir=%mroot%\Templates"
-set "batdir=%mroot%\Templates"
 
 call:getLayer _p_ pname
 md presentations
