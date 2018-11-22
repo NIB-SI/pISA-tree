@@ -15,7 +15,16 @@ TITLE pISA-tree
 echo ============================
 echo pISA-tree: make STUDY 
 echo ----------------------------
-call:getLayer _I_ iname
+rem ----------- init directories
+set descFile=".\_STUDY_METADATA.TXT"
+set "iroot=%cd%"
+set "pISAroot=%iroot%\..\.."
+set "mroot=%iroot%\..\.."
+set "tmpldir=%mroot%\Templates"
+set "libdir=%tmpldir%\x.lib"
+set "batdir=%libdir%"
+rem -----------
+call %libdir%\lib.cmd :getLayer _I_ iname
 rem Check Investigation existence
 if x%iname::=%==x%iname% goto iok
 echo.
@@ -25,18 +34,17 @@ pause
 goto:eof
 :iok
 rem Investigation already created
-set descFile=".\_STUDY_METADATA.TXT"
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
 rem echo @
-call:askFile "Enter Study ID: " ID
+call %libdir%\lib.cmd :askFile "Enter Study ID: " ID
 rem echo %ID%
 ) else (
 set ID=%1
 )
 :Ask
-if %ID% EQU "" call:askFile "Enter Study ID: " ID
+if %ID% EQU "" call %libdir%\lib.cmd :askFile "Enter Study ID: " ID
 if %ID% EQU "" goto Ask
 REM Check existence/uniqueness
 IF EXIST _S_%ID% (
@@ -72,17 +80,17 @@ set LF=^
 
 REM Two empty lines are necessary
 rem -----------------------------------------------
-call:getLayer _p_ pname
-call:getLayer _I_ iname
-call:getLayer _S_ sname
+call %libdir%\lib.cmd :getLayer _p_ pname
+call %libdir%\lib.cmd :getLayer _I_ iname
+call %libdir%\lib.cmd :getLayer _S_ sname
 rem -----------------------------------------------
 echo Study:	%sname%> %descFile%
 echo Investigation:	%iname%>> %descFile%
 echo project:	%pname%>> %descFile%
 rem echo ### STUDY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
-  call:inputMeta "Title" aTitle *
-  call:inputMeta "Description" aDesc *
+  call %libdir%\lib.cmd :inputMeta "Title" aTitle *
+  call %libdir%\lib.cmd :inputMeta "Description" aDesc *
 rem echo Study Path:	%cd:\=/%>> %descFile%
 echo Raw Data:	>> %descFile%
 rem echo #### ASSAYS>>  %descFile%
@@ -94,6 +102,9 @@ copy %iroot%\showTree.bat . > NUL
 copy %iroot%\showMetadata.bat . > NUL
 copy %iroot%\xcheckMetadata.bat . > NUL
 REM
+rem process level specific items
+ call %libdir%\lib.cmd :processMeta %iroot%\meta_S.ini
+ copy %libdir%\meta_A.ini %sroot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
@@ -102,7 +113,7 @@ cls
 echo ======================================
 echo      Study METADATA
 echo ======================================
-call:showDesc %descFile%
+call %libdir%\lib.cmd :showDesc %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
@@ -124,7 +135,7 @@ rem Functions
 ::          --- %~2 Variable to get result
 ::          --- %~3 (optional) missing: input required
 ::          ---                * : can be skipped, return *
-:: Example: call:getInpt "Type something" xx default
+:: Example: call %libdir%\lib.cmd :getInpt "Type something" xx default
 SETLOCAL
 :Ask1
 set x=%~3
@@ -151,14 +162,14 @@ rem -----------------------------------------------------
 ::          --- %~2 Variable to get result
 ::          --- %~3 (optional) missing: input required
 ::          ---                * : can be skipped, return *
-:: Example: call:putMeta "Type something" xx default
+:: Example: call %libdir%\lib.cmd :putMeta "Type something" xx default
 SETLOCAL
-rem call:getInput "%~1" xMeta "%~3"
+rem call %libdir%\lib.cmd :getInput "%~1" xMeta "%~3"
 rem Type input or get menu?
 
-call:getInput "%~1" xMeta "%~3"
+call %libdir%\lib.cmd :getInput "%~1" xMeta "%~3"
 echo %~1:	%xMeta%>> %descFile%
-rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
+rem call %libdir%\lib.cmd :writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 
 
@@ -202,7 +213,7 @@ setlocal enableextensions disabledelayedexpansion
 ::          --- %~1 Question
 ::          --- %~2 Variable to get result 
 ::
-:: Example: call:askFile "Enter project ID: " ID
+:: Example: call %libdir%\lib.cmd :askFile "Enter project ID: " ID
 
     rem Retrieve filename. On empty input ask again
     set /p "my_file=%~1" || goto :askFile
@@ -277,11 +288,11 @@ rem -------------------------------------------------------------------
 :showDesc   --- show description file in columns 
 ::          --- %~1 file name
 ::
-:: Example: call:showDesc %descFile%
+:: Example: call %libdir%\lib.cmd :showDesc %descFile%
 ::
 SETLOCAL EnableDelayedExpansion
 For /F "TOKENS=1-2 delims=	" %%A In (%~1) do (
-    call:showTwoCol "%%A" "%%B"
+    call %libdir%\lib.cmd :showTwoCol "%%A" "%%B"
     )
 endlocal
 goto :EOF
@@ -290,7 +301,7 @@ rem -------------------------------------------------------------------
 ::			--- %~1 first column
 ::			--- %~2 second column
 ::
-:: Example: call:showTwoCol "Item name" "Item value"
+:: Example: call %libdir%\lib.cmd :showTwoCol "Item name" "Item value"
 ::
 	set "_sp=                                         "
     set "iname=%~1%_sp%"
