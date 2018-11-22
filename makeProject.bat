@@ -15,11 +15,13 @@ TITLE pISA-tree
 echo =============================
 echo pISA-tree: make PROJECT 
 echo -----------------------------
+rem ----------- init directories
 set descFile=".\_PROJECT_METADATA.TXT"
 set pISAroot=%cd%
 set mroot=%cd%
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
+rem -----------
 rem Ask for study ID, loop if empty
 set ID=""
 if "%1" EQU "" (
@@ -78,7 +80,7 @@ REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!PROJECT	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo project:	%pname%> %descFile%
 echo Short Name:	%ID%>> %descFile%
-  call %libdir%\lib.cmd :inputMeta "Title      " aTitle *
+  call %libdir%\lib.cmd :inputMeta "Title" aTitle *
   call %libdir%\lib.cmd :inputMeta "Description" aDesc *
 echo pISA projects path:	%pISAroot:\=/%>> %descFile%
 rem copy bla.tmp %descFile%
@@ -89,9 +91,10 @@ copy %mroot%\showTree.bat . > NUL
 copy %mroot%\showMetadata.bat . > NUL
 copy %mroot%\xcheckMetadata.bat . > NUL
 rem del *.tmp > NUL
-rem append common.ini
-rem call lib.cmd :processMeta .\Templates\meta_p.ini
+rem process level specific items
  call %libdir%\lib.cmd :processMeta %libdir%\meta_p.ini
+ copy %libdir%\meta_I.ini %proot%
+rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
 rem Display metadata
