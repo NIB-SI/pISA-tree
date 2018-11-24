@@ -559,7 +559,7 @@ if exist %tmpldir%\DRY\%NewType% (
   goto Ask4)
 rem type ok
 md %tmpldir%\%IDClass%\%NewType%
-echo Creation date	%today%> %tmpldir%\%IDClass%\%NewType%\AssayType.ini
+echo Creation date	%today%> %tmpldir%\%IDClass%\%NewType%\Meta.ini
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
 )
@@ -714,7 +714,7 @@ rem
 :wetclass
 REM ------------------------------------------ wetclass
 rem cd
-rem echo tst %tmpldir%\%IDClass%\%IDType%\AssayType.ini
+rem echo tst %tmpldir%\%IDClass%\%IDType%\Analytes.ini
 rem dir %tmpldir%
 rem dir ..\%tmpldir%
 rem Assay type directory
@@ -728,7 +728,7 @@ rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%an
   rem dir %tmpldir%\%IDClass%\%IDType%\
     set "line1="
     set "line2="
-if exist %tasdir%\AssayType.ini call :processAnalytes %tasdir%\AssayType.ini
+if exist %tasdir%\Analytes.ini call :processAnalytes %tasdir%\Analytes.ini
 
  rem echo tst after processAnalytes: line1 %line1%
  rem echo tst after processAnalytes: line2 %line2%
@@ -740,7 +740,7 @@ REM ---------------------------------------- dryclass
     copy %tmpldir%\ignore.txt . > NUL
     set "line1="
     set "line2="
-    if exist %tasdir%\AssayType.ini call :processAnalytes %tasdir%\AssayType.ini
+    if exist %tasdir%\Analytes.ini call :processAnalytes %tasdir%\Analytes.ini
     goto Finish
 REM ---------------------------------------- /dryclass
 :Finish
@@ -1038,15 +1038,15 @@ SET %~2=%files:~0,-1%
 GOTO:EOF
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 REM ----------------------------------------------------------
-:processAnalytes  --- read AssayType.ini and loop through lines
+:processAnalytes  --- read Analytes.ini and loop through lines
 ::                --- %~1 file path
 ::                --- %~2 Variable to get result
 :: Return:    >>> 
-:: Example: call:processAnalytes %tmpldir%\%IDClass%\%IDType%\AssayType.ini"
+:: Example: call:processAnalytes %tmpldir%\%IDClass%\%IDType%\Analytes.ini"
 rem first id is prefixed. will be reset to empty after the first line
 set postfix=_%IDName%
 set "lfn=%~1"
-if %lfn%=="" set "lfn=%tmpldir%\%IDClass%\%IDType%\AssayType.ini"
+if %lfn%=="" set "lfn=%tmpldir%\%IDClass%\%IDType%\Analytes.ini"
 SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
@@ -1062,7 +1062,7 @@ call:writeAnalytes %analytesInput% "%line1%" "%line2%" )
 goto :eof
 rem ------------------------------------------------------------
 :processLine  --- compose metadata menu for a line
-::            --- %~1 line from AssayType.ini template (two tab delimited strings)
+::            --- %~1 line from Analytes.ini template (two tab delimited strings)
 ::
 :: Example: call:processLine "Descriptor	Option1/Option2"
 SET "string=%~1"
@@ -1082,7 +1082,7 @@ goto :eof
 
 REM ----------------------------------------------------------
 :processLine2  --- compose metadata menu for a line
-::            --- %~1 line from AssayType.ini template (two tab delimited strings)
+::            --- %~1 line from Analytes.ini template (two tab delimited strings)
 ::
 :: Example: call:processLine "Descriptor	Option1/Option2"
 SETLOCAL enabledelayedexpansion
@@ -1359,7 +1359,7 @@ REM ----------------------------------------------------------
 ::                --- %~1 file path
 ::                --- %~2 Variable to get result
 :: Return:    >>> 
-:: Example: call:processMeta %tmpldir%\%IDClass%\%IDType%\AssayType.ini"
+:: Example: call:processMeta %tmpldir%\%IDClass%\%IDType%\Analytes.ini"
 rem first id is prefixed. will be reset to empty after the first line
 echo off
 call:normalizeDate today -
