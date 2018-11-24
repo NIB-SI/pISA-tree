@@ -26,9 +26,12 @@ rem Backup copy if the folder exists
 rem robocopy %ID% X-%ID% /MIR
 rem ------------------------------------------------------
 TITLE %$ver%
-echo ============================= %$ver%
-echo pISA-tree: make PROJECT 
-echo -----------------------------
+set     hd=======================================/
+set hd=%hd%      pISA-tree: make PROJECT/
+set hd=%hd%--------------------------------------/
+call :displayhd "%hd%"
+echo Location: %cd%
+echo.
 rem ----------- init directories
 set descFile=".\_PROJECT_METADATA.TXT"
 set pISAroot=%cd%
@@ -54,10 +57,9 @@ set ID=""
 goto Ask
 ) ELSE (
 REM Continue creating directory
-echo Creating project %ID%
+rem echo Creating project %ID%
 )
 rem ----------------------------------------------
-
 rem Make new project directory tree
 rem set project root
 rem set PPath=:getparentdir %cd%
@@ -68,7 +70,7 @@ rem
 set pdir=_p_%ID%
 md %pdir%
 cd %pdir%
-echo %cd%
+rem echo %cd%
 set proot=%cd%
 md presentations
 md reports
@@ -90,6 +92,7 @@ REM not really needed
 rem call :hexprint "0x09" TAB
 rem -----------------------------------------------
 call :getLayer _p_ pname
+set hd=%hd%project:                           %pname:~3%/
 REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!PROJECT	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo project:	%pname%> %descFile%
@@ -106,7 +109,7 @@ copy %mroot%\showMetadata.bat . > NUL
 copy %mroot%\xcheckMetadata.bat . > NUL
 rem del *.tmp > NUL
 rem process level specific items
- call :processMeta %mroot%\meta_p.ini
+call :processMeta %mroot%\meta_p.ini
 copy %libdir%\meta_I.ini %proot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
@@ -126,7 +129,8 @@ echo.
 echo ============================== pISA ==
 echo.
 echo project %ID% is ready.
-echo .
+echo Location: %cd%\%pname%
+echo.
 echo ======================================
 PAUSE
 goto:eof
@@ -147,9 +151,12 @@ rem Backup copy if the folder exists
 rem robocopy %ID% X-%ID% /MIR
 rem ------------------------------------------------------
 TITLE %$ver%
-echo ============================= %$ver%
-echo pISA-tree: make INVESTIGATION 
-echo -----------------------------
+set     hd=======================================/
+set hd=%hd%      pISA-tree: make INVESTIGATION/
+set hd=%hd%--------------------------------------/
+call :displayhd "%hd%"
+echo Location: %cd%
+echo.
 rem ----------- init directories
 set descFile=".\_INVESTIGATION_METADATA.TXT"
 set "proot=%cd%"
@@ -158,6 +165,7 @@ set "mroot=%proot%\.."
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
 set "batdir=%libdir%"
+call :normalizedate today -
 rem -----------
 call :getLayer _p_ pname
 rem Check project existence
@@ -189,7 +197,7 @@ set ID=""
 goto Ask
 ) ELSE (
 REM Continue creating directory
-echo %ID%
+rem echo %ID%
 )
 rem ----------------------------------------------
 rem Make new Investigationt directory tree
@@ -202,7 +210,7 @@ rem
 set Idir=_I_%ID%
 md %Idir%
 cd %Idir%
-echo %cd%
+rem echo %cd%
 set iroot=%cd%
 
 call :getLayer _p_ pname
@@ -225,6 +233,8 @@ REM call :hexprint "0x09" TAB
 rem -----------------------------------------------
 call :getLayer _p_ pname
 call :getLayer _I_ iname
+set hd=%hd%Investigation:                     %iname:~3%/
+set hd=%hd%project:                           %pname:~3%/
 REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo Investigation:	%iname%> %descFile%
@@ -241,11 +251,11 @@ if exist %pfn% (
 	) else (
 	rem Make test phenodata file
 	echo Phenodata:	./%pfn%>> %descFile%
-	echo SampleID	SampleName	AdditionalField1	Assay001> %pfn%
-	echo SMPL001	Sample_001	B1	x>> %pfn%
-	echo SMPL002	Sample_002	B2	>> %pfn%
-	echo SMPL003	Sample_003	B3	x>> %pfn%
-	echo SMPL004	Sample_004	B4	>> %pfn%
+	echo SampleID	SampleName	Date_of_change	AdditionalField1	Assay001> %pfn%
+	echo SMPL001	Sample_001	%today%	B1	x>> %pfn%
+	echo SMPL002	Sample_002	%today%	B2	>> %pfn%
+	echo SMPL003	Sample_003	%today%	B3	x>> %pfn%
+	echo SMPL004	Sample_004	%today%	B4	>> %pfn%
 rem End test %pfn%
 )
 echo Featuredata:	>> %descFile%
@@ -278,7 +288,8 @@ echo.
 echo ============================== pISA ==
 echo.
 echo Investigation %ID% is ready.
-echo .
+echo Location: %cd%\%iname%
+echo.
 echo ======================================
 
 PAUSE
@@ -299,9 +310,12 @@ rem Backup copy if project folder exists
 rem robocopy %1 X-%1 /MIR
 rem ------------------------------------------------------
 TITLE %$ver%
-echo ============================ %$ver%
-echo pISA-tree: make STUDY 
-echo ----------------------------
+set     hd=======================================/
+set hd=%hd%      pISA-tree: make STUDY/
+set hd=%hd%--------------------------------------/
+call :displayhd "%hd%"
+echo Location: %cd%
+echo.
 rem ----------- init directories
 set descFile=".\_STUDY_METADATA.TXT"
 set "iroot=%cd%"
@@ -348,7 +362,7 @@ rem Make new Study directory tree
 set Sdir=_S_%ID%
 md %Sdir%
 cd %Sdir%
-echo %cd%
+rem echo %cd%
 set sroot=%cd%
 set "iroot=.."
 set "proot=%iroot%\.."
@@ -368,6 +382,8 @@ rem -----------------------------------------------
 call :getLayer _p_ pname
 call :getLayer _I_ iname
 call :getLayer _S_ sname
+set hd=%hd%Study:                             %sname:~3%/
+set hd=%hd%Investigation:                     %iname:~3%/
 rem -----------------------------------------------
 echo Study:	%sname%> %descFile%
 echo Short Name:	%ID%>> %descFile%
@@ -404,7 +420,8 @@ echo.
 echo ============================== pISA ==
 echo.
 echo Study %ID% is ready.
-echo .
+echo Location: %cd%\%sname%
+echo.
 echo ======================================
 
 PAUSE
@@ -433,9 +450,12 @@ set LF=^
 
 REM Keep two empty lines above - they are neccessary!!
 set "TAB=	"
-echo ============================ %$ver%
-echo pISA-tree: make ASSAY 
-echo ---------------------------------
+set     hd=======================================/
+set hd=%hd%      pISA-tree: make ASSAY/
+set hd=%hd%--------------------------------------/
+call :displayhd "%hd%"
+echo Location: %cd%
+echo.
 rem ----------- init directories
 set descFile=".\_Assay_METADATA.TXT"
 set "sroot=%cd%"
@@ -455,10 +475,9 @@ pause
 goto:eof
 :sok
 rem Study already created
-set     hd================================== %$ver%/
-set hd=%hd%pISA-tree: make ASSAY/
-set hd=%hd%---------------------------------/
 call :displayhd "%hd%"
+echo Location: %cd%
+echo.
 set sroot=%cd%
 set "iroot=.."
 set "proot=..\%iroot%"
@@ -641,7 +660,7 @@ goto Forall
 rem ----------------------------------------------
 :Forall
 rem
-echo %cd%
+rem echo %cd%
 setlocal EnableDelayedExpansion
 set LF=^
 
@@ -653,6 +672,8 @@ call :getLayer _p_ pname
 call :getLayer _I_ iname
 call :getLayer _S_ sname
 call :getLayer _A_ aname
+set hd=%hd%Study:                             %sname:~3%/
+rem set hd=%hd%Assay:                             %aname:~3%/
 rem -------------------------------------- make ASSAY_METADATA
 echo Assay:	%Adir%> %descFile%
 echo Short Name:	%ID%>> %descFile%
@@ -748,9 +769,9 @@ echo.
 echo ============================== pISA ==
 echo.
 echo Assay %ID% is ready.
-echo .
+echo Location: %cd%\%aname%
+echo.
 echo ======================================
-
 PAUSE
 goto:eof
 rem ====================================== / makeAssay
@@ -769,7 +790,7 @@ rem --------------------------------------------------------
 SETLOCAL
 :Ask1
 echo.
-echo =======================================================
+echo ======================================
 echo.
 :: Default for typing is the first item (needed for Other)
 set "x=%~3"
@@ -866,7 +887,7 @@ SETLOCAL
 rem Make menu function
 rem cls
 echo.
-echo =========================
+echo ======================================
 echo.
 echo %~1
 echo.
@@ -1217,6 +1238,7 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
   set "line=%%L"
   setlocal EnableDelayedExpansion
   rem set "preparedLine=#!line:;=;#!"
+  rem replace TAB with ;#
   set "preparedLine=#!line:	=;#!"
   rem get first two and 'assayID' tokens
   FOR /F "tokens=1-2,%where% delims=;" %%c in ("!preparedLine!") DO (
@@ -1225,9 +1247,11 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
     set "param2=%%d"
     set "param3=%%e"
     setlocal EnableDelayedExpansion
+    rem echo $1=!param1! $2=*!param2!* $3=*!param3!*
+    rem remove leading #
     set "param1=!param1:~1!"
     set "param2=!param2:~1!"
-    set "param3=!param3:~1!"
+    if "!param3!" NEQ "" set "param3=!param3:~1!"
     rem echo $1=!param1! $2=*!param2!* $3=*!param3!*
     if "!param3!" NEQ "" echo !param1!	!param2!	!param3!>> %outfile%
     endlocal
