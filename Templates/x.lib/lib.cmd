@@ -1,5 +1,436 @@
 @echo off
-rem -------------------------------------  pISA-tree v.0.4.2
+rem get parameters
+call %*
+goto :EOF
+rem pISA make batch files packed into the library
+:pISA
+@echo off
+set "$ver=pISA-tree v.3.0"
+rem first argument defines where to go (calling batch file name)
+call :%1 %2 %3 %4
+goto:EOF
+rem
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+rem ---------- core make-p-I-S-A routines -----------------
+rem 
+:makeProject
+rem
+rem Create a new project tree _p_xxx in current directory
+rem ------------------------------------------------------
+rem Author: A Blejec <andrej.blejec@nib.si>
+rem (c) National Institute of Biology, Ljubljana, Slovenia
+rem 2016
+rem ------------------------------------------------------
+rem cd d:\_X
+rem Backup copy if the folder exists
+rem robocopy %ID% X-%ID% /MIR
+rem ------------------------------------------------------
+TITLE %$ver%
+set     hd=======================================/
+set hd=%hd%      pISA-tree: make PROJECT/
+set hd=%hd%--------------------------------------/
+call :displayhd "%hd%"
+echo Location: %cd%
+echo.
+rem ----------- init directories
+set descFile=".\_PROJECT_METADATA.TXT"
+set pISAroot=%cd%
+set mroot=%cd%
+set "tmpldir=%mroot%\Templates"
+set "libdir=%tmpldir%\x.lib"
+rem -----------
+rem Ask for study ID, loop if empty
+set ID=""
+if "%1" EQU "" (
+rem echo @
+call :askFile "Enter project ID: " ID
+) else (
+set ID=%1
+)
+:Ask
+if %ID% EQU "" call :askFile "Enter project ID: " ID
+if %ID% EQU "" goto Ask
+IF EXIST _p_%ID% (
+REM Dir exists
+echo ERROR: project named *%ID%* already exists
+set ID=""
+goto Ask
+) ELSE (
+REM Continue creating directory
+rem echo Creating project %ID%
+)
+rem ----------------------------------------------
+rem Make new project directory tree
+rem set project root
+rem set PPath=:getparentdir %cd%
+rem set \ to /
+rem set "PPath=!PPath:\=/!"
+rem echo %PPath%
+rem
+set pdir=_p_%ID%
+md %pdir%
+cd %pdir%
+rem echo %cd%
+set proot=%cd%
+md presentations
+md reports
+rem put something to the directories
+rem to force git to add them
+REM
+echo # Project %ID% >  .\README.MD
+echo # Reports for project %ID% >  .\reports\README.MD
+echo # Presentations for project %ID% >  .\presentations\README.MD
+echo # Feature Summary Table> .\FST.txt
+rem
+setlocal EnableDelayedExpansion
+set LF=^
+
+
+REM Two empty lines are necessary
+::Create a TAB variable
+REM not really needed
+rem call :hexprint "0x09" TAB
+rem -----------------------------------------------
+call :getLayer _p_ pname
+set hd=%hd%project:                           %pname:~3%/
+REM -----------------------------------------------
+REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!PROJECT	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
+echo project:	%pname%> %descFile%
+echo Short Name:	%ID%>> %descFile%
+  call :inputMeta "Title" aTitle *
+  call :inputMeta "Description" aDesc *
+echo pISA projects path:	%pISAroot:\=/%>> %descFile%
+rem copy bla.tmp %descFile%
+rem
+rem  make main readme.md file
+copy %libdir%\makeInvestigation.bat . >NUL 
+copy %mroot%\showTree.bat . > NUL
+copy %mroot%\showMetadata.bat . > NUL
+copy %mroot%\xcheckMetadata.bat . > NUL
+rem del *.tmp > NUL
+rem process level specific items
+call :processMeta %mroot%\meta_p.ini
+copy %libdir%\meta_I.ini %proot%
+rem append common.ini
+copy %descFile%+..\common.ini %descFile% /b> NUL
+copy ..\common.ini . /b > NUL
+rem Display metadata
+cls
+echo ======================================
+echo      project METADATA
+echo ======================================
+call :showDesc %descFile%
+cd..
+rem copy existing files from nonversioned tree (if any)
+rem robocopy X-%ID% %ID% /E
+rem dir .\%ID% /s/b
+rem pause
+echo.
+echo ============================== pISA ==
+echo.
+echo project %ID% is ready.
+echo Location: %cd%\%pname%
+echo.
+echo ======================================
+PAUSE
+goto:eof
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+:makeInvestigation
+rem ---------------------------------- make Investigation
+@echo off
+rem -------------------------------------  pISA-tree %$ver%
+rem
+rem Create a new Investigation tree _I_xxx in current directory
+rem ------------------------------------------------------
+rem Author: A Blejec <andrej.blejec@nib.si>
+rem (c) National Institute of Biology, Ljubljana, Slovenia
+rem 2016-
+rem ------------------------------------------------------
+rem cd d:\_X
+rem Backup copy if the folder exists
+rem robocopy %ID% X-%ID% /MIR
+rem ------------------------------------------------------
+TITLE %$ver%
+set     hd=======================================/
+set hd=%hd%      pISA-tree: make INVESTIGATION/
+set hd=%hd%--------------------------------------/
+call :displayhd "%hd%"
+echo Location: %cd%
+echo.
+rem ----------- init directories
+set descFile=".\_INVESTIGATION_METADATA.TXT"
+set "proot=%cd%"
+set "pISAroot=%proot%\.."
+set "mroot=%proot%\.."
+set "tmpldir=%mroot%\Templates"
+set "libdir=%tmpldir%\x.lib"
+set "batdir=%libdir%"
+call :normalizedate today -
+rem -----------
+call :getLayer _p_ pname
+rem Check project existence
+if x%pname::=%==x%pname% goto pok
+echo.
+echo ERROR: Make project first!
+echo.
+pause
+goto:eof
+:pok
+rem project already created
+rem Ask for study ID, loop if empty
+set ID=""
+if "%1" EQU "" (
+rem echo @
+call :askFile "Enter Investigation ID: " ID
+rem echo %ID%
+) else (
+set ID=%1
+)
+:Ask
+if %ID% EQU "" call :askFile "Enter Investigation ID: " ID
+if %ID% EQU "" goto Ask
+REM Check existence/uniqueness
+IF EXIST _I_%ID% (
+REM Dir exists
+echo ERROR: Investigation named *%ID%* already exists
+set ID=""
+goto Ask
+) ELSE (
+REM Continue creating directory
+rem echo %ID%
+)
+rem ----------------------------------------------
+rem Make new Investigationt directory tree
+rem set project root
+rem set PPath=:getparentdir %cd%
+rem set \ to /
+rem set "PPath=!PPath:\=/!"
+rem echo %PPath%
+rem
+set Idir=_I_%ID%
+md %Idir%
+cd %Idir%
+rem echo %cd%
+set iroot=%cd%
+
+call :getLayer _p_ pname
+md presentations
+md reports
+rem put something to the directories
+rem to force git to add them
+echo # Investigation %ID% >  .\README.MD
+echo # Reports for investigation %ID% >  .\reports\README.MD
+echo # Presentations for investigation %ID% >  .\presentations\README.MD
+rem
+setlocal EnableDelayedExpansion
+set LF=^
+
+
+REM Two empty lines are necessary
+::Create a TAB variable (not realy needed)
+REM Throws an error??
+REM call :hexprint "0x09" TAB
+rem -----------------------------------------------
+call :getLayer _p_ pname
+call :getLayer _I_ iname
+set hd=%hd%Investigation:                     %iname:~3%/
+set hd=%hd%project:                           %pname:~3%/
+REM -----------------------------------------------
+REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
+echo Investigation:	%iname%> %descFile%
+echo Short Name:	%ID%>> %descFile%
+  call :inputMeta "Title" aTitle *
+  call :inputMeta "Description" aDesc *
+rem echo Investigation Path:	%cd:\=/%>> %descFile%
+rem copy bla.tmp %descFile%
+rem create phenodata file name
+call :normalizeDate danes
+set pfn=phenodata_%danes%.txt
+if exist %pfn% (
+	echo Phenodata %pfn% already exists: will not overwrite it
+	) else (
+	rem Make test phenodata file
+	echo Phenodata:	./%pfn%>> %descFile%
+	echo SampleID	SampleName	Date_of_change	AdditionalField1	Assay001> %pfn%
+	echo SMPL001	Sample_001	%today%	B1	x>> %pfn%
+	echo SMPL002	Sample_002	%today%	B2	>> %pfn%
+	echo SMPL003	Sample_003	%today%	B3	x>> %pfn%
+	echo SMPL004	Sample_004	%today%	B4	>> %pfn%
+rem End test %pfn%
+)
+echo Featuredata:	>> %descFile%
+rem echo INVESTIGATION:	%ID%>> ..\_PROJECT_METADATA.TXT
+
+rem
+rem  make main readme.md file
+copy %batdir%\makeStudy.bat . > NUL
+copy %proot%\showTree.bat . > NUL
+copy %proot%\showMetadata.bat . > NUL
+copy %proot%\xcheckMetadata.bat . > NUL
+rem process level specific items
+ call :processMeta %proot%\meta_i.ini
+ copy %libdir%\meta_S.ini %iroot%
+rem append common.ini
+copy %descFile%+..\common.ini %descFile% /b> NUL
+copy ..\common.ini . /b > NUL
+rem Display metadata
+cls
+echo ======================================
+echo      Investigation METADATA
+echo ======================================
+call :showDesc %descFile%
+cd ..
+rem copy existing files from nonversioned tree (if any)
+rem robocopy X-%ID% %ID% /E
+rem dir .\%ID% /s/b
+rem pause
+echo.
+echo ============================== pISA ==
+echo.
+echo Investigation %ID% is ready.
+echo Location: %cd%\%iname%
+echo.
+echo ======================================
+
+PAUSE
+goto:eof
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+:makeStudy
+@echo off
+rem -------------------------------------  %$ver%
+rem
+rem Create a new Study tree _S_xxxx in current directory
+rem ------------------------------------------------------
+rem Author: A Blejec <andrej.blejec@nib.si>
+rem (c) National Institute of Biology, Ljubljana, Slovenia
+rem 2016
+rem ------------------------------------------------------
+rem cd d:\_X
+rem Backup copy if project folder exists
+rem robocopy %1 X-%1 /MIR
+rem ------------------------------------------------------
+TITLE %$ver%
+set     hd=======================================/
+set hd=%hd%      pISA-tree: make STUDY/
+set hd=%hd%--------------------------------------/
+call :displayhd "%hd%"
+echo Location: %cd%
+echo.
+rem ----------- init directories
+set descFile=".\_STUDY_METADATA.TXT"
+set "iroot=%cd%"
+set "pISAroot=%iroot%\..\.."
+set "mroot=%iroot%\..\.."
+set "tmpldir=%mroot%\Templates"
+set "libdir=%tmpldir%\x.lib"
+set "batdir=%libdir%"
+rem -----------
+call :getLayer _I_ iname
+rem Check Investigation existence
+if x%iname::=%==x%iname% goto iok
+echo.
+echo ERROR: Make Investigation first!
+echo.
+pause
+goto:eof
+:iok
+rem Investigation already created
+rem Ask for study ID, loop if empty
+set ID=""
+if "%1" EQU "" (
+rem echo @
+call :askFile "Enter Study ID: " ID
+rem echo %ID%
+) else (
+set ID=%1
+)
+:Ask
+if %ID% EQU "" call :askFile "Enter Study ID: " ID
+if %ID% EQU "" goto Ask
+REM Check existence/uniqueness
+IF EXIST _S_%ID% (
+REM Dir exists
+echo ERROR: Study named *%ID%* already exists
+set ID=""
+goto Ask
+) ELSE (
+REM Continue creating directory
+rem echo %ID%
+)
+rem ----------------------------------------------
+rem Make new Study directory tree
+set Sdir=_S_%ID%
+md %Sdir%
+cd %Sdir%
+rem echo %cd%
+set sroot=%cd%
+set "iroot=.."
+set "proot=%iroot%\.."
+set "mroot=%proot%\.."
+md reports
+rem put something to the directories
+rem to force git to add them
+echo # Study %ID% >  .\README.MD
+echo # Reports for study %ID% >  .\reports\README.MD
+rem
+setlocal EnableDelayedExpansion
+set LF=^
+
+
+REM Two empty lines are necessary
+rem -----------------------------------------------
+call :getLayer _p_ pname
+call :getLayer _I_ iname
+call :getLayer _S_ sname
+set hd=%hd%Study:                             %sname:~3%/
+set hd=%hd%Investigation:                     %iname:~3%/
+rem -----------------------------------------------
+echo Study:	%sname%> %descFile%
+echo Short Name:	%ID%>> %descFile%
+  call :inputMeta "Title" aTitle *
+  call :inputMeta "Description" aDesc *
+rem echo Study Path:	%cd:\=/%>> %descFile%
+echo Raw Data:	>> %descFile%
+rem echo #### ASSAYS>>  %descFile%
+rem echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
+rem 
+rem  make main readme.md file
+copy %batdir%\makeAssay.bat . > NUL
+copy %iroot%\showTree.bat . > NUL
+copy %iroot%\showMetadata.bat . > NUL
+copy %iroot%\xcheckMetadata.bat . > NUL
+REM
+rem process level specific items
+ call :processMeta %iroot%\meta_S.ini
+ copy %libdir%\meta_A.ini %sroot%
+rem append common.ini
+copy %descFile%+..\common.ini %descFile% /b> NUL
+copy ..\common.ini . /b > NUL
+rem Display metadata
+cls
+echo ======================================
+echo      Study METADATA
+echo ======================================
+call :showDesc %descFile%
+cd ..
+rem copy existing files from nonversioned tree (if any)
+rem robocopy X-%ID% %ID% /E
+rem dir .\%ID% /s/b
+echo.
+echo ============================== pISA ==
+echo.
+echo Study %ID% is ready.
+echo Location: %cd%\%sname%
+echo.
+echo ======================================
+
+PAUSE
+goto:eof
+
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+:makeAssay
+@echo off
+rem -------------------------------------  pISA-tree %$ver%
 rem
 rem Create a new Assay tree _A_xxx in the current study directory
 rem ------------------------------------------------------
@@ -12,17 +443,29 @@ rem Backup copy if assay folder exists
 rem robocopy %1 X-%1 /MIR
 rem ------------------------------------------------------
 rem
-TITLE pISA-tree
+TITLE %$ver%
 setlocal EnableDelayedExpansion
 set LF=^
 
 
 REM Keep two empty lines above - they are neccessary!!
 set "TAB=	"
-echo =================================
-echo pISA-tree: make ASSAY 
-echo ---------------------------------
-call:getLayer _S_ sname
+set     hd=======================================/
+set hd=%hd%      pISA-tree: make ASSAY/
+set hd=%hd%--------------------------------------/
+call :displayhd "%hd%"
+echo Location: %cd%
+echo.
+rem ----------- init directories
+set descFile=".\_Assay_METADATA.TXT"
+set "sroot=%cd%"
+set "pISAroot=%sroot%\..\..\.."
+set "mroot=%sroot%\..\..\.."
+set "tmpldir=%mroot%\Templates"
+set "libdir=%tmpldir%\x.lib"
+set "batdir=%libdir%"
+rem -----------
+call :getLayer _S_ sname
 rem Check Study existence
 if x%sname::=%==x%sname% goto sok
 echo.
@@ -32,22 +475,19 @@ pause
 goto:eof
 :sok
 rem Study already created
-set hd=---------------------------------/
-set hd=%hd%pISA-tree: make ASSAY/
-set hd=%hd%---------------------------------/
-call:displayhd "%hd%"
+call :displayhd "%hd%"
+echo Location: %cd%
+echo.
 set sroot=%cd%
 set "iroot=.."
 set "proot=..\%iroot%"
 set "mroot=..\%proot%"
-set "tmpldir=%mroot%\Templates"
-set "batdir=%mroot%\Templates"
 rem dir %tmpldir%
 rem pause
 rem ----------------------------------------------
 rem Class: use argument 1 if present
 rem set today=%date:~13,4%-%date:~9,2%-%date:~5,2%
-call:normalizeDate today -
+call :normalizeDate today -
 rem set IDClass=
 rem if "%1" EQU "" (
 rem echo @
@@ -68,17 +508,17 @@ rem if /I %IDClass% EQU w set IDClass=Wet
 SETLOCAL ENABLEDELAYEDEXPANSION
 rem Supported classes
 SET "types="
-FOR /f "delims=" %%i IN ('dir %tmpldir% /AD/B') DO (
+FOR /f "delims=" %%i IN ('dir %tmpldir%\*. /AD/B') DO (
     SET types=!types!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
 if "%1" EQU "" (
  set "IdClass="
- call:getMenu "Select Assay Class" %types% IDClass ) else (
+ call :getMenu "Select Assay Class" %types% IDClass ) else (
  set "IdClass=%1"
 )
 set "hd=%hd%Assay Class:		 %~4%IDClass%/"
-call:displayhd "%hd%"
+call :displayhd "%hd%"
 echo Selected: %IDClass%
 rem ----------------------------------------------
 rem Supported types
@@ -93,7 +533,7 @@ SETLOCAL DISABLEDELAYEDEXPANSION
 if "%2" EQU "" (
 set "IDType="
 rem echo %tmpldir%\%IDClass%
-call:getMenu "Select Assay Type" "%types%Other" IDType ) else (
+call :getMenu "Select Assay Type" "%types%Other" IDType ) else (
 set "IDType=%2"
 )
 rem process Other type
@@ -102,7 +542,7 @@ rem Create new assay type if needed
 echo:
 set "NewType=""
 :Ask4
-if %NewType%* EQU * call:askFile "Enter new Assay Type ID: " NewType 
+if %NewType%* EQU * call :askFile "Enter new Assay Type ID: " NewType 
 if %NewType%* EQU * goto Ask4
 rem check type existence/uniqueness
 if exist %tmpldir%\DRY\%NewType% ( 
@@ -119,13 +559,13 @@ if exist %tmpldir%\DRY\%NewType% (
   goto Ask4)
 rem type ok
 md %tmpldir%\%IDClass%\%NewType%
-echo Creation date	%today%> %tmpldir%\%IDClass%\%NewType%\AssayType.ini
+echo Creation date	%today%> %tmpldir%\%IDClass%\%NewType%\Meta.ini
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
 )
 rem Other finished
 set "hd=%hd%Assay Type:		 %~4%IDType%/"
-call:displayhd "%hd%"
+call :displayhd "%hd%"
 rem echo Selected: %IDType%
 rem ----------------------------------------------
 rem Type: use argument 2 if present
@@ -145,7 +585,7 @@ rem ----------------------------------------------
 rem ID : use argument 3 if present
 set IDName=""
 if "%3" EQU "" (
-call:askFile "Enter Assay ID: " IDName 
+call :askFile "Enter Assay ID: " IDName 
 ) else (
 set IDName=%3
 )
@@ -153,7 +593,7 @@ rem dir %IDType%* /B /AD
 rem Similar Assay IDs
 rem %IDType%* /AD
 :Ask3
-if %IDName% EQU "" call:askFile "Enter Assay ID: " IDName 
+if %IDName% EQU "" call :askFile "Enter Assay ID: " IDName 
 if %IDName% EQU "" goto Ask3
 rem ----------------------------------------------
 rem concatenate ID name
@@ -173,17 +613,15 @@ goto Ask3
 REM Continue creating directory
 )
 set "hd=%hd%Assay ID:		 %~4%ID%/"
-call:displayhd "%hd%"
+call :displayhd "%hd%"
 set Adir=_A_%ID%
 md %Adir%
 cd %Adir%
 set aroot=%cd%
 set "sroot=.."
-set "iroot=..\%sroot%"
-set "proot=..\%iroot%"
-set "mroot=..\%proot%"
-set "tmpldir=%mroot%\Templates"
-set "batdir=%mroot%\Templates"
+set "iroot=%sroot%\.."
+set "proot=%iroot%\.."
+set "mroot=%proot%\.."
 goto %IDClass%
 rem ----------------------------------------------
 rem Make new assay directory tree
@@ -222,7 +660,7 @@ goto Forall
 rem ----------------------------------------------
 :Forall
 rem
-echo %cd%
+rem echo %cd%
 setlocal EnableDelayedExpansion
 set LF=^
 
@@ -230,34 +668,34 @@ set LF=^
 REM Keep two empty lines above - they are neccessary!!
 set "TAB=	"
 rem -----------------------------------------------
-call:getLayer _p_ pname
-call:getLayer _I_ iname
-call:getLayer _S_ sname
-call:getLayer _A_ aname
-rem -------------------------------------- make ASSAY_DESCRIPTION
-set descFile=".\_ASSAY_METADATA.TXT"
+call :getLayer _p_ pname
+call :getLayer _I_ iname
+call :getLayer _S_ sname
+call :getLayer _A_ aname
+set hd=%hd%Study:                             %sname:~3%/
+rem set hd=%hd%Assay:                             %aname:~3%/
+rem -------------------------------------- make ASSAY_METADATA
 echo Assay:	%Adir%> %descFile%
-echo Study:	%sname%>> %descFile%
-echo Investigation:	%iname%>> %descFile%
-echo project:	%pname%>> %descFile%
-rem echo ### ASSAY>> %descFile%
 echo Short Name:	%ID%>> %descFile%
-echo Assay Class:	 %IDClass%>> %descFile%
-echo Assay Type:	 %IDType%>> %descFile%
+echo Assay Class:	%IDClass%>> %descFile%
+echo Assay Type:	%IDType%>> %descFile%
 rem ECHO ON
   rem set analytesInput=Analytes.txt
   rem if exist ../%analytesInput% ( copy ../%analytesInput% ./%analytesInput% )
-  call:inputMeta "Title" aTitle *
-  call:inputMeta "Description" aDesc *
+  call :inputMeta "Title" aTitle *
+  call :inputMeta "Description" aDesc *
 rem echo Assay Path:	%cd:\=/%>> %descFile%
 rem set phenodata file
+rem process level specific items
+ call :processMeta %sroot%\meta_A.ini
+ call :processMeta %tmpldir%\%IDClass%\%IDType%\meta.ini
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "pfns="
 FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_20*.* /B') DO (
     SET pfns=!pfns!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
-call:getMenu "Select phenodata file" "%pfns%None" pfn
+call :getMenu "Select phenodata file" "%pfns%None" pfn
 if "%pfn%" EQU "None" ( echo Phenodata:	%pfn%>> %descFile%
 ) ELSE ( echo Phenodata:	%iroot:\=/%/%pfn%>> %descFile%)
 rem ---- Type specific fields
@@ -276,7 +714,7 @@ rem
 :wetclass
 REM ------------------------------------------ wetclass
 rem cd
-rem echo tst %tmpldir%\%IDClass%\%IDType%\AssayType.ini
+rem echo tst %tmpldir%\%IDClass%\%IDType%\Analytes.ini
 rem dir %tmpldir%
 rem dir ..\%tmpldir%
 rem Assay type directory
@@ -284,13 +722,13 @@ rem dir %tasdir%
 rem dir %tmpldir%
 :: echo %cd%
 set "analytesInput=Analytes.txt"
-call:getSamples %IDName% %iroot%\%pfn% %aroot%\%analytesInput%
+call :getSamples %IDName% %iroot%\%pfn% %aroot%\%analytesInput%
 setlocal disabledelayedexpansion
 rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   rem dir %tmpldir%\%IDClass%\%IDType%\
     set "line1="
     set "line2="
-if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
+if exist %tasdir%\Analytes.ini call :processAnalytes %tasdir%\Analytes.ini
 
  rem echo tst after processAnalytes: line1 %line1%
  rem echo tst after processAnalytes: line2 %line2%
@@ -302,7 +740,7 @@ REM ---------------------------------------- dryclass
     copy %tmpldir%\ignore.txt . > NUL
     set "line1="
     set "line2="
-    if exist %tasdir%\AssayType.ini call:processAnalytes %tasdir%\AssayType.ini
+    if exist %tasdir%\Analytes.ini call :processAnalytes %tasdir%\Analytes.ini
     goto Finish
 REM ---------------------------------------- /dryclass
 :Finish
@@ -322,7 +760,7 @@ cls
 echo ======================================
 echo      Assay METADATA
 echo ======================================
-call:showDesc %descFile%
+call :showDesc %descFile%
 cd ..
 rem copy existing files from nonversioned tree (if any)
 rem robocopy X-%ID% %ID% /E
@@ -331,12 +769,14 @@ echo.
 echo ============================== pISA ==
 echo.
 echo Assay %ID% is ready.
-echo .
+echo Location: %cd%\%aname%
+echo.
 echo ======================================
-
 PAUSE
 goto:eof
 rem ====================================== / makeAssay
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+rem 
 rem --------------------------------------------------------
 rem Functions
 rem --------------------------------------------------------
@@ -350,7 +790,7 @@ rem --------------------------------------------------------
 SETLOCAL
 :Ask1
 echo.
-echo =======================================================
+echo ======================================
 echo.
 :: Default for typing is the first item (needed for Other)
 set "x=%~3"
@@ -375,6 +815,7 @@ goto Ask1
  IF "%~2" NEQ "" set "%~2=%x%"
 )
 GOTO:EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem -----------------------------------------------------
 :putMeta   --- get metadata and append to descFile
 ::         --- descFile - should be set befor the call
@@ -402,6 +843,7 @@ rem
 
 )
 GOTO:EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem -----------------------------------------------------
 :inputMeta   --- get metadata and append to descFile
 ::         --- descFile - should be set befor the call
@@ -422,7 +864,7 @@ rem
 
     set "spaces=                                           "
     set "line=%~1:%spaces%"
-    set "line=%line:~0,25%%~4%xMeta%"
+    set "line=%line:~0,35%%~4%xMeta%"
 rem
 (ENDLOCAL
     IF "%~2" NEQ "" set "%~2=%xMeta%"
@@ -432,6 +874,7 @@ rem
 
     )
 GOTO:EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem --------------------------------------------------------
 :getMenu    --- get menu item
 ::          --- %~1 Value description
@@ -444,7 +887,7 @@ SETLOCAL
 rem Make menu function
 rem cls
 echo.
-echo =========================
+echo ======================================
 echo.
 echo %~1
 echo.
@@ -467,9 +910,10 @@ rem :done
 echo. 
 choice /C:%mch% /M:Select 
 (ENDLOCAL
-    for /F "tokens=%errorlevel% delims=/" %%H in ("%_mn%") DO set "%~3=%%H
+    for /F "tokens=%errorlevel% delims=/" %%H in ("%_mn%") DO set "%~3=%%H"
 )
 GOTO:EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem -----------------------------------------------------
 :putMeta2   --- get metadata and append to descFile
 ::          --- descFile - should be set befor the call
@@ -495,7 +939,7 @@ for /f "tokens=1 delims=/" %%a in ("%~3") do set first=%%a
 rem echo =%~3=%first%= REM test
 if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%first%"
 :next
-echo %~1:	%xMeta%%prefix%>> %descFile%
+if /I "%~3" NEQ "Blank" echo %~1:	%xMeta%%prefix%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem
 REM (ENDLOCAL
@@ -510,12 +954,13 @@ rem echo tst line2 %line2%
 rem pause
 set "spaces=                                 "
 set "line=%~1%spaces%"
-set "line=%line:~0,25%%~4%xMeta%"
+set "line=%line:~0,35%%~4%xMeta%"
 rem if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/"
 if /I "%~3" NEQ "Blank" set "hd=%hd%%line%/"
 if /I "%~3" NEQ "Blank" call:displayhd "%hd%"
 REM )
 GOTO:EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem ---------------------------------------------------
 :writeAnalytes  --- write colums to analyte file
 ::              --- %~1 file to process
@@ -558,6 +1003,7 @@ rem )
 ENDLOCAL
 del tmp.txt
 GOTO:EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem --------------------------------------------------
 :displayhd  --- clear screen and display header
 ::          --- %~1 header text, use / as the new line character
@@ -572,6 +1018,7 @@ set mn=%mn:*/=%
 if NOT "%mn%"=="" goto :tophd
 ENDLOCAL
 goto:EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem --------------------------------------------------
 :getDirNames  --- get directory names and prepare / delimited list
 ::            --- %~1 directory
@@ -589,16 +1036,17 @@ SET %~2="%files%"
 SET %~2=%files:~0,-1%
 )
 GOTO:EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 REM ----------------------------------------------------------
-:processAnalytes  --- read AssayType.ini and loop through lines
+:processAnalytes  --- read Analytes.ini and loop through lines
 ::                --- %~1 file path
 ::                --- %~2 Variable to get result
 :: Return:    >>> 
-:: Example: call:processAnalytes %tmpldir%\%IDClass%\%IDType%\AssayType.ini"
+:: Example: call:processAnalytes %tmpldir%\%IDClass%\%IDType%\Analytes.ini"
 rem first id is prefixed. will be reset to empty after the first line
 set postfix=_%IDName%
 set "lfn=%~1"
-if %lfn%=="" set "lfn=%tmpldir%\%IDClass%\%IDType%\AssayType.ini"
+if %lfn%=="" set "lfn=%tmpldir%\%IDClass%\%IDType%\Analytes.ini"
 SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
@@ -614,7 +1062,7 @@ call:writeAnalytes %analytesInput% "%line1%" "%line2%" )
 goto :eof
 rem ------------------------------------------------------------
 :processLine  --- compose metadata menu for a line
-::            --- %~1 line from AssayType.ini template (two tab delimited strings)
+::            --- %~1 line from Analytes.ini template (two tab delimited strings)
 ::
 :: Example: call:processLine "Descriptor	Option1/Option2"
 SET "string=%~1"
@@ -634,7 +1082,7 @@ goto :eof
 
 REM ----------------------------------------------------------
 :processLine2  --- compose metadata menu for a line
-::            --- %~1 line from AssayType.ini template (two tab delimited strings)
+::            --- %~1 line from Analytes.ini template (two tab delimited strings)
 ::
 :: Example: call:processLine "Descriptor	Option1/Option2"
 SETLOCAL enabledelayedexpansion
@@ -649,7 +1097,8 @@ rem ENDLOCAL
 ECHO call:putMeta2 "%s1%" xxx %s2%
 call:putMeta2 "%s1%" xxx %s2%
 rem ENDLOCAL
-goto :eof
+goto:eof
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem -----------------------------------
 :getLayer  --- get layer name from the current path
 ::                --- %~1 layer prefix (e.g. _I_)
@@ -676,7 +1125,8 @@ SETLOCAL EnableDelayedExpansion
    set "%~2=%_result%")
    rem echo %iname%
    endlocal
-goto :eof
+goto:eof
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem ---------------------------------------------------
 setlocal enableextensions disabledelayedexpansion
 
@@ -754,7 +1204,8 @@ setlocal enableextensions disabledelayedexpansion
     rem echo Selected file is "%my_file%"
     (endlocal 
      set "%~2=%my_file%")
-goto :eof
+goto:eof
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem ----------------------------------------------------------
 :getSamples --- get sample names from %pfn%
 ::          --- %~1 column name
@@ -787,6 +1238,7 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
   set "line=%%L"
   setlocal EnableDelayedExpansion
   rem set "preparedLine=#!line:;=;#!"
+  rem replace TAB with ;#
   set "preparedLine=#!line:	=;#!"
   rem get first two and 'assayID' tokens
   FOR /F "tokens=1-2,%where% delims=;" %%c in ("!preparedLine!") DO (
@@ -795,9 +1247,11 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
     set "param2=%%d"
     set "param3=%%e"
     setlocal EnableDelayedExpansion
+    rem echo $1=!param1! $2=*!param2!* $3=*!param3!*
+    rem remove leading #
     set "param1=!param1:~1!"
     set "param2=!param2:~1!"
-    set "param3=!param3:~1!"
+    if "!param3!" NEQ "" set "param3=!param3:~1!"
     rem echo $1=!param1! $2=*!param2!* $3=*!param3!*
     if "!param3!" NEQ "" echo !param1!	!param2!	!param3!>> %outfile%
     endlocal
@@ -807,6 +1261,7 @@ for /f "EOL=: delims=" %%L in (%infile%) do (
 rem else (echo No column %~1 in: & echo %line1%)
 setlocal disabledelayedexpansion
 goto:eof
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem ------------------------------------------------------------
 :strfind    --- locate the first occurence of a string in a tab-separated set of strings
 ::          --- %~1 string to find/locate
@@ -837,6 +1292,7 @@ for %%i in (%strings%) do (
 
 )
 goto:eof
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem ------------------------------------------------------------
 :normalizeDate --- normalize current date into YYYYMMDD
 ::                 should work for all native formats 0=m-d-y; 1=d-m-y; 2=y-m-d
@@ -883,7 +1339,8 @@ For /F "TOKENS=1-2 delims=	" %%A In (%~1) do (
     call:showTwoCol "%%A" "%%B"
     )
 endlocal
-goto :EOF
+goto:EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem -------------------------------------------------------------------
 :showTwoCol --- show one line
 ::			--- %~1 first column
@@ -893,6 +1350,26 @@ rem -------------------------------------------------------------------
 ::
 	set "_sp=                                         "
     set "iname=%~1%_sp%"
-    set "iname=%iname:~0,30%"
+    set "iname=%iname:~0,35%"
     echo %iname% %~2
 goto:eof
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+REM ----------------------------------------------------------
+:processMeta  --- read meta ini file and loop through lines
+::                --- %~1 file path
+::                --- %~2 Variable to get result
+:: Return:    >>> 
+:: Example: call:processMeta %tmpldir%\%IDClass%\%IDType%\Analytes.ini"
+rem first id is prefixed. will be reset to empty after the first line
+echo off
+call:normalizeDate today -
+set "lfn=%~1"
+if not exist %lfn% goto:eof
+if %lfn%=="" echo Nothing to process
+SETLOCAL EnableDelayedExpansion
+FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
+    call :processLine "%%a"
+    )
+echo off
+goto :eof
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
