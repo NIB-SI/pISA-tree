@@ -5,7 +5,7 @@ goto :EOF
 rem pISA make batch files packed into the library
 :pISA
 @echo off
-set "$ver=pISA-tree v.2.0"
+set "$ver=pISA-tree v.3.0"
 rem first argument defines where to go (calling batch file name)
 call :%1 %2 %3 %4
 goto:EOF
