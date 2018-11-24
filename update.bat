@@ -8,7 +8,7 @@ rem (c) National Institute of Biology, Ljubljana, Slovenia
 rem 2016
 rem ------------------------------------------------------
 set "mroot=."
-set "batdir=%mroot%\Templates"
+set "batdir=%mroot%\Templates\x.lib"
 rem call:Update %mroot% makeProject.bat
 call:Update %batdir% makeInvestigation.bat
 call:Update %batdir% makeStudy.bat
