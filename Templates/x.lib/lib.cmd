@@ -38,6 +38,7 @@ set pISAroot=%cd%
 set mroot=%cd%
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
+set "batdir=%libdir%"
 rem -----------
 rem Ask for study ID, loop if empty
 set ID=""
@@ -103,7 +104,7 @@ echo pISA projects path:	%pISAroot:\=/%>> %descFile%
 rem copy bla.tmp %descFile%
 rem
 rem  make main readme.md file
-copy %libdir%\makeInvestigation.bat . >NUL 
+copy %libdir%\call.bat .\makeInvestigation.bat >NUL 
 copy %mroot%\showTree.bat . > NUL
 copy %mroot%\showMetadata.bat . > NUL
 copy %mroot%\xcheckMetadata.bat . > NUL
@@ -258,12 +259,11 @@ if exist %pfn% (
 	echo SMPL004	Sample_004	%today%	B4	>> %pfn%
 rem End test %pfn%
 )
-echo Featuredata:	>> %descFile%
 rem echo INVESTIGATION:	%ID%>> ..\_PROJECT_METADATA.TXT
 
 rem
 rem  make main readme.md file
-copy %batdir%\makeStudy.bat . > NUL
+copy %libdir%\call.bat .\makeStudy.bat > NUL
 copy %proot%\showTree.bat . > NUL
 copy %proot%\showMetadata.bat . > NUL
 copy %proot%\xcheckMetadata.bat . > NUL
@@ -395,7 +395,7 @@ rem echo #### ASSAYS>>  %descFile%
 rem echo STUDY:	%ID%>> ..\_INVESTIGATION_METADATA.TXT
 rem 
 rem  make main readme.md file
-copy %batdir%\makeAssay.bat . > NUL
+copy %libdir%\call.bat .\makeAssay.bat > NUL
 copy %iroot%\showTree.bat . > NUL
 copy %iroot%\showMetadata.bat . > NUL
 copy %iroot%\xcheckMetadata.bat . > NUL
@@ -698,6 +698,7 @@ SETLOCAL DISABLEDELAYEDEXPANSION
 call :getMenu "Select phenodata file" "%pfns%None" pfn
 if "%pfn%" EQU "None" ( echo Phenodata:	%pfn%>> %descFile%
 ) ELSE ( echo Phenodata:	%iroot:\=/%/%pfn%>> %descFile%)
+echo Featuredata:	>> %descFile%
 rem ---- Type specific fields
 set tasdir=%tmpldir%\%IDClass%\%IDType%
     set "line1="
@@ -775,6 +776,80 @@ echo ======================================
 PAUSE
 goto:eof
 rem ====================================== / makeAssay
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+:showMetadata
+@echo off
+rem -------------------------------------  pISA-tree %$ver%
+rem
+rem Prepare Metadata for levels below the current level
+rem ------------------------------------------------------
+rem Author: A Blejec <andrej.blejec@nib.si>
+rem (c) National Institute of Biology, Ljubljana, Slovenia
+rem 2016
+rem ------------------------------------------------------
+TITLE %$ver%
+setlocal EnableDelayedExpansion
+set rtyp=txt
+call:getMenu "Select report type" "Markdown/Plain text" rtip
+if "%rtip%" EQU "Markdown" ( set "rtyp=md" ) 
+set lfn=Metadata.%rtyp%
+set LF=^
+
+
+REM Two empty lines are necessary
+echo !LF!*!LF!>line.tmp
+where /R . _*.txt > src.tmp
+rem change \ with /
+echo # Metadata files>!lfn!
+set "mycd=%cd:\=;%"
+if "%rtyp%" EQU "md" set "mycd=%mycd:_=\_%
+echo %mycd:;=  !LF!/%>>!lfn!
+For /F "tokens=1*" %%i in (src.tmp) do (
+	rem (echo.|set /p =## %%i!LF!)>name.tmp
+	rem copy !lfn!+line.tmp !lfn!
+	echo !LF!---!LF!>>!lfn!
+	rem copy !lfn!+name.tmp !lfn!
+	rem Shorten the path( remove project root) and change \ to /
+	set "fname=%%i"
+	set "fname=!fname:%cd%= * **!"
+	@echo. !fname!
+	set "fname=!fname:\=/!"
+	if "%rtyp%" EQU "md" set "fname=!fname:_=\_!"
+	(echo.|set /p =" !fname!**!LF!")>>!lfn!
+	echo !LF!---!LF!>>!lfn!
+	REM set /p="TextHere" <nul >>!lfn!
+	REM Add two blanks to each line
+	set addtext="  "
+	if exist tmpfile.tmp del /q tmpfile.tmp
+	if "%rtyp%" EQU "md" (
+		echo ^|Item^|Value^| >> tmpfile.tmp
+		echo ^|:---^|:---^| >> tmpfile.tmp
+		) ELSE (
+		echo Item	Value >> tmpfile.tmp
+		)
+		for /f "delims=" %%l in (%%i) Do (
+			if "%rtyp%" EQU "md" (
+				set "iv=%%l"
+				set "iv=!iv::	=:|!"
+				set "iv=!iv:_=\_!"
+				echo ^| !iv!  %addtext% ^| >> tmpfile.tmp
+			) ELSE (
+			echo %%l >> tmpfile.tmp
+			)
+		)
+	REM
+	copy !lfn!+tmpfile.tmp !lfn!>NUL
+	REM copy !lfn!+"%%i" !lfn!
+)
+echo !LF!---!LF!>>!lfn!
+del *.tmp
+::@echo on
+@echo.
+@echo.Metadata of levels below %cd% are in !lfn!
+@echo.
+open !lfn!
+timeout 10
+goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem 
 rem --------------------------------------------------------
