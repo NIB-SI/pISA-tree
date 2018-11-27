@@ -10,9 +10,11 @@ _p_*/*
 */_S_*/*
 */_A_*/*
 # Metadata files are recreated with .bat files 
-main/Metadata.md
-main/xCheckMetadata.md
-main/TREE.TXT
+Metadata.md
+Metadata.txt
+Metadata.htm*
+xCheckMetadata.md
+TREE.TXT
 ToDo.txt
 =======
 */bla*/
