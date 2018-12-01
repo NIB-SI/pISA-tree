@@ -9,6 +9,8 @@ rem pISA make batch files packed into the library
 :pISA
 @echo off
 set "$ver=pISA-tree v.3.0"
+set "$analini=Analytes_Template.txt"
+set "$metaTypeini=meta_AType_Template.txt"
 rem first argument defines where to go (calling batch file name)
 call :%1 %2 %3 %4
 goto:EOF
@@ -113,8 +115,8 @@ copy %mroot%\showMetadata.bat . > NUL
 copy %mroot%\xcheckMetadata.bat . > NUL
 rem del *.tmp > NUL
 rem process level specific items
-call :processMeta %mroot%\meta_p.ini
-copy %libdir%\meta_I.ini %proot%
+call :processMeta %mroot%\meta_p_Template.txt
+copy %libdir%\meta_I_Template.txt %proot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
@@ -136,7 +138,7 @@ echo project %ID% is ready.
 echo Location: %cd%\%pname%
 echo.
 echo ======================================
-PAUSE
+rem PAUSE
 goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 :makeInvestigation
@@ -271,8 +273,8 @@ copy %proot%\showTree.bat . > NUL
 copy %proot%\showMetadata.bat . > NUL
 copy %proot%\xcheckMetadata.bat . > NUL
 rem process level specific items
- call :processMeta %proot%\meta_i.ini
- copy %libdir%\meta_S.ini %iroot%
+ call :processMeta %proot%\meta_I_Template.txt
+ copy %libdir%\meta_S_Template.txt %iroot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
@@ -294,8 +296,7 @@ echo Investigation %ID% is ready.
 echo Location: %cd%\%iname%
 echo.
 echo ======================================
-
-PAUSE
+rem PAUSE
 goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 :makeStudy
@@ -404,8 +405,8 @@ copy %iroot%\showMetadata.bat . > NUL
 copy %iroot%\xcheckMetadata.bat . > NUL
 REM
 rem process level specific items
- call :processMeta %iroot%\meta_S.ini
- copy %libdir%\meta_A.ini %sroot%
+ call :processMeta %iroot%\meta_S_Template.txt
+ copy %libdir%\meta_A_Template.txt %sroot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
@@ -426,8 +427,7 @@ echo Study %ID% is ready.
 echo Location: %cd%\%sname%
 echo.
 echo ======================================
-
-PAUSE
+rem PAUSE
 goto:eof
 
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -562,7 +562,8 @@ if exist %tmpldir%\DRY\%NewType% (
   goto Ask4)
 rem type ok
 md %tmpldir%\%IDClass%\%NewType%
-echo Creation date	%today%> %tmpldir%\%IDClass%\%NewType%\Meta.ini
+echo #Item name	Item value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
+echo #Creation date	%today%>> %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
 )
@@ -690,8 +691,8 @@ rem ECHO ON
 rem echo Assay Path:	%cd:\=/%>> %descFile%
 rem set phenodata file
 rem process level specific items
- call :processMeta %sroot%\meta_A.ini
- call :processMeta %tmpldir%\%IDClass%\%IDType%\meta.ini
+ call :processMeta %sroot%\meta_A_Template.txt
+ call :processMeta %tmpldir%\%IDClass%\%IDType%\%$metaTypeini%
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "pfns="
 FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_20*.* /B') DO (
@@ -718,7 +719,7 @@ rem
 :wetclass
 REM ------------------------------------------ wetclass
 rem cd
-rem echo tst %tmpldir%\%IDClass%\%IDType%\Analytes.ini
+rem echo tst %tmpldir%\%IDClass%\%IDType%\%$analini%
 rem dir %tmpldir%
 rem dir ..\%tmpldir%
 rem Assay type directory
@@ -732,7 +733,7 @@ rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%an
   rem dir %tmpldir%\%IDClass%\%IDType%\
     set "line1="
     set "line2="
-if exist %tasdir%\Analytes.ini call :processAnalytes %tasdir%\Analytes.ini
+if exist %tasdir%\%$analini% call :processAnalytes %tasdir%\%$analini%
 
  rem echo tst after processAnalytes: line1 %line1%
  rem echo tst after processAnalytes: line2 %line2%
@@ -744,7 +745,7 @@ REM ---------------------------------------- dryclass
     copy %tmpldir%\ignore.txt . > NUL
     set "line1="
     set "line2="
-    if exist %tasdir%\Analytes.ini call :processAnalytes %tasdir%\Analytes.ini
+    if exist %tasdir%\%$analini% call :processAnalytes %tasdir%\%$analini%
     goto Finish
 REM ---------------------------------------- /dryclass
 :Finish
@@ -776,7 +777,7 @@ echo Assay %ID% is ready.
 echo Location: %cd%\%aname%
 echo.
 echo ======================================
-PAUSE
+rem PAUSE
 goto:eof
 rem ====================================== / makeAssay
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -974,14 +975,17 @@ rem
 IF NOT "%mn:~-1%"=="/" set mn=%mn%/
 set _mn=%mn%
 set nl=0
-set mch=
+set "mchl=123456789ABCDEFGHIJKLMNOP"
+set "mch="
 rem echo %mn%
 rem echo. 
 :top
 rem if "%mn%"=="" goto :done
 set /A "nl=%nl%+1"
-set mch=%mch%%nl%
-for /F "tokens=1 delims=/" %%H in ("%mn%") DO echo    %nl% %%H
+set cprf=%mchl:~0,1%
+set mchl=%mchl:~1%
+set mch=%mch%%cprf%
+for /F "tokens=1 delims=/" %%H in ("%mn%") DO echo    %cprf% %%H
 set mn=%mn:*/=%
 if NOT "%mn%"=="" goto :top
 rem :done
@@ -1124,7 +1128,7 @@ REM ----------------------------------------------------------
 rem first id is prefixed. will be reset to empty after the first line
 set postfix=_%IDName%
 set "lfn=%~1"
-if %lfn%=="" set "lfn=%tmpldir%\%IDClass%\%IDType%\Analytes.ini"
+if %lfn%=="" set "lfn=%tmpldir%\%IDClass%\%IDType%\%$analini%"
 SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
     call :processLine "%%a"
@@ -1146,6 +1150,8 @@ rem ------------------------------------------------------------
 SET "string=%~1"
 REM the line starts with "nn:" - cut off the numbers and colon
 set "string=%string:*:=%
+rem echo "$%string:~0,1%"
+if "$%string:~0,1%" EQU "$#" goto:eof
 REM parse Item/Value line (separetor is TAB) - do not forget to use "..."
 set s1=
 set s2=
@@ -1231,9 +1237,9 @@ setlocal enableextensions disabledelayedexpansion
     setlocal enabledelayedexpansion
     rem Ensure we do not have restricted characters in file name trying to use them as 
     rem delimiters and requesting the second token in the line
-    for /f tokens^=2^ delims^=^<^>^:^.^,^(^)^[^]^"^/^\^|^?^*^ eol^= %%y in ("[!my_file!]") do (
+    for /f tokens^=2^ delims^=^<^>^:^.^,()$[]^"^/^\^|^?^*^ eol^= %%y in ("A!my_file!A") do (
         rem If we are here there is a second token, so, there is a special character
-        echo. Error : Non allowed characters in ID
+        echo. Error : Non allowed character in ID
         endlocal & goto :askFile
     )
 
@@ -1446,7 +1452,7 @@ if not exist %lfn% goto:eof
 if %lfn%=="" echo Nothing to process
 SETLOCAL EnableDelayedExpansion
 FOR /F "usebackq delims=" %%a in (`"findstr /n ^^ %lfn%"`) do (
-    call :processLine "%%a"
+	 call :processLine "%%a"
     )
 echo off
 goto :eof
