@@ -1,2 +1,3 @@
+#Item name	Item value
 pISA Assay creation date	%today%
 pISA Assay creator	*
