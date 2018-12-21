@@ -109,7 +109,7 @@ echo pISA projects path:	%pISAroot:\=/%>> %descFile%
 rem copy bla.tmp %descFile%
 rem
 rem  make main readme.md file
-copy %libdir%\call.bat .\makeInvestigation.bat >NUL 
+copy %libdir%\call.bat .\makeInvestigation.bat >NUL
 copy %mroot%\showTree.bat . > NUL
 copy %mroot%\showMetadata.bat . > NUL
 copy %mroot%\xcheckMetadata.bat . > NUL
