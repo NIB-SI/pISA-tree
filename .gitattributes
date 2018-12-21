@@ -4,6 +4,7 @@
 *.cmd eol=crlf
 *.txt eol=crlf
 *.md eol=crlf
+*.ini eol=crlf
 #
 # Custom for Visual Studio
 *.cs     diff=csharp
