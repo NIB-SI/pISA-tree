@@ -1,4 +1,5 @@
 @echo off
+pushd %~dp0
 rem -------------------------------------  pISA-tree v.0.4.2
 rem
 rem Update/copy files down the tree
