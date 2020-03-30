@@ -460,7 +460,7 @@ call :displayhd "%hd%"
 echo Location: %cd%
 echo.
 rem ----------- init directories
-set descFile=".\_Assay_METADATA.TXT"
+set descFile=".\_ASSAY_METADATA.TXT"
 set "sroot=%cd%"
 set "pISAroot=%sroot%\..\..\.."
 set "mroot=%sroot%\..\..\.."
