@@ -1227,7 +1227,7 @@ REM the line starts with "nn:" - cut off the numbers and colon
 set "string=%string:*:=%
 rem echo "$%string:~0,1%"
 if "$%string:~0,1%" EQU "$#" goto:eof
-REM parse Item/Value line (separetor is TAB) - do not forget to use "..."
+REM parse Item/Value line (separator is TAB) - do not forget to use "..."
 set s1=
 set s2=
 for /f "tokens=1 delims=	" %%a in ("%string%") do set s1=%%a
@@ -1395,10 +1395,12 @@ rem https://www.dostips.com/forum/viewtopic.php?t=3599
 setlocal DisableDelayedExpansion
 for /f "EOL=: delims=" %%L in (%infile%) do (
   set "line=%%L"
+  :: echo !line!
   setlocal EnableDelayedExpansion
   rem set "preparedLine=#!line:;=;#!"
   rem replace TAB with ;#
   set "preparedLine=#!line:	=;#!"
+  :: echo !preparedLine!
   rem get first two and 'assayID' tokens
   FOR /F "tokens=1-2,%where% delims=;" %%c in ("!preparedLine!") DO (
     endlocal
@@ -1433,6 +1435,9 @@ set "TAB=	"
 set "what=%~1"
 set "strings=%~2"
 set what=%what: =.%
+:: echo /+ %strings%
+rem Replace ?
+set "strings=%strings:?=-QM-%"
 set strings=%strings: =.%
 :: echo / %strings%
 set pos=0
