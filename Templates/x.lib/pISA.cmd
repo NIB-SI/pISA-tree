@@ -695,7 +695,7 @@ rem process level specific items
  call :processMeta %tmpldir%\%IDClass%\%IDType%\%$metaTypeini%
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "pfns="
-FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_20*.* /B /O:-N') DO (
+FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_*.txt /B /O:-N') DO (
     SET pfns=!pfns!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
