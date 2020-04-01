@@ -257,7 +257,7 @@ if exist %pfn% (
 	) else (
 	rem Make test phenodata file
 	echo Phenodata:	./%pfn%>> %descFile%
-	echo SampleID	SampleName	Date_of_change	AdditionalField1	Assay001> %pfn%
+	echo SampleID	SampleName	Date_of_change	AdditionalField1	_A_Assay001-RNAisol> %pfn%
 	echo SMPL001	Sample_001	%today%	B1	x>> %pfn%
 	echo SMPL002	Sample_002	%today%	B2	>> %pfn%
 	echo SMPL003	Sample_003	%today%	B3	x>> %pfn%
@@ -695,7 +695,7 @@ rem process level specific items
  call :processMeta %tmpldir%\%IDClass%\%IDType%\%$metaTypeini%
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "pfns="
-FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_*.txt /B /O:-N') DO (
+FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_20*.txt /B /O:-N') DO (
     SET pfns=!pfns!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
@@ -727,7 +727,9 @@ rem dir %tasdir%
 rem dir %tmpldir%
 :: echo %cd%
 set "analytesInput=Analytes.txt"
-call :getSamples %IDName% %iroot%\%pfn% %aroot%\%analytesInput%
+::call :getSamples %IDName% %iroot%\%pfn% %aroot%\%analytesInput%
+call :getSamples %Adir% %iroot%\%pfn% %aroot%\%analytesInput%
+
 setlocal disabledelayedexpansion
 rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   rem dir %tmpldir%\%IDClass%\%IDType%\
