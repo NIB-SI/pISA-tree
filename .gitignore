@@ -16,6 +16,7 @@ Metadata.htm*
 xCheckMetadata.md
 TREE.TXT
 ToDo.txt
+*.bak
 =======
 */bla*/
 >>>>>>> refs/remotes/origin/fix-structure

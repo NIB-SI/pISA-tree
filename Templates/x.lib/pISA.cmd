@@ -8,7 +8,7 @@ goto :EOF
 rem pISA make batch files packed into the library
 :pISA
 @echo off
-set "$ver=pISA-tree v.3.0"
+set "$ver=pISA-tree v.3.0.1"
 set "$analini=Analytes_Template.txt"
 set "$metaTypeini=meta_AType_Template.txt"
 rem first argument defines where to go (calling batch file name)
@@ -109,7 +109,7 @@ echo pISA projects path:	%pISAroot:\=/%>> %descFile%
 rem copy bla.tmp %descFile%
 rem
 rem  make main readme.md file
-copy %libdir%\call.bat .\makeInvestigation.bat >NUL 
+copy %libdir%\call.bat .\makeInvestigation.bat >NUL
 copy %mroot%\showTree.bat . > NUL
 copy %mroot%\showMetadata.bat . > NUL
 copy %mroot%\xcheckMetadata.bat . > NUL
@@ -257,7 +257,7 @@ if exist %pfn% (
 	) else (
 	rem Make test phenodata file
 	echo Phenodata:	./%pfn%>> %descFile%
-	echo SampleID	SampleName	Date_of_change	AdditionalField1	Assay001> %pfn%
+	echo SampleID	SampleName	Date_of_change	AdditionalField1	_A_Assay001-RNAisol> %pfn%
 	echo SMPL001	Sample_001	%today%	B1	x>> %pfn%
 	echo SMPL002	Sample_002	%today%	B2	>> %pfn%
 	echo SMPL003	Sample_003	%today%	B3	x>> %pfn%
@@ -460,7 +460,7 @@ call :displayhd "%hd%"
 echo Location: %cd%
 echo.
 rem ----------- init directories
-set descFile=".\_Assay_METADATA.TXT"
+set descFile=".\_ASSAY_METADATA.TXT"
 set "sroot=%cd%"
 set "pISAroot=%sroot%\..\..\.."
 set "mroot=%sroot%\..\..\.."
@@ -695,7 +695,7 @@ rem process level specific items
  call :processMeta %tmpldir%\%IDClass%\%IDType%\%$metaTypeini%
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET "pfns="
-FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_20*.* /B /O:-N') DO (
+FOR /f "delims=" %%i IN ('dir %iroot%\phenodata_20*.txt /B /O:-N') DO (
     SET pfns=!pfns!%%i/
 )
 SETLOCAL DISABLEDELAYEDEXPANSION
@@ -727,7 +727,9 @@ rem dir %tasdir%
 rem dir %tmpldir%
 :: echo %cd%
 set "analytesInput=Analytes.txt"
-call :getSamples %IDName% %iroot%\%pfn% %aroot%\%analytesInput%
+::call :getSamples %IDName% %iroot%\%pfn% %aroot%\%analytesInput%
+call :getSamples %Adir% %iroot%\%pfn% %aroot%\%analytesInput%
+
 setlocal disabledelayedexpansion
 rem  if exist %sroot%\%analytesInput% ( copy %sroot%\%analytesInput% %aroot%\%analytesInput% )
   rem dir %tmpldir%\%IDClass%\%IDType%\
@@ -1227,7 +1229,7 @@ REM the line starts with "nn:" - cut off the numbers and colon
 set "string=%string:*:=%
 rem echo "$%string:~0,1%"
 if "$%string:~0,1%" EQU "$#" goto:eof
-REM parse Item/Value line (separetor is TAB) - do not forget to use "..."
+REM parse Item/Value line (separator is TAB) - do not forget to use "..."
 set s1=
 set s2=
 for /f "tokens=1 delims=	" %%a in ("%string%") do set s1=%%a
@@ -1395,10 +1397,12 @@ rem https://www.dostips.com/forum/viewtopic.php?t=3599
 setlocal DisableDelayedExpansion
 for /f "EOL=: delims=" %%L in (%infile%) do (
   set "line=%%L"
+  :: echo !line!
   setlocal EnableDelayedExpansion
   rem set "preparedLine=#!line:;=;#!"
   rem replace TAB with ;#
   set "preparedLine=#!line:	=;#!"
+  :: echo !preparedLine!
   rem get first two and 'assayID' tokens
   FOR /F "tokens=1-2,%where% delims=;" %%c in ("!preparedLine!") DO (
     endlocal
@@ -1433,6 +1437,9 @@ set "TAB=	"
 set "what=%~1"
 set "strings=%~2"
 set what=%what: =.%
+:: echo /+ %strings%
+rem Replace ?
+set "strings=%strings:?=-QM-%"
 set strings=%strings: =.%
 :: echo / %strings%
 set pos=0
