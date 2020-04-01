@@ -1,4 +1,3 @@
-Creation date	%today%
 RNA ID	$_RNA
 ng/ul	Blank
 260/280	Blank
