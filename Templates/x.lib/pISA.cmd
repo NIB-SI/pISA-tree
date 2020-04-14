@@ -641,7 +641,7 @@ rem put something in to force git to add new directories
 echo # Assay %ID% >  .\README.MD
 echo # Input for assay %ID% >  .\input\README.MD
 echo # Reports for assay %ID% >  .\reports\README.MD
-echo # Scripts for assas %ID% >  .\scripts\README.MD
+echo # Scripts for assay %ID% >  .\scripts\README.MD
 echo # Output of assay %ID% >  .\output\README.MD
 echo # Other files for assay %ID% >  .\other\README.MD
 goto Forall
