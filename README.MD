@@ -15,6 +15,6 @@ Additional info:
 
 Links:  
 * [pISA-tree Web page](https://nib-si.github.io/pISA/index.html)  
-* [ISA Model & Serialization   Specifications](http://isa-tools.org/format/specification/)
+* [ISA Model & Serialization   Specifications](https://isa-tools.org/format/specification.html)
 * [FAIRDOM hub](https://seek.sysmo-db.org/)  
 
