@@ -18,3 +18,7 @@ Links:
 * [ISA Model & Serialization   Specifications](https://isa-tools.org/format/specification.html)
 * [FAIRDOM hub](https://seek.sysmo-db.org/)  
 
+
+Linked resources:
+* [R support for pISA-tree](https://github.com/NIB-SI/pisar)
+* [R interface for SEEK API (connection to FAIRDOMHub)](https://github.com/NIB-SI/seekr)
