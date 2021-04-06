@@ -917,7 +917,7 @@ rem ------------------------------------------------------
 rem
 rem echo %~dp0 > d.tmp
 TITLE %$ver%
-echo %cd% > d.tmp
+echo %cd%> d.tmp
 tree /A /F > t.tmp
 copy d.tmp+t.tmp TREE.TXT
 del *.tmp
