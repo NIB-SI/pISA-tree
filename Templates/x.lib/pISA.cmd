@@ -548,15 +548,9 @@ set "NewType=""
 if %NewType%* EQU * call :askFile "Enter new Assay Type ID: " NewType 
 if %NewType%* EQU * goto Ask4
 rem check type existence/uniqueness
-if exist %tmpldir%\DRY\%NewType% ( 
+if exist %tmpldir%\%IDClass%\%NewType% ( 
   echo.
-  echo. ERROR: DRY assay type %NewType% already exists
-  echo.
-  set "NewType=" 
-  goto Ask4)
-  if exist %tmpldir%\WET\%NewType% ( 
-  echo.
-  echo. ERROR: WET assay type %NewType% already exists
+  echo. ERROR: %IDClass% assay type %NewType% already exists
   echo.
   set "NewType=" 
   goto Ask4)
