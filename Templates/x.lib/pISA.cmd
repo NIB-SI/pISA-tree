@@ -83,9 +83,9 @@ md reports
 rem put something to the directories
 rem to force git to add them
 REM
-echo # Project %ID% >  .\README.MD
-echo # Reports for project %ID% >  .\reports\README.MD
-echo # Presentations for project %ID% >  .\presentations\README.MD
+echo # Project %ID%>  .\README.MD
+echo # Reports for project %ID%>  .\reports\README.MD
+echo # Presentations for project %ID%>  .\presentations\README.MD
 echo # Feature Summary Table> .\FST.txt
 rem
 setlocal EnableDelayedExpansion
@@ -224,9 +224,9 @@ md presentations
 md reports
 rem put something to the directories
 rem to force git to add them
-echo # Investigation %ID% >  .\README.MD
-echo # Reports for investigation %ID% >  .\reports\README.MD
-echo # Presentations for investigation %ID% >  .\presentations\README.MD
+echo # Investigation %ID%>  .\README.MD
+echo # Reports for investigation %ID%>  .\reports\README.MD
+echo # Presentations for investigation %ID%>  .\presentations\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -374,8 +374,8 @@ set "mroot=%proot%\.."
 md reports
 rem put something to the directories
 rem to force git to add them
-echo # Study %ID% >  .\README.MD
-echo # Reports for study %ID% >  .\reports\README.MD
+echo # Study %ID%>  .\README.MD
+echo # Reports for study %ID%>  .\reports\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -632,12 +632,12 @@ md scripts
 md output
 md other
 rem put something in to force git to add new directories
-echo # Assay %ID% >  .\README.MD
-echo # Input for assay %ID% >  .\input\README.MD
-echo # Reports for assay %ID% >  .\reports\README.MD
-echo # Scripts for assay %ID% >  .\scripts\README.MD
-echo # Output of assay %ID% >  .\output\README.MD
-echo # Other files for assay %ID% >  .\other\README.MD
+echo # Assay %ID%>  .\README.MD
+echo # Input for assay %ID%>  .\input\README.MD
+echo # Reports for assay %ID%>  .\reports\README.MD
+echo # Scripts for assay %ID%>  .\scripts\README.MD
+echo # Output of assay %ID%>  .\output\README.MD
+echo # Other files for assay %ID%>  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :wet
@@ -649,11 +649,11 @@ md raw
 cd ..
 md other
 rem put something in to force git to add new directories
-echo # Assay %ID% >  .\README.MD
-echo # Reports for assay %ID% >  .\reports\README.MD
-echo # Output of assay %ID% >  .\output\README.MD
-echo # Raw output of assay %ID% >  .\output\raw\README.MD
-echo # Other files for assay %ID% >  .\other\README.MD
+echo # Assay %ID%>  .\README.MD
+echo # Reports for assay %ID%>  .\reports\README.MD
+echo # Output of assay %ID%>  .\output\README.MD
+echo # Raw output of assay %ID%>  .\output\raw\README.MD
+echo # Other files for assay %ID%>  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :Forall
