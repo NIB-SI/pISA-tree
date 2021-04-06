@@ -1255,6 +1255,11 @@ rem ENDLOCAL
 goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem -----------------------------------
+:TRIM
+SET %2=%1
+GOTO :EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+rem -----------------------------------
 :getLayer  --- get layer name from the current path
 ::                --- %~1 layer prefix (e.g. _I_)
 ::                --- %~2 Variable to get result
@@ -1275,10 +1280,10 @@ SETLOCAL EnableDelayedExpansion
 
    ::Now remove this from the original string
    CALL SET _result=%%_test:\%_endbit%=%%
-   rem echo %_result%
+   CALL :TRIM %_result% _result
+   rem echo *%_result%*
    (endlocal 
    set "%~2=%_result%")
-   rem echo %iname%
    endlocal
 goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
