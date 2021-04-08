@@ -1,4 +1,4 @@
-#Item name	Item value
+#Key name	Key value
 Local pISA-tree organisation	*
 pISA project creation date	%today%
 pISA project creator	*
