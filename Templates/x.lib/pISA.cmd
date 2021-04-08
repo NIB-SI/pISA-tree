@@ -556,7 +556,7 @@ if exist %tmpldir%\%IDClass%\%NewType% (
   goto Ask4)
 rem type ok
 md %tmpldir%\%IDClass%\%NewType%
-echo #Item name	Item value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
+echo #Key name	Key value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
 echo #Creation date	%today%>> %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
@@ -822,10 +822,10 @@ For /F "tokens=1*" %%i in (src.tmp) do (
 	set addtext="  "
 	if exist tmpfile.tmp del /q tmpfile.tmp
 	if "%rtyp%" EQU "md" (
-		echo ^|Item^|Value^| >> tmpfile.tmp
+		echo ^|Key^|Value^| >> tmpfile.tmp
 		echo ^|:---^|:---^| >> tmpfile.tmp
 		) ELSE (
-		echo Item	Value >> tmpfile.tmp
+		echo Key	Value >> tmpfile.tmp
 		)
 		for /f "delims=" %%l in (%%i) Do (
 			if "%rtyp%" EQU "md" (
@@ -1223,7 +1223,7 @@ REM the line starts with "nn:" - cut off the numbers and colon
 set "string=%string:*:=%
 rem echo "$%string:~0,1%"
 if "$%string:~0,1%" EQU "$#" goto:eof
-REM parse Item/Value line (separator is TAB) - do not forget to use "..."
+REM parse Key/Value line (separator is TAB) - do not forget to use "..."
 set s1=
 set s2=
 for /f "tokens=1 delims=	" %%a in ("%string%") do set s1=%%a
@@ -1511,7 +1511,7 @@ rem -------------------------------------------------------------------
 ::			--- %~1 first column
 ::			--- %~2 second column
 ::
-:: Example: call:showTwoCol "Item name" "Item value"
+:: Example: call:showTwoCol "Key name" "Key value"
 ::
 	set "_sp=                                         "
     set "iname=%~1%_sp%"
