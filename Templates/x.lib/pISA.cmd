@@ -116,7 +116,7 @@ copy %mroot%\xcheckMetadata.bat . > NUL
 rem del *.tmp > NUL
 rem process level specific items
 call :processMeta %mroot%\meta_p_Template.txt
-copy %libdir%\meta_I_Template.txt %proot%
+copy %tmpldir%\meta_I_Template.txt %proot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
@@ -274,7 +274,7 @@ copy %proot%\showMetadata.bat . > NUL
 copy %proot%\xcheckMetadata.bat . > NUL
 rem process level specific items
  call :processMeta %proot%\meta_I_Template.txt
- copy %libdir%\meta_S_Template.txt %iroot%
+ copy %tmpldir%\meta_S_Template.txt %iroot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
@@ -406,7 +406,7 @@ copy %iroot%\xcheckMetadata.bat . > NUL
 REM
 rem process level specific items
  call :processMeta %iroot%\meta_S_Template.txt
- copy %libdir%\meta_A_Template.txt %sroot%
+ copy %tmpldir%\meta_A_Template.txt %sroot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
