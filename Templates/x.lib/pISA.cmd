@@ -8,7 +8,7 @@ goto :EOF
 rem pISA makeLayer batch files packed into the library
 :pISA
 @echo off
-set "$ver=pISA-tree v.3.0.1"
+set "$ver=pISA-tree v.3.0.2"
 set "$analini=Analytes_Template.txt"
 set "$metaTypeini=meta_AType_Template.txt"
 rem first argument defines where to go (calling batch file name)
