@@ -5,7 +5,7 @@ REM XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem get parameters
 call %*
 goto :EOF
-rem pISA make batch files packed into the library
+rem pISA makeLayer batch files packed into the library
 :pISA
 @echo off
 set "$ver=pISA-tree v.3.0.1"
