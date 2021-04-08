@@ -43,7 +43,6 @@ set pISAroot=%cd%
 set mroot=%cd%
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
-set "batdir=%libdir%"
 rem -----------
 rem Ask for study ID, loop if empty
 set ID=""
@@ -170,7 +169,6 @@ set "pISAroot=%proot%\.."
 set "mroot=%proot%\.."
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
-set "batdir=%libdir%"
 call :normalizedate today -
 rem -----------
 call :getLayer _p_ pname
@@ -327,7 +325,6 @@ set "pISAroot=%iroot%\..\.."
 set "mroot=%iroot%\..\.."
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
-set "batdir=%libdir%"
 rem -----------
 call :getLayer _I_ iname
 rem Check Investigation existence
@@ -466,7 +463,6 @@ set "pISAroot=%sroot%\..\..\.."
 set "mroot=%sroot%\..\..\.."
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
-set "batdir=%libdir%"
 rem -----------
 call :getLayer _S_ sname
 rem Check Study existence
