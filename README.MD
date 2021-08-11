@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/13748861/120488150-d205ed00-c3b6-11eb-8902-64b4ca914452.png)
+![image](pISA-tree_logo.svg)
 
 # pISA-tree: Standard project directory tree<br/>(ISA-tab compliant)
 
