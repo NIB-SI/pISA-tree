@@ -1,0 +1,6 @@
+#Item name	Item value
+Lab manager	*
+Sample collection protocol	*
+Extraction protocol	*
+Chromatography protocol	*
+Mass spectrometry protocol	*
