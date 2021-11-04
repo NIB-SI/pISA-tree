@@ -1,6 +1,6 @@
 #Item name	Item value
 Lab manager	*
-Sample collection protocol	*
-Extraction protocol	*
-Chromatography protocol	*
-Mass spectrometry protocol	*
+Sample collection protocol (file path, link or citation)	*
+Extraction protocol (file path, link or citation)	*
+Chromatography protocol (file path, link or citation)	*
+Mass spectrometry protocol (file path, link or citation)	*
