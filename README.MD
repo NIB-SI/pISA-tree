@@ -5,6 +5,8 @@
 This set of batch files is used to create standard directory tree for research projects.
 Batch files are provided to make standardized nested directories in accordance with the ISA-tab framework (**I**nvestigation/**S**tudy/**A**ssay).
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5721227.svg)](https://doi.org/10.5281/zenodo.5721227)
+
 Installation:
 
 1. Download (zip file) or clone the repository from [NIB GitHub repository](https://github.com/NIB-SI/pISA/archive/projects.zip).
@@ -24,4 +26,4 @@ Links:
 
 Linked resources:
 * [R support for pISA-tree](https://github.com/NIB-SI/pisar)
-* [R interface for SEEK API (connection to FAIRDOMHub)](https://github.com/NIB-SI/seekr)
+* [R interface for SEEK API (connection to FAIRDOMHub)](https://github.com/NIB-SI/seekr) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5710285.svg)](https://doi.org/10.5281/zenodo.5710285)
