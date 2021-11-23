@@ -20,7 +20,7 @@ Additional info:
 Links:  
 * [ISA Model & Serialization   Specifications](https://isa-tools.org/format/specification.html)
 * [FAIRDOM hub](https://seek.sysmo-db.org/)  
-* [bio.tools](https://bio.tools/pisa-tree)
+* [bio.tools:pisa-tree](https://bio.tools/pisa-tree)
 
 
 Linked resources:
