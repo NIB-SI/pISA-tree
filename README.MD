@@ -11,7 +11,7 @@ Installation:
 
 1. Download (zip file) or clone the repository from [NIB GitHub repository](https://github.com/NIB-SI/pISA/archive/projects.zip).
 2. Extract files into your local pISA projects directory (ignore or delete .git-related files).
-3. User instructions are in **INSTRUCTIONS** file.
+3. User instructions are in the **INSTRUCTIONS** file.
 
 Additional info:  
 * Files in `doc` folder  
