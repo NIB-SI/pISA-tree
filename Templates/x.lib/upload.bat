@@ -1,10 +1,10 @@
 ECHO OFF
 cls
 REM Upload newly generated files 
-REM From local assay to remote assay (in uroot)
+REM From the local assay to the remote/network assay (set by uroot)
 REM ----------------------------
 REM uroot --- remote pISA projects root (for upload)
-REM NOTE: only uroot has to be set manually
+REM NOTE: replace uroot with the pISA-projects location on your server 
 set "uroot=O:\DEJAVNOSTI\OMIKE\pISA-Projects"
 REM --- Set local pISA roots and names (version 2018)
 set wd=%CD%

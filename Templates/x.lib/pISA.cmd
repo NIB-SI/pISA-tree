@@ -1,14 +1,14 @@
-REM XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-REM X DANGEROUS ZONE::: DO NOT CHANGE ANYTHING IN THIS FILE X
-REM XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+REM XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+REM ! DANGEROUS ZONE ::: DO NOT CHANGE ANYTHING IN THIS FILE !
+REM XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 @echo off
 rem get parameters
 call %*
 goto :EOF
-rem pISA make batch files packed into the library
+rem pISA makeLayer batch files packed into the library
 :pISA
 @echo off
-set "$ver=pISA-tree v.3.0.1"
+set "$ver=pISA-tree v.3.0.2"
 set "$analini=Analytes_Template.txt"
 set "$metaTypeini=meta_AType_Template.txt"
 rem first argument defines where to go (calling batch file name)
@@ -43,7 +43,6 @@ set pISAroot=%cd%
 set mroot=%cd%
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
-set "batdir=%libdir%"
 rem -----------
 rem Ask for study ID, loop if empty
 set ID=""
@@ -83,9 +82,9 @@ md reports
 rem put something to the directories
 rem to force git to add them
 REM
-echo # Project %ID% >  .\README.MD
-echo # Reports for project %ID% >  .\reports\README.MD
-echo # Presentations for project %ID% >  .\presentations\README.MD
+echo # Project %ID%>  .\README.MD
+echo # Reports for project %ID%>  .\reports\README.MD
+echo # Presentations for project %ID%>  .\presentations\README.MD
 echo # Feature Summary Table> .\FST.txt
 rem
 setlocal EnableDelayedExpansion
@@ -116,7 +115,7 @@ copy %mroot%\xcheckMetadata.bat . > NUL
 rem del *.tmp > NUL
 rem process level specific items
 call :processMeta %mroot%\meta_p_Template.txt
-copy %libdir%\meta_I_Template.txt %proot%
+copy %tmpldir%\meta_I_Template.txt %proot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
@@ -170,7 +169,6 @@ set "pISAroot=%proot%\.."
 set "mroot=%proot%\.."
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
-set "batdir=%libdir%"
 call :normalizedate today -
 rem -----------
 call :getLayer _p_ pname
@@ -224,9 +222,9 @@ md presentations
 md reports
 rem put something to the directories
 rem to force git to add them
-echo # Investigation %ID% >  .\README.MD
-echo # Reports for investigation %ID% >  .\reports\README.MD
-echo # Presentations for investigation %ID% >  .\presentations\README.MD
+echo # Investigation %ID%>  .\README.MD
+echo # Reports for investigation %ID%>  .\reports\README.MD
+echo # Presentations for investigation %ID%>  .\presentations\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -274,7 +272,7 @@ copy %proot%\showMetadata.bat . > NUL
 copy %proot%\xcheckMetadata.bat . > NUL
 rem process level specific items
  call :processMeta %proot%\meta_I_Template.txt
- copy %libdir%\meta_S_Template.txt %iroot%
+ copy %tmpldir%\meta_S_Template.txt %iroot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
@@ -327,7 +325,6 @@ set "pISAroot=%iroot%\..\.."
 set "mroot=%iroot%\..\.."
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
-set "batdir=%libdir%"
 rem -----------
 call :getLayer _I_ iname
 rem Check Investigation existence
@@ -374,8 +371,8 @@ set "mroot=%proot%\.."
 md reports
 rem put something to the directories
 rem to force git to add them
-echo # Study %ID% >  .\README.MD
-echo # Reports for study %ID% >  .\reports\README.MD
+echo # Study %ID%>  .\README.MD
+echo # Reports for study %ID%>  .\reports\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -406,7 +403,7 @@ copy %iroot%\xcheckMetadata.bat . > NUL
 REM
 rem process level specific items
  call :processMeta %iroot%\meta_S_Template.txt
- copy %libdir%\meta_A_Template.txt %sroot%
+ copy %tmpldir%\meta_A_Template.txt %sroot%
 rem append common.ini
 copy %descFile%+..\common.ini %descFile% /b> NUL
 copy ..\common.ini . /b > NUL
@@ -466,7 +463,6 @@ set "pISAroot=%sroot%\..\..\.."
 set "mroot=%sroot%\..\..\.."
 set "tmpldir=%mroot%\Templates"
 set "libdir=%tmpldir%\x.lib"
-set "batdir=%libdir%"
 rem -----------
 call :getLayer _S_ sname
 rem Check Study existence
@@ -548,21 +544,15 @@ set "NewType=""
 if %NewType%* EQU * call :askFile "Enter new Assay Type ID: " NewType 
 if %NewType%* EQU * goto Ask4
 rem check type existence/uniqueness
-if exist %tmpldir%\DRY\%NewType% ( 
+if exist %tmpldir%\%IDClass%\%NewType% ( 
   echo.
-  echo. ERROR: DRY assay type %NewType% already exists
-  echo.
-  set "NewType=" 
-  goto Ask4)
-  if exist %tmpldir%\WET\%NewType% ( 
-  echo.
-  echo. ERROR: WET assay type %NewType% already exists
+  echo. ERROR: %IDClass% assay type %NewType% already exists
   echo.
   set "NewType=" 
   goto Ask4)
 rem type ok
 md %tmpldir%\%IDClass%\%NewType%
-echo #Item name	Item value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
+echo #Key name	Key value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
 echo #Creation date	%today%>> %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
@@ -638,12 +628,12 @@ md scripts
 md output
 md other
 rem put something in to force git to add new directories
-echo # Assay %ID% >  .\README.MD
-echo # Input for assay %ID% >  .\input\README.MD
-echo # Reports for assay %ID% >  .\reports\README.MD
-echo # Scripts for assas %ID% >  .\scripts\README.MD
-echo # Output of assay %ID% >  .\output\README.MD
-echo # Other files for assay %ID% >  .\other\README.MD
+echo # Assay %ID%>  .\README.MD
+echo # Input for assay %ID%>  .\input\README.MD
+echo # Reports for assay %ID%>  .\reports\README.MD
+echo # Scripts for assay %ID%>  .\scripts\README.MD
+echo # Output of assay %ID%>  .\output\README.MD
+echo # Other files for assay %ID%>  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :wet
@@ -655,11 +645,11 @@ md raw
 cd ..
 md other
 rem put something in to force git to add new directories
-echo # Assay %ID% >  .\README.MD
-echo # Reports for assay %ID% >  .\reports\README.MD
-echo # Output of assay %ID% >  .\output\README.MD
-echo # Raw output of assay %ID% >  .\output\raw\README.MD
-echo # Other files for assay %ID% >  .\other\README.MD
+echo # Assay %ID%>  .\README.MD
+echo # Reports for assay %ID%>  .\reports\README.MD
+echo # Output of assay %ID%>  .\output\README.MD
+echo # Raw output of assay %ID%>  .\output\raw\README.MD
+echo # Other files for assay %ID%>  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :Forall
@@ -828,10 +818,10 @@ For /F "tokens=1*" %%i in (src.tmp) do (
 	set addtext="  "
 	if exist tmpfile.tmp del /q tmpfile.tmp
 	if "%rtyp%" EQU "md" (
-		echo ^|Item^|Value^| >> tmpfile.tmp
+		echo ^|Key^|Value^| >> tmpfile.tmp
 		echo ^|:---^|:---^| >> tmpfile.tmp
 		) ELSE (
-		echo Item	Value >> tmpfile.tmp
+		echo Key	Value >> tmpfile.tmp
 		)
 		for /f "delims=" %%l in (%%i) Do (
 			if "%rtyp%" EQU "md" (
@@ -923,7 +913,7 @@ rem ------------------------------------------------------
 rem
 rem echo %~dp0 > d.tmp
 TITLE %$ver%
-echo %cd% > d.tmp
+echo %cd%> d.tmp
 tree /A /F > t.tmp
 copy d.tmp+t.tmp TREE.TXT
 del *.tmp
@@ -1229,7 +1219,7 @@ REM the line starts with "nn:" - cut off the numbers and colon
 set "string=%string:*:=%
 rem echo "$%string:~0,1%"
 if "$%string:~0,1%" EQU "$#" goto:eof
-REM parse Item/Value line (separator is TAB) - do not forget to use "..."
+REM parse Key/Value line (separator is TAB) - do not forget to use "..."
 set s1=
 set s2=
 for /f "tokens=1 delims=	" %%a in ("%string%") do set s1=%%a
@@ -1261,6 +1251,11 @@ rem ENDLOCAL
 goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem -----------------------------------
+:TRIM
+SET %2=%1
+GOTO :EOF
+rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+rem -----------------------------------
 :getLayer  --- get layer name from the current path
 ::                --- %~1 layer prefix (e.g. _I_)
 ::                --- %~2 Variable to get result
@@ -1281,10 +1276,10 @@ SETLOCAL EnableDelayedExpansion
 
    ::Now remove this from the original string
    CALL SET _result=%%_test:\%_endbit%=%%
-   rem echo %_result%
+   CALL :TRIM %_result% _result
+   rem echo *%_result%*
    (endlocal 
    set "%~2=%_result%")
-   rem echo %iname%
    endlocal
 goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1512,7 +1507,7 @@ rem -------------------------------------------------------------------
 ::			--- %~1 first column
 ::			--- %~2 second column
 ::
-:: Example: call:showTwoCol "Item name" "Item value"
+:: Example: call:showTwoCol "Key name" "Key value"
 ::
 	set "_sp=                                         "
     set "iname=%~1%_sp%"
