@@ -1,0 +1,32 @@
+#Item name	Item value
+#Creation date	2021-03-05
+#MIQE precis minimal standard was used for preparation of template:
+#https://bmcmolbiol.biomedcentral.com/articles/10.1186/1471-2199-11-74/tables/1
+Lab manager	*
+#
+#Assay optimisation/validation
+Assay chemistry	TaqMan Probe/MGB Probe/SYBRGreen/mixed
+Assay optimisation protocol (file path, link or citation)	
+Pippeting	liquid handling station/manual
+Reaction volume	*
+#
+#qPCR
+qPCR platform	HT7900 Fast, ABI (SDS)/Viia7, ABI (QuantStudio)/QuantStudio7 Flex , ABI (QuantStudio)/QuantStudio7 Pro, ABI (Design and Analysis) /LightCycler 480, Roche (LightCycler 480)
+qPCR protocol (file path, link or citation)	*
+One-step RT-PCR (RNA as input)	No/Yes
+Well format	384/96/tubes
+MasterMix	FastStart Universal Probe Master (ROX), Roche (4914058001)/TaqMan Universal PCR Master mix, ABI (4318157)/Power SYBR® Green PCR Master Mix, ABI (4367659)
+No. sample technical replicates	*
+No. sample dilutions	*
+PCR controls used	NTC only/NTC and PC/only PC/None
+No. standard curve dilutions (if using)	
+Operator	*
+#
+#Data analysis
+Cq value determination software (if different from PCR platform)
+Quantification software	quantGenius/Excel
+qPCR quantification method	relative standard curve/absolute standard curve/ddCq
+Notes	
+
+
+

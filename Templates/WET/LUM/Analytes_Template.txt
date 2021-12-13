@@ -1,0 +1,20 @@
+Plate ID	PS001
+DNA introduction system	agrobacteria mediated transient transformation/protoplast transfection
+SynBio GenotypeID(s)	*
+Date of transformation/transfection	%today%
+Treatment	none/JA/MeJA/SA/INA/Etylene/ACC/dexamethasone
+Date of treatment	%today%
+Date of sampling	%today%
+Date of luminescence assay start	%today%
+Time of luminescence assay start	%time:~0,5%
+Luminometer	BioTek Synergy Mx/BioTek Synergy H1/BioTek Synergy Neo2/Promega GloMax 20 20
+Protocol (luminometer setup)	Long Kinetic Experiment
+Time [min] between two measurements (luminometer setup)	10/20
+Sensitivity (luminometer setup)	100/150/200
+Integration time [ms] (luminometer setup)	300
+Temperature (luminometer) at start of the experiment [degrees Celsius]	23/24
+Temperature (luminometer) at the end of the experiment [degrees Celsius]	27/28
+Time between start of sampling and start of experiment [min]	30/60
+Final concentration of luciferin [uM]	35
+Silencing supressor added	none/p19
+Notes	
