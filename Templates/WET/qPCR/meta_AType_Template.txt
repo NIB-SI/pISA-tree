@@ -1,4 +1,4 @@
-#Item name	Item value
+#Key name	Key value
 #Creation date	2021-03-05
 #MIQE precis minimal standard was used for preparation of template:
 #https://bmcmolbiol.biomedcentral.com/articles/10.1186/1471-2199-11-74/tables/1

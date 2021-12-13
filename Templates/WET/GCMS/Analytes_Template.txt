@@ -1,4 +1,4 @@
-#Item name	Item value
+#Key name	Key value
 Creation date	%today%
 #Extraction
 Extract ID	$_extr

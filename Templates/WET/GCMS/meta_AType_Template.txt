@@ -1,4 +1,4 @@
-#Item name	Item value
+#Key name	Key value
 Lab manager	*
 Sample collection protocol (file path, link or citation)	*
 Extraction protocol (file path, link or citation)	*
