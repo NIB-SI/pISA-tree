@@ -1,0 +1,6 @@
+#Key name	Key Value
+Lab manager	ACR/TL
+Operator	*
+Link to SynBio DM	*
+Link to protocols	*
+Additional Notes	

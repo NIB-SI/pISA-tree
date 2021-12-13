@@ -1,0 +1,31 @@
+#Key name	Key value
+Creation date	%today%
+#Extraction
+Extract ID	$_extr
+Extract Name	Blank
+Extraction Method	*
+Date Extraction	%today%
+#Post Extraction
+Derivatization or Labelling	sylilation/acetylation/alkylation/none
+Date Derivatization or Labelling	%today%
+Derivatized or labeled Extract ID	$_extrD
+Derivatized or labeled Extract Name	Blank
+Other Post Extraction Procedures	
+Storage	
+#Chromatography
+Date GC-MS Run	%today%
+GC Instrument	*
+GC Autosampler Model	
+GC Column model	*
+GC Column type	*
+Guard Column	
+#Mass spectrometry
+MS Scan polarity	positive/negative/alternating/negative/NA
+MS Scan mz range	*
+MS Instrument	*
+MS Ion source	electron ionization (EI)/chemical ionization (CI)/electrospray ionization (ESI)/atmospheric pressure chemical ionization (APCI)/atmospheric pressure photoionization (APPI)/inductively coupled plasma ionization (ICP)/matrix assisted laser desorption and ionization (MALDI)
+Mass analyzer	quadrupole mass filter/quadrupole ion trap/Fourier-transform ion cyclotron resonance (FT-ICR)/orbitrap/time-of-flight
+Raw Spectral Data Files	Blank
+#Other
+Operator	*
+Notes	
