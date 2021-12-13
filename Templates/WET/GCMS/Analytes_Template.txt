@@ -1,4 +1,4 @@
-#Item name	Item value
+#Key name	Key value
 Creation date	%today%
 #Extraction
 Extract ID	$_extr
@@ -28,4 +28,4 @@ Mass analyzer	quadrupole mass filter/quadrupole ion trap/Fourier-transform ion c
 Raw Spectral Data Files	Blank
 #Other
 Operator	*
-Notes	
+Notes 

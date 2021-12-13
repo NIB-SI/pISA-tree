@@ -14,7 +14,7 @@ Installation:
 3. User instructions are in the **INSTRUCTIONS** file.
 
 Additional info:  
-* Files in `doc` folder  
+* Files in the `doc` folder  
 * Files at [http://ablejec.nib.si/doc](http://ablejec.nib.si/doc)  
 
 Links:  

@@ -1,4 +1,4 @@
-#Item name	Item value
+#Key name	Key value
 #Creation date	2021-03-05
 #MIQE precis minimal standard was used for preparation of template:
 #https://bmcmolbiol.biomedcentral.com/articles/10.1186/1471-2199-11-74/tables/1
@@ -27,6 +27,3 @@ Cq value determination software (if different from PCR platform)
 Quantification software	quantGenius/Excel
 qPCR quantification method	relative standard curve/absolute standard curve/ddCq
 Notes	
-
-
-

@@ -1,2 +1,2 @@
-#Item name	Item Value
+#Key name	Key Value
 Lab manager	*
