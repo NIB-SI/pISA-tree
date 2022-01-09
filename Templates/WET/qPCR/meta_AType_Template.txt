@@ -27,6 +27,3 @@ Cq value determination software (if different from PCR platform)
 Quantification software	quantGenius/Excel
 qPCR quantification method	relative standard curve/absolute standard curve/ddCq
 Notes	
-
-
-

@@ -28,4 +28,4 @@ Mass analyzer	quadrupole mass filter/quadrupole ion trap/Fourier-transform ion c
 Raw Spectral Data Files	Blank
 #Other
 Operator	*
-Notes	
+Notes 
