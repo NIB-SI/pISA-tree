@@ -742,8 +742,8 @@ REM ---------------------------------------- dryclass
 REM ---------------------------------------- /dryclass
 :Finish
 echo Data:	>> %descFile%
-rem ------------------------------------  include common.ini from project level
-copy %descFile%+..\common.ini %descFile% \b >NUL
+rem ------------------------------------  include common.ini from previous level
+copy %descFile%+..\common.ini %descFile% /b >NUL
 rem echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
 copy %sroot%\showTree.bat . >NUL
 copy %sroot%\showMetadata.bat . >NUL
