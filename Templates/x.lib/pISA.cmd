@@ -1065,7 +1065,7 @@ GOTO:EOF
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem -----------------------------------------------------
 :putMeta2   --- get metadata and append to descFile
-::          --- descFile - should be set befor the call
+::          --- descFile - should be set before the call
 ::          --- %~1 Input message (what to enter)
 ::          --- %~2 Variable to get result
 ::          --- %~3 (optional) missing: no typed input required
@@ -1076,6 +1076,13 @@ rem -----------------------------------------------------
 :: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
 rem FIX: allow text input of empty string
+echo putMeta2: %~1 , %~2 , %~3
+set "plus=%~1"
+echo %plus% 
+echo %plus:~0,1%
+echo %plus:+=%
+pause
+if %plus:~0,1%=="+" set xMeta="%~3" & set %1=%plus:+=% & GOTO:next
 if "%~3"=="*" call:getInput "%~1" xMeta "%~3" & GOTO:next
 if "%~3"==""  call:getInput "%~1" xMeta "%~3" & GOTO:next
 if "%~3"==" " call:getInput "%~1" xMeta "%~3" & GOTO:next
@@ -1088,6 +1095,8 @@ for /f "tokens=1 delims=/" %%a in ("%~3") do set first=%%a
 rem echo =%~3=%first%= REM test
 if "%xMeta%"=="Other" call:getInput "%~1" xMeta "%first%"
 :next
+echo echo %~1:	%xMeta%%prefix%
+pause
 if /I "%~3" NEQ "Blank" echo %~1:	%xMeta%%prefix%>> %descFile%
 rem call:writeAnalytes %analytesInput% "%~1" %xMeta% 
 rem

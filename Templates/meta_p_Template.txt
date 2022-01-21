@@ -1,7 +1,6 @@
 #Key name	Key value
 Local pISA-tree organisation	*
 pISA project creation date	%today%
-+Technology Type:	included without typing
 pISA project creator	*
 Project funding code	*
 Project coordinator	*
