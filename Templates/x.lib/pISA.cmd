@@ -1067,6 +1067,8 @@ rem -----------------------------------------------------
 :putMeta2   --- get metadata and append to descFile
 ::          --- descFile - should be set before the call
 ::          --- %~1 Input message (what to enter)
+::                  If it starts with symbol '+', no user input is expected.
+::                  Line is added into metafile.
 ::          --- %~2 Variable to get result
 ::          --- %~3 (optional) missing: no typed input required
 ::                             * : can be skipped, return *
