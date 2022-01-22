@@ -1065,8 +1065,10 @@ GOTO:EOF
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem -----------------------------------------------------
 :putMeta2   --- get metadata and append to descFile
-::          --- descFile - should be set befor the call
+::          --- descFile - should be set before the call
 ::          --- %~1 Input message (what to enter)
+::                  If it starts with symbol '+', no user input is expected.
+::                  Line is added into metafile.
 ::          --- %~2 Variable to get result
 ::          --- %~3 (optional) missing: no typed input required
 ::                             * : can be skipped, return *
@@ -1076,6 +1078,13 @@ rem -----------------------------------------------------
 :: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
 rem FIX: allow text input of empty string
+set "Key=%~1"
+set "xMeta=%~3"
+if "%Key:~0,1%" NEQ "+" GOTO:kbdinput
+    set "Key=%Key:+=%"
+    echo %Key%:	%xMeta%>> %descFile%
+goto:header
+:kbdinput
 if "%~3"=="*" call:getInput "%~1" xMeta "%~3" & GOTO:next
 if "%~3"==""  call:getInput "%~1" xMeta "%~3" & GOTO:next
 if "%~3"==" " call:getInput "%~1" xMeta "%~3" & GOTO:next
@@ -1097,12 +1106,13 @@ set pf=
 if "%~4" NEQ ""  set pf=%postfix%
 set "line1=%line1%	%~1"
 set "line2=%line2%	%~4%xMeta%%pf%"
+:header
 endlocal
 rem echo tst line1 %line1%
 rem echo tst line2 %line2%
 rem pause
 set "spaces=                                 "
-set "line=%~1%spaces%"
+set "line=%Key%%spaces%"
 set "line=%line:~0,35%%~4%xMeta%"
 rem if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/"
 if /I "%~3" NEQ "Blank" set "hd=%hd%%line%/"
