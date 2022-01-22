@@ -52,14 +52,14 @@ call :askFile "Enter project ID: " ID
 ) else (
 set ID=%1
 )
-:Ask
+:Askpid
 if %ID% EQU "" call :askFile "Enter project ID: " ID
-if %ID% EQU "" goto Ask
+if %ID% EQU "" goto Askpid
 IF EXIST _p_%ID% (
 REM Dir exists
 echo ERROR: project named *%ID%* already exists
 set ID=""
-goto Ask
+goto Askpid
 ) ELSE (
 REM Continue creating directory
 rem echo Creating project %ID%
@@ -190,15 +190,15 @@ rem echo %ID%
 ) else (
 set ID=%1
 )
-:Ask
+:Askiid
 if %ID% EQU "" call :askFile "Enter Investigation ID: " ID
-if %ID% EQU "" goto Ask
+if %ID% EQU "" goto Askiid
 REM Check existence/uniqueness
 IF EXIST _I_%ID% (
 REM Dir exists
 echo ERROR: Investigation named *%ID%* already exists
 set ID=""
-goto Ask
+goto Askiid
 ) ELSE (
 REM Continue creating directory
 rem echo %ID%
@@ -345,15 +345,15 @@ rem echo %ID%
 ) else (
 set ID=%1
 )
-:Ask
+:Asksid
 if %ID% EQU "" call :askFile "Enter Study ID: " ID
-if %ID% EQU "" goto Ask
+if %ID% EQU "" goto Asksid
 REM Check existence/uniqueness
 IF EXIST _S_%ID% (
 REM Dir exists
 echo ERROR: Study named *%ID%* already exists
 set ID=""
-goto Ask
+goto Asksid
 ) ELSE (
 REM Continue creating directory
 rem echo %ID%
@@ -586,9 +586,9 @@ set IDName=%3
 rem dir %IDType%* /B /AD
 rem Similar Assay IDs
 rem %IDType%* /AD
-:Ask3
+:Askaid
 if %IDName% EQU "" call :askFile "Enter Assay ID: " IDName 
-if %IDName% EQU "" goto Ask3
+if %IDName% EQU "" goto Askaid
 rem ----------------------------------------------
 rem concatenate ID name
 set ID=%IDName%-%IDType%
@@ -602,7 +602,7 @@ rem set IDType=""
 rem set IDClass=""
 set IDName=""
 set ID=""
-goto Ask3
+goto Askaid
 ) ELSE (
 REM Continue creating directory
 )
