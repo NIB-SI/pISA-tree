@@ -345,15 +345,15 @@ rem echo %ID%
 ) else (
 set ID=%1
 )
-:Ask
+:Asksid
 if %ID% EQU "" call :askFile "Enter Study ID: " ID
-if %ID% EQU "" goto Ask
+if %ID% EQU "" goto Asksid
 REM Check existence/uniqueness
 IF EXIST _S_%ID% (
 REM Dir exists
 echo ERROR: Study named *%ID%* already exists
 set ID=""
-goto Ask
+goto Asksid
 ) ELSE (
 REM Continue creating directory
 rem echo %ID%
