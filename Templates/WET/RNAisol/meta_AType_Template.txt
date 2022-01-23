@@ -1,2 +1,6 @@
 #Key name	Key Value
+# Lines starting with + will be silently added to metadata
++Measurement Type	sample preprocessing with quality control
++Technology Type	RNA isolation and reverse transcription
+#
 Lab manager	*

@@ -1,0 +1,17 @@
+#Item name	Item value
+#Creation date	2021-09-07
+# Lines starting with + will be silently added to metadata
++Measurement Type	nucleic acid sequencing
++Technology Type	Oxford Nanopore Technologies sequencing
+#
+Measurement Type	nucleic acid sequencing
+Technology Type	Oxford Nanopore Technologies sequencing
+Lab manager	*
+Sequencing platform	MinION/GridION/PromethION
+Flow cell	Flongle/MinION_GridION/PromethION
+Sequencing kit (sample type)	SQK-LSK109 (DNA)/SQK-LSK110 (DNA)/SQK-LSK109-XL (DNA)/SQK-RAD004 (DNA)/SQK-PSK004 (PCR-DNA)/SQK-DCS109 (cDNA)/SQK-PCS109 (cDNA)/SQK-PCS109 (PCR-cDNA)/SQK-RNA002 (DirectRNA)
+Barcoding kit	None/SQK-RPB004(Rapid DNA)/SQK-PBK004 (DNA)/SQK-RBK110.96 (Rapid DNA)/SQK-RBK004 (Rapid DNA)/SQK-16S024 (16S)/SQK-PCB109 (PCR-cDNA)
+MinKNOW version	*
+Basecaller software and version	*
+Operator	*
+Notes	
