@@ -1,4 +1,8 @@
 #Key name	Key Value
+# Lines starting with + will be silently added to metadata
++Measurement Type	*
++Technology Type	*
+#
 Lab manager	ACR/TL
 Operator	*
 Link to SynBio DM	*
