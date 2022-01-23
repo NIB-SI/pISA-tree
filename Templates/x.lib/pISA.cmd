@@ -82,9 +82,9 @@ md reports
 rem put something to the directories
 rem to force git to add them
 REM
-echo # Project %ID%>  .\README.MD
-echo # Reports for project %ID%>  .\reports\README.MD
-echo # Presentations for project %ID%>  .\presentations\README.MD
+echo # Project %pdir%>  .\README.MD
+echo # Reports for project %pdir%>  .\reports\README.MD
+echo # Presentations for project %pdir%>  .\presentations\README.MD
 echo # Feature Summary Table> .\FST.txt
 rem
 setlocal EnableDelayedExpansion
@@ -101,7 +101,7 @@ set hd=%hd%project:                           %pname:~3%/
 REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!PROJECT	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo project:	%pname%> %descFile%
-echo Short Name:	%ID%>> %descFile%
+rem echo Short Name:	%ID%>> %descFile%
   call :inputMeta "Title" aTitle *
   call :inputMeta "Description" aDesc *
 echo pISA projects path:	%pISAroot:\=/%>> %descFile%
@@ -222,9 +222,9 @@ md presentations
 md reports
 rem put something to the directories
 rem to force git to add them
-echo # Investigation %ID%>  .\README.MD
-echo # Reports for investigation %ID%>  .\reports\README.MD
-echo # Presentations for investigation %ID%>  .\presentations\README.MD
+echo # Investigation %Idir%>  .\README.MD
+echo # Reports for investigation %Idir%>  .\reports\README.MD
+echo # Presentations for investigation %Idir%>  .\presentations\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -242,7 +242,7 @@ set hd=%hd%project:                           %pname:~3%/
 REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo Investigation:	%iname%> %descFile%
-echo Short Name:	%ID%>> %descFile%
+rem echo Short Name:	%ID%>> %descFile%
   call :inputMeta "Title" aTitle *
   call :inputMeta "Description" aDesc *
 rem echo Investigation Path:	%cd:\=/%>> %descFile%
@@ -371,8 +371,8 @@ set "mroot=%proot%\.."
 md reports
 rem put something to the directories
 rem to force git to add them
-echo # Study %ID%>  .\README.MD
-echo # Reports for study %ID%>  .\reports\README.MD
+echo # Study %Sdir%>  .\README.MD
+echo # Reports for study %Sdir%>  .\reports\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -387,7 +387,7 @@ set hd=%hd%Study:                             %sname:~3%/
 set hd=%hd%Investigation:                     %iname:~3%/
 rem -----------------------------------------------
 echo Study:	%sname%> %descFile%
-echo Short Name:	%ID%>> %descFile%
+rem echo Short Name:	%ID%>> %descFile%
   call :inputMeta "Title" aTitle *
   call :inputMeta "Description" aDesc *
 rem echo Study Path:	%cd:\=/%>> %descFile%
@@ -628,12 +628,12 @@ md scripts
 md output
 md other
 rem put something in to force git to add new directories
-echo # Assay %ID%>  .\README.MD
-echo # Input for assay %ID%>  .\input\README.MD
-echo # Reports for assay %ID%>  .\reports\README.MD
-echo # Scripts for assay %ID%>  .\scripts\README.MD
-echo # Output of assay %ID%>  .\output\README.MD
-echo # Other files for assay %ID%>  .\other\README.MD
+echo # Assay %Adir%>  .\README.MD
+echo # Input for assay %Adir%>  .\input\README.MD
+echo # Reports for assay %Adir%>  .\reports\README.MD
+echo # Scripts for assay %Adir%>  .\scripts\README.MD
+echo # Output of assay %Adir%>  .\output\README.MD
+echo # Other files for assay %Adir%>  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :wet
@@ -645,11 +645,11 @@ md raw
 cd ..
 md other
 rem put something in to force git to add new directories
-echo # Assay %ID%>  .\README.MD
-echo # Reports for assay %ID%>  .\reports\README.MD
-echo # Output of assay %ID%>  .\output\README.MD
-echo # Raw output of assay %ID%>  .\output\raw\README.MD
-echo # Other files for assay %ID%>  .\other\README.MD
+echo # Assay %Adir%>  .\README.MD
+echo # Reports for assay %Adir%>  .\reports\README.MD
+echo # Output of assay %Adir%>  .\output\README.MD
+echo # Raw output of assay %Adir%>  .\output\raw\README.MD
+echo # Other files for assay %Adir%>  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :Forall
@@ -670,7 +670,7 @@ set hd=%hd%Study:                             %sname:~3%/
 rem set hd=%hd%Assay:                             %aname:~3%/
 rem -------------------------------------- make ASSAY_METADATA
 echo Assay:	%Adir%> %descFile%
-echo Short Name:	%ID%>> %descFile%
+rem echo Short Name:	%Adir%>> %descFile%
 echo Assay Class:	%IDClass%>> %descFile%
 echo Assay Type:	%IDType%>> %descFile%
 rem ECHO ON
