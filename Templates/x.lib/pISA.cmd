@@ -8,7 +8,7 @@ goto :EOF
 rem pISA makeLayer batch files packed into the library
 :pISA
 @echo off
-set "$ver=pISA-tree v.3.0.2"
+set "$ver=pISA-tree v.3.0.3"
 set "$analini=Analytes_Template.txt"
 set "$metaTypeini=meta_AType_Template.txt"
 rem first argument defines where to go (calling batch file name)
@@ -52,14 +52,14 @@ call :askFile "Enter project ID: " ID
 ) else (
 set ID=%1
 )
-:Ask
+:Askpid
 if %ID% EQU "" call :askFile "Enter project ID: " ID
-if %ID% EQU "" goto Ask
+if %ID% EQU "" goto Askpid
 IF EXIST _p_%ID% (
 REM Dir exists
 echo ERROR: project named *%ID%* already exists
 set ID=""
-goto Ask
+goto Askpid
 ) ELSE (
 REM Continue creating directory
 rem echo Creating project %ID%
@@ -82,9 +82,9 @@ md reports
 rem put something to the directories
 rem to force git to add them
 REM
-echo # Project %ID%>  .\README.MD
-echo # Reports for project %ID%>  .\reports\README.MD
-echo # Presentations for project %ID%>  .\presentations\README.MD
+echo # Project %pdir%>  .\README.MD
+echo # Reports for project %pdir%>  .\reports\README.MD
+echo # Presentations for project %pdir%>  .\presentations\README.MD
 echo # Feature Summary Table> .\FST.txt
 rem
 setlocal EnableDelayedExpansion
@@ -101,7 +101,7 @@ set hd=%hd%project:                           %pname:~3%/
 REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!PROJECT	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo project:	%pname%> %descFile%
-echo Short Name:	%ID%>> %descFile%
+rem echo Short Name:	%ID%>> %descFile%
   call :inputMeta "Title" aTitle *
   call :inputMeta "Description" aDesc *
 echo pISA projects path:	%pISAroot:\=/%>> %descFile%
@@ -190,15 +190,15 @@ rem echo %ID%
 ) else (
 set ID=%1
 )
-:Ask
+:Askiid
 if %ID% EQU "" call :askFile "Enter Investigation ID: " ID
-if %ID% EQU "" goto Ask
+if %ID% EQU "" goto Askiid
 REM Check existence/uniqueness
 IF EXIST _I_%ID% (
 REM Dir exists
 echo ERROR: Investigation named *%ID%* already exists
 set ID=""
-goto Ask
+goto Askiid
 ) ELSE (
 REM Continue creating directory
 rem echo %ID%
@@ -222,9 +222,9 @@ md presentations
 md reports
 rem put something to the directories
 rem to force git to add them
-echo # Investigation %ID%>  .\README.MD
-echo # Reports for investigation %ID%>  .\reports\README.MD
-echo # Presentations for investigation %ID%>  .\presentations\README.MD
+echo # Investigation %Idir%>  .\README.MD
+echo # Reports for investigation %Idir%>  .\reports\README.MD
+echo # Presentations for investigation %Idir%>  .\presentations\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -242,7 +242,7 @@ set hd=%hd%project:                           %pname:~3%/
 REM -----------------------------------------------
 REM echo SHORT NAME	!LF!DESCRIPTION	 !LF!INVESTIGATOR	!LF!INVESTIGATION	!LF!FITOBASE LINK	!LF!RAW DATA	!LF!> .\_experiments\_EXPERIMENT_METADATA.TXT
 echo Investigation:	%iname%> %descFile%
-echo Short Name:	%ID%>> %descFile%
+rem echo Short Name:	%ID%>> %descFile%
   call :inputMeta "Title" aTitle *
   call :inputMeta "Description" aDesc *
 rem echo Investigation Path:	%cd:\=/%>> %descFile%
@@ -345,15 +345,15 @@ rem echo %ID%
 ) else (
 set ID=%1
 )
-:Ask
+:Asksid
 if %ID% EQU "" call :askFile "Enter Study ID: " ID
-if %ID% EQU "" goto Ask
+if %ID% EQU "" goto Asksid
 REM Check existence/uniqueness
 IF EXIST _S_%ID% (
 REM Dir exists
 echo ERROR: Study named *%ID%* already exists
 set ID=""
-goto Ask
+goto Asksid
 ) ELSE (
 REM Continue creating directory
 rem echo %ID%
@@ -371,8 +371,8 @@ set "mroot=%proot%\.."
 md reports
 rem put something to the directories
 rem to force git to add them
-echo # Study %ID%>  .\README.MD
-echo # Reports for study %ID%>  .\reports\README.MD
+echo # Study %Sdir%>  .\README.MD
+echo # Reports for study %Sdir%>  .\reports\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -387,7 +387,7 @@ set hd=%hd%Study:                             %sname:~3%/
 set hd=%hd%Investigation:                     %iname:~3%/
 rem -----------------------------------------------
 echo Study:	%sname%> %descFile%
-echo Short Name:	%ID%>> %descFile%
+rem echo Short Name:	%ID%>> %descFile%
   call :inputMeta "Title" aTitle *
   call :inputMeta "Description" aDesc *
 rem echo Study Path:	%cd:\=/%>> %descFile%
@@ -586,9 +586,9 @@ set IDName=%3
 rem dir %IDType%* /B /AD
 rem Similar Assay IDs
 rem %IDType%* /AD
-:Ask3
+:Askaid
 if %IDName% EQU "" call :askFile "Enter Assay ID: " IDName 
-if %IDName% EQU "" goto Ask3
+if %IDName% EQU "" goto Askaid
 rem ----------------------------------------------
 rem concatenate ID name
 set ID=%IDName%-%IDType%
@@ -602,7 +602,7 @@ rem set IDType=""
 rem set IDClass=""
 set IDName=""
 set ID=""
-goto Ask3
+goto Askaid
 ) ELSE (
 REM Continue creating directory
 )
@@ -628,12 +628,12 @@ md scripts
 md output
 md other
 rem put something in to force git to add new directories
-echo # Assay %ID%>  .\README.MD
-echo # Input for assay %ID%>  .\input\README.MD
-echo # Reports for assay %ID%>  .\reports\README.MD
-echo # Scripts for assay %ID%>  .\scripts\README.MD
-echo # Output of assay %ID%>  .\output\README.MD
-echo # Other files for assay %ID%>  .\other\README.MD
+echo # Assay %Adir%>  .\README.MD
+echo # Input for assay %Adir%>  .\input\README.MD
+echo # Reports for assay %Adir%>  .\reports\README.MD
+echo # Scripts for assay %Adir%>  .\scripts\README.MD
+echo # Output of assay %Adir%>  .\output\README.MD
+echo # Other files for assay %Adir%>  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :wet
@@ -645,11 +645,11 @@ md raw
 cd ..
 md other
 rem put something in to force git to add new directories
-echo # Assay %ID%>  .\README.MD
-echo # Reports for assay %ID%>  .\reports\README.MD
-echo # Output of assay %ID%>  .\output\README.MD
-echo # Raw output of assay %ID%>  .\output\raw\README.MD
-echo # Other files for assay %ID%>  .\other\README.MD
+echo # Assay %Adir%>  .\README.MD
+echo # Reports for assay %Adir%>  .\reports\README.MD
+echo # Output of assay %Adir%>  .\output\README.MD
+echo # Raw output of assay %Adir%>  .\output\raw\README.MD
+echo # Other files for assay %Adir%>  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :Forall
@@ -670,7 +670,7 @@ set hd=%hd%Study:                             %sname:~3%/
 rem set hd=%hd%Assay:                             %aname:~3%/
 rem -------------------------------------- make ASSAY_METADATA
 echo Assay:	%Adir%> %descFile%
-echo Short Name:	%ID%>> %descFile%
+rem echo Short Name:	%Adir%>> %descFile%
 echo Assay Class:	%IDClass%>> %descFile%
 echo Assay Type:	%IDType%>> %descFile%
 rem ECHO ON
@@ -1065,8 +1065,10 @@ GOTO:EOF
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 rem -----------------------------------------------------
 :putMeta2   --- get metadata and append to descFile
-::          --- descFile - should be set befor the call
+::          --- descFile - should be set before the call
 ::          --- %~1 Input message (what to enter)
+::                  If it starts with symbol '+', no user input is expected.
+::                  Line is added into metafile.
 ::          --- %~2 Variable to get result
 ::          --- %~3 (optional) missing: no typed input required
 ::                             * : can be skipped, return *
@@ -1076,6 +1078,13 @@ rem -----------------------------------------------------
 :: Example: call:putMeta2 "Type something" xx default
 rem SETLOCAL
 rem FIX: allow text input of empty string
+set "Key=%~1"
+set "xMeta=%~3"
+if "%Key:~0,1%" NEQ "+" GOTO:kbdinput
+    set "Key=%Key:+=%"
+    echo %Key%:	%xMeta%>> %descFile%
+goto:header
+:kbdinput
 if "%~3"=="*" call:getInput "%~1" xMeta "%~3" & GOTO:next
 if "%~3"==""  call:getInput "%~1" xMeta "%~3" & GOTO:next
 if "%~3"==" " call:getInput "%~1" xMeta "%~3" & GOTO:next
@@ -1097,12 +1106,13 @@ set pf=
 if "%~4" NEQ ""  set pf=%postfix%
 set "line1=%line1%	%~1"
 set "line2=%line2%	%~4%xMeta%%pf%"
+:header
 endlocal
 rem echo tst line1 %line1%
 rem echo tst line2 %line2%
 rem pause
 set "spaces=                                 "
-set "line=%~1%spaces%"
+set "line=%Key%%spaces%"
 set "line=%line:~0,35%%~4%xMeta%"
 rem if /I "%~3" NEQ "Blank" set "hd=%hd%%~1:		 %~4%xMeta%/"
 if /I "%~3" NEQ "Blank" set "hd=%hd%%line%/"

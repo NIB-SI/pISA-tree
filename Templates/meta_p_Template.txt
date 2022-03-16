@@ -1,0 +1,9 @@
+#Key name	Key value
+Local pISA-tree organisation	*
+pISA project creation date	%today%
+pISA project creator	*
+Project funding code	*
+Project coordinator	*
+Project partners	*
+Project start date	*
+Project end date	*

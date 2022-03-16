@@ -1,4 +1,8 @@
 #Key name	Key value
+# Lines starting with + will be silently added to metadata
++Measurement Type	metabolite profiling
++Technology Type	gas chromatography-mass spectrometry
+#
 Lab manager	*
 Sample collection protocol (file path, link or citation)	*
 Extraction protocol (file path, link or citation)	*
