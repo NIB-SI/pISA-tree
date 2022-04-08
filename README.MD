@@ -1,4 +1,4 @@
-![image](PISATREE RGB.png)
+![image](PISATREE.png)
 
 # pISA-tree: Standard project directory tree<br/>Extension of ISA structure
 
