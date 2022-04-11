@@ -872,6 +872,8 @@ echo # Check for missing metadata >!lfn!
 set "mycd=%cd:\=;%"
 set "mycd=%mycd:_=\_%
 echo %mycd:;=  !LF!/%>>!lfn!
+@echo xCheckMetadata ----------------------  pISA-tree %$ver%
+@echo Metadata for levels below %cd%!LF!
 For /F "tokens=1*" %%i in (src.tmp) do (
 	rem (echo.|set /p =## %%i!LF!)>name.tmp
 	rem copy !lfn!+line.tmp !lfn!
@@ -896,9 +898,9 @@ For /F "tokens=1*" %%i in (src.tmp) do (
 )
 echo !LF!---!LF!>>!lfn!
 del *.tmp
-@echo on
+@echo off
 rem type Metadata.md
-@echo Metadata levels below %cd%
+@echo !LF!Metadata error report for levels below %cd% is in !lfn!!LF!
 open !lfn!
 goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
