@@ -1,7 +1,7 @@
 #Key name	Key Value
 # Lines starting with + will be silently added to metadata
-+Measurement Type	*
-+Technology Type	*
++Measurement Type	promoter activity detection by reporter gene assay
++Technology Type	microplate reader
 #
 Lab manager	ACR/TL
 Operator	*

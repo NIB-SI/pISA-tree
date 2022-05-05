@@ -10,7 +10,7 @@ Lab manager	*
 #
 #Assay optimisation/validation
 Assay chemistry	TaqMan Probe/MGB Probe/SYBRGreen/mixed
-Assay optimisation protocol (file path, link or citation)	
+Assay optimisation protocol (file path, link or citation) *
 Pippeting	liquid handling station/manual
 Reaction volume	*
 #
