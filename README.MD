@@ -27,3 +27,4 @@ Links:
 Linked resources:
 * [R support for pISA-tree](https://github.com/NIB-SI/pisar) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5721249.svg)](https://doi.org/10.5281/zenodo.5721249)
 * [R interface for SEEK API (connection to FAIRDOMHub)](https://github.com/NIB-SI/seekr) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5710285.svg)](https://doi.org/10.5281/zenodo.5710285)
+* [Community effort pISA-tree assay-types](https://github.com/NIB-SI/pISA-tree-assay-types) - enhanced with pISA-tree->ISA-Tab validation files
