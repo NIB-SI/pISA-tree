@@ -15,7 +15,7 @@ Technology Type	RNA isolation and reverse transcription
 
 Measurement Type	metabolite profiling
 
-Technology Type	gas chromatography–mass spectrometry
+Technology Type	gas chromatography-mass spectrometry
 
 ## Assay type: qPCR
 
@@ -31,6 +31,6 @@ Technology Type	Oxford Nanopore Technologies sequencing
 
 ## Assay type: LUM
 
-Measurement Type	*
+Measurement Type	promoter activity detection by reporter gene assay
 
-Technology Type	*
+Technology Type	microplate reader
