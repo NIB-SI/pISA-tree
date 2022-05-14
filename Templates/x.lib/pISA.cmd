@@ -111,7 +111,7 @@ rem  make main readme.md file
 copy %libdir%\call.bat .\makeInvestigation.bat >NUL
 copy %mroot%\showTree.bat . > NUL
 copy %mroot%\showMetadata.bat . > NUL
-copy %mroot%\xcheckMetadata.bat . > NUL
+copy %mroot%\xCheckMetadata.bat . > NUL
 rem del *.tmp > NUL
 rem process level specific items
 call :processMeta %mroot%\meta_p_Template.txt
@@ -269,7 +269,7 @@ rem  make main readme.md file
 copy %libdir%\call.bat .\makeStudy.bat > NUL
 copy %proot%\showTree.bat . > NUL
 copy %proot%\showMetadata.bat . > NUL
-copy %proot%\xcheckMetadata.bat . > NUL
+copy %proot%\xCheckMetadata.bat . > NUL
 rem process level specific items
  call :processMeta %proot%\meta_I_Template.txt
  copy %tmpldir%\meta_S_Template.txt %iroot%
@@ -399,7 +399,7 @@ rem  make main readme.md file
 copy %libdir%\call.bat .\makeAssay.bat > NUL
 copy %iroot%\showTree.bat . > NUL
 copy %iroot%\showMetadata.bat . > NUL
-copy %iroot%\xcheckMetadata.bat . > NUL
+copy %iroot%\xCheckMetadata.bat . > NUL
 REM
 rem process level specific items
  call :processMeta %iroot%\meta_S_Template.txt
@@ -747,7 +747,7 @@ copy %descFile%+..\common.ini %descFile% /b >NUL
 rem echo ASSAY:	%ID%>> ..\_STUDY_METADATA.TXT
 copy %sroot%\showTree.bat . >NUL
 copy %sroot%\showMetadata.bat . >NUL
-copy %sroot%\xcheckMetadata.bat . >NUL
+copy %sroot%\xCheckMetadata.bat . >NUL
 
 rem
 rem  make main readme.md file
@@ -847,7 +847,7 @@ if %rtyp% EQU txt start excel !lfn!
 if %rtyp% NEQ txt open !lfn!
 goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-:xcheckMetadata
+:xCheckMetadata
 @echo off
 rem -------------------------------------  pISA-tree %$ver%
 rem
@@ -864,6 +864,7 @@ set LF=^
 
 
 REM Two empty lines are necessary
+set "TAB=	"
 echo !LF!*!LF!>line.tmp
 where /R . _*.txt > src.tmp
 rem change \ with /
@@ -871,6 +872,8 @@ echo # Check for missing metadata >!lfn!
 set "mycd=%cd:\=;%"
 set "mycd=%mycd:_=\_%
 echo %mycd:;=  !LF!/%>>!lfn!
+@echo xCheckMetadata ----------------------  pISA-tree %$ver%
+@echo Metadata for levels below %cd%!LF!
 For /F "tokens=1*" %%i in (src.tmp) do (
 	rem (echo.|set /p =## %%i!LF!)>name.tmp
 	rem copy !lfn!+line.tmp !lfn!
@@ -888,15 +891,16 @@ For /F "tokens=1*" %%i in (src.tmp) do (
 	REM Add two blanks to each line
 	set addtext="  "
 	rem find stars
-	for /f "delims=" %%a in ('findstr "*" %%i') do echo  ?? MISSING: %%a %addtext% >> !lfn!
-	rem 
+	for /f "delims=" %%a in ('findstr "*" %%i') do echo  ?? MISSING VALUE: %%a %addtext% >> !lfn!
+	rem find missing Key/Value tab separator
+	for /f "delims=" %%a in ('findstr /C:"%tab%" /v %%i') do echo  ?? NO TAB SEPARATOR: %%a %addtext% >> !lfn!
 	if exist tmpfile.tmp del /q tmpfile.tmp
 )
 echo !LF!---!LF!>>!lfn!
 del *.tmp
-@echo on
+@echo off
 rem type Metadata.md
-@echo Metadata levels below %cd%
+@echo !LF!Metadata error report for levels below %cd% is in !lfn!!LF!
 open !lfn!
 goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
