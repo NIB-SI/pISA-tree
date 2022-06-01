@@ -6,7 +6,7 @@
 This set of batch files is used to create standard directory tree for research projects.
 Batch files are provided to make standardized nested directories in accordance with the ISA framework (**I**nvestigation/**S**tudy/**A**ssay).
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5721227.svg)](https://doi.org/10.5281/zenodo.5721227)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6602088.svg)](https://doi.org/10.5281/zenodo.6602088)
 
 Installation:
 
