@@ -1,10 +1,10 @@
 ![image](PISATREE.png)
 
-# pISA-tree: Standard project directory tree<br/>Extension of ISA structure
+# pISA-tree: Standard project directory tree<br/>
 
 
-This set of batch files is used to create standard directory tree for research projects.
-Batch files are provided to make standardized nested directories in accordance with the ISA framework (**I**nvestigation/**S**tudy/**A**ssay).
+This set of batch files is used to create standard directory tree for research projects. 
+Batch files are provided to make standardized nested directories in accordance with the ISA Abstract Model levels (**I**nvestigation/**S**tudy/**A**ssay).
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6602088.svg)](https://doi.org/10.5281/zenodo.6602088)
 
