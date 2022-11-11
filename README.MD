@@ -28,3 +28,17 @@ Linked resources:
 * [R support for pISA-tree](https://github.com/NIB-SI/pisar) [![DOI](https://zenodo.org/badge/214719940.svg)](https://zenodo.org/badge/latestdoi/214719940)
 * [R interface for SEEK API (connection to FAIRDOMHub)](https://github.com/NIB-SI/seekr) [![DOI](https://zenodo.org/badge/253771274.svg)](https://zenodo.org/badge/latestdoi/253771274)
 * [Community effort pISA-tree assay-types](https://github.com/NIB-SI/pISA-tree-assay-types) - enhanced with pISA-tree->ISA-Tab validation files
+
+
+
+
+</br></br>
+
+<span style="color:green">**Find out even more about pISA-tree from**</span>
+  
+
+🖋 blog post [Manage life science research data with pISA-tree](https://researchdata.springernature.com/posts/manage-life-science-research-data-with-pisa-tree)
+
+📋 scientific **data** article [Petek, M., Zagorščak, M., Blejec, A. et al. pISA-tree - a data management framework for life science research projects using a standardised directory tree. Sci Data 9, 685 (2022). https://doi.org/10.1038/s41597-022-01805-5](https://www.nature.com/articles/s41597-022-01805-5)
+
+
