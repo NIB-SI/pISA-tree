@@ -575,9 +575,9 @@ if exist %tmpldir%\%IDClass%\%NewType% (
   set "NewType=" 
   goto Ask4)
 rem type ok
-md %tmpldir%\%IDClass%\%NewType%
-echo #Key name	Key value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
-echo #Creation date	%today%>> %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
+rem md %tmpldir%\%IDClass%\%NewType%
+rem echo #Key name	Key value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
+rem echo #Creation date	%today%>> %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
 )
