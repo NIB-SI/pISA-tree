@@ -556,7 +556,7 @@ SETLOCAL DISABLEDELAYEDEXPANSION
 if "%2" EQU "" (
 set "IDType="
 rem echo %tmpldir%\%IDClass%
-call :getMenu "Select Assay Type" "%types%Other" IDType ) else (
+call :getMenu "Select Assay Type" "%types%Other/None" IDType ) else (
 set "IDType=%2"
 )
 rem process Other type
@@ -575,11 +575,14 @@ if exist %tmpldir%\%IDClass%\%NewType% (
   set "NewType=" 
   goto Ask4)
 rem type ok
-md %tmpldir%\%IDClass%\%NewType%
-echo #Key name	Key value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
-echo #Creation date	%today%>> %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
+rem md %tmpldir%\%IDClass%\%NewType%
+rem echo #Key name	Key value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
+rem echo #Creation date	%today%>> %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
+)
+if %IDType% EQU None (
+set "IDType="
 )
 rem Other finished
 set "hd=%hd%Assay Type:		 %~4%IDType%/"
@@ -615,8 +618,10 @@ if %IDName% EQU "" call :askFile "Enter Assay ID: " IDName
 if %IDName% EQU "" goto Askaid
 rem ----------------------------------------------
 rem concatenate ID name
-set ID=%IDName%-%IDType%
-echo %ID%
+REM x echo *%IDType%*
+REM x pause
+if "%IDType%" EQU "" (
+   set ID=%IDName% ) else ( set ID=%IDName%-%IDType% ) 
 rem ----------------------------------------------
 rem Check existence
 IF EXIST _A_%ID% (
