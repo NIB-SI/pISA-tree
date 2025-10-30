@@ -86,9 +86,9 @@ md reports
 rem put something to the directories
 rem to force git to add them
 REM
-echo # Project %pdir%>  .\README.MD
-echo # Reports for project %pdir%>  .\reports\README.MD
-echo # Presentations for project %pdir%>  .\presentations\README.MD
+echo # Project ...>  .\README.MD
+echo # Reports for project ...>  .\reports\README.MD
+echo # Presentations for project ...>  .\presentations\README.MD
 echo # Feature Summary Table> .\FST.txt
 rem
 setlocal EnableDelayedExpansion
@@ -242,9 +242,9 @@ md presentations
 md reports
 rem put something to the directories
 rem to force git to add them
-echo # Investigation %Idir%>  .\README.MD
-echo # Reports for investigation %Idir%>  .\reports\README.MD
-echo # Presentations for investigation %Idir%>  .\presentations\README.MD
+echo # Investigation ...>  .\README.MD
+echo # Reports for investigation ...>  .\reports\README.MD
+echo # Presentations for investigation ...>  .\presentations\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -395,8 +395,8 @@ set "mroot=%proot%\.."
 md reports
 rem put something to the directories
 rem to force git to add them
-echo # Study %Sdir%>  .\README.MD
-echo # Reports for study %Sdir%>  .\reports\README.MD
+echo # Study ...>  .\README.MD
+echo # Reports for study ...>  .\reports\README.MD
 rem
 setlocal EnableDelayedExpansion
 set LF=^
@@ -556,7 +556,7 @@ SETLOCAL DISABLEDELAYEDEXPANSION
 if "%2" EQU "" (
 set "IDType="
 rem echo %tmpldir%\%IDClass%
-call :getMenu "Select Assay Type" "%types%Other" IDType ) else (
+call :getMenu "Select Assay Type" "%types%Other/None" IDType ) else (
 set "IDType=%2"
 )
 rem process Other type
@@ -575,11 +575,14 @@ if exist %tmpldir%\%IDClass%\%NewType% (
   set "NewType=" 
   goto Ask4)
 rem type ok
-md %tmpldir%\%IDClass%\%NewType%
-echo #Key name	Key value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
-echo #Creation date	%today%>> %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
+rem md %tmpldir%\%IDClass%\%NewType%
+rem echo #Key name	Key value>   %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
+rem echo #Creation date	%today%>> %tmpldir%\%IDClass%\%NewType%\%$metaTypeini%
 echo New %IDClass% Assay Type was created: %NewType%
 set "IDType=%NewType%"
+)
+if %IDType% EQU None (
+set "IDType="
 )
 rem Other finished
 set "hd=%hd%Assay Type:		 %~4%IDType%/"
@@ -615,8 +618,10 @@ if %IDName% EQU "" call :askFile "Enter Assay ID: " IDName
 if %IDName% EQU "" goto Askaid
 rem ----------------------------------------------
 rem concatenate ID name
-set ID=%IDName%-%IDType%
-echo %ID%
+REM x echo *%IDType%*
+REM x pause
+if "%IDType%" EQU "" (
+   set ID=%IDName% ) else ( set ID=%IDName%-%IDType% ) 
 rem ----------------------------------------------
 rem Check existence
 IF EXIST _A_%ID% (
@@ -652,12 +657,12 @@ md scripts
 md output
 md other
 rem put something in to force git to add new directories
-echo # Assay %Adir%>  .\README.MD
-echo # Input for assay %Adir%>  .\input\README.MD
-echo # Reports for assay %Adir%>  .\reports\README.MD
-echo # Scripts for assay %Adir%>  .\scripts\README.MD
-echo # Output of assay %Adir%>  .\output\README.MD
-echo # Other files for assay %Adir%>  .\other\README.MD
+echo # Assay ...>  .\README.MD
+echo # Input for assay ...>  .\input\README.MD
+echo # Reports for assay ...>  .\reports\README.MD
+echo # Scripts for assay ...>  .\scripts\README.MD
+echo # Output of assay ...>  .\output\README.MD
+echo # Other files for assay ...>  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :wet
@@ -669,11 +674,11 @@ md raw
 cd ..
 md other
 rem put something in to force git to add new directories
-echo # Assay %Adir%>  .\README.MD
-echo # Reports for assay %Adir%>  .\reports\README.MD
-echo # Output of assay %Adir%>  .\output\README.MD
-echo # Raw output of assay %Adir%>  .\output\raw\README.MD
-echo # Other files for assay %Adir%>  .\other\README.MD
+echo # Assay ...>  .\README.MD
+echo # Reports for assay ...>  .\reports\README.MD
+echo # Output of assay ...>  .\output\README.MD
+echo # Raw output of assay ...>  .\output\raw\README.MD
+echo # Other files for assay ...>  .\other\README.MD
 goto Forall
 rem ----------------------------------------------
 :Forall
