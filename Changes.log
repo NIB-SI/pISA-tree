@@ -1,0 +1,9 @@
+Changes
+
+* Close #120
+Escape special characters in user input and file ID
+Added logic to replace &, ", and ' with [] entities in user input.
+(7d2cf0d)
+
+* Add restricted characters for file names
+ Updated file ID validation to include ' and ! as restricted characters to prevent invalid input.
