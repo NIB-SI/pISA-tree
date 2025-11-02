@@ -1004,9 +1004,6 @@ set "x=%~3"
 set /p x=Enter %~1 [ %x% ]: 
 rem if %x% EQU "" set x="%~3"
 rem empty answer OK
-Set x=%x:&=[amp]%
-Set x=%x:"=[quot]%
-Set x=%x:'=[apos]%
 if "%x%" EQU "" goto done 
 if "%x%" EQU "*" goto done
 REM Is input required and not entered?
@@ -1392,7 +1389,7 @@ setlocal enableextensions disabledelayedexpansion
     setlocal enabledelayedexpansion
     rem Ensure we do not have restricted characters in file name trying to use them as 
     rem delimiters and requesting the second token in the line
-    for /f tokens^=2^ delims^=^<^>^:^.^,()$[]^"^'^/^\^|^?^!^*^ eol^= %%y in ("A!my_file!A") do (
+    for /f tokens^=2^ delims^=^<^>^:^.^,()$[]^"^/^\^|^?^*^ eol^= %%y in ("A!my_file!A") do (
         rem If we are here there is a second token, so, there is a special character
         echo( Error : Non allowed character in ID
         endlocal & goto :askFile
