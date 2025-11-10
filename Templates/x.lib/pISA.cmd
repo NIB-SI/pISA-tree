@@ -926,21 +926,22 @@ echo !LF!*!LF!>line.tmp
 where /R . _*.txt > src.tmp
 rem change \ with /
 echo # Check for missing metadata >!lfn!
-set "mycd=%cd:\=;%"
-set "mycd=%mycd:_=\_%
-echo %mycd:;=  !LF!/%>>!lfn!
+rem pathln is path brokon to separate paths by LF
+set "pathln=%cd:\=;%"
+set "pathln=%pathln:_=\_%
+echo %pathln:;=  !LF!/%>>!lfn!
 @echo xCheckMetadata ----------------------  pISA-tree %$ver%
 @echo Metadata for levels below %cd%!LF!
-For /F "tokens=1*" %%i in (src.tmp) do (
+For /F "tokens=1* delims=" %%i in (src.tmp) do (
 	rem (echo(|set /p =## %%i!LF!)>name.tmp
 	rem copy !lfn!+line.tmp !lfn!
 	echo !LF!---!LF!>>!lfn!
 	rem copy !lfn!+name.tmp !lfn!
 	rem Shorten the path( remove project root) and change \ to /
-	set "fname=%%i"
-	set "fname=!fname:%cd%= * !"
-	set "fname=!fname:\=/!"
-	set "fname=!fname:_=\_!"
+	set fname="%%i"
+	rem set "fname=!fname:%cd%= * !"
+	rem set "fname=!fname:\=/!"
+	rem set "fname=!fname:_=\_!"
 	echo !fname!
 	(echo(|set /p =" !fname! !LF!")>>!lfn!
 	echo !LF!---!LF!>>!lfn!
@@ -948,16 +949,17 @@ For /F "tokens=1*" %%i in (src.tmp) do (
 	REM Add two blanks to each line
 	set addtext="  "
 	rem find stars
-	for /f "delims=" %%a in ('findstr "*" %%i') do echo  ?? MISSING VALUE: %%a %addtext% >> !lfn!
+	for /f "delims=" %%a in ('findstr "*" !fname!') do echo  ?? MISSING VALUE: %%a %addtext% >> !lfn!
 	rem find missing Key/Value tab separator
-	for /f "delims=" %%a in ('findstr /C:"%tab%" /v %%i') do echo  ?? NO TAB SEPARATOR: %%a %addtext% >> !lfn!
+	for /f "delims=" %%a in ('findstr /C:"%tab%" /v !fname!') do echo  ?? NO TAB SEPARATOR: %%a %addtext% >> !lfn!
 	if exist tmpfile.tmp del /q tmpfile.tmp
 )
 echo !LF!---!LF!>>!lfn!
 del *.tmp
 @echo off
 rem type Metadata.md
-@echo !LF!Metadata error report for levels below %cd% is in !lfn!!LF!
+@echo !LF!Metadata error report is in: 
+@echo %cd%\!lfn!!LF!
 open !lfn!
 goto:eof
 rem XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
