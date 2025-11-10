@@ -857,18 +857,19 @@ echo # Metadata files>!lfn!
 set "mycd=%cd:\=;%"
 if "%rtyp%" EQU "md" set "mycd=%mycd:_=\_%
 echo %mycd:;=  !LF!/%>>!lfn!
-For /F "tokens=1*" %%i in (src.tmp) do (
+For /F "tokens=1* delims=" %%i in (src.tmp) do (
 	rem (echo(|set /p =## %%i!LF!)>name.tmp
 	rem copy !lfn!+line.tmp !lfn!
 	echo !LF!---!LF!>>!lfn!
 	rem copy !lfn!+name.tmp !lfn!
 	rem Shorten the path( remove project root) and change \ to /
-	set "fname=%%i"
+	set fname="%%i"
 	set "fname=!fname:%cd%= * **!"
-	@echo( !fname!
+	rem @echo( !fname!
 	set "fname=!fname:\=/!"
 	if "%rtyp%" EQU "md" set "fname=!fname:_=\_!"
-	(echo(|set /p =" !fname!**!LF!")>>!lfn!
+	set filename="!fname:"=!**"
+	(echo(|set /p =!filename!!LF!)>>!lfn!
 	echo !LF!---!LF!>>!lfn!
 	REM set /p="TextHere" <nul >>!lfn!
 	REM Add two blanks to each line
@@ -880,7 +881,8 @@ For /F "tokens=1*" %%i in (src.tmp) do (
 		) ELSE (
 		echo Key	Value >> tmpfile.tmp
 		)
-		for /f "delims=" %%l in (%%i) Do (
+		echo %%i
+		for /f "usebackq delims=" %%l in ("%%i") Do (
 			if "%rtyp%" EQU "md" (
 				set "iv=%%l"
 				set "iv=!iv::	=:|!"
